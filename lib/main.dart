@@ -293,3 +293,4 @@ class _Home2048State extends State<Home2048>
 //commealskdjlaksjdnt
 // comment #2
 // lkasjdlkajsdlkj
+// kalskdjaklsdj
