@@ -1,74 +1,9 @@
 import 'package:flutter/material.dart';
-
-const Color lightBrown = Color.fromARGB(255, 205, 193, 180);
-const Color darkBrown = Color.fromARGB(255, 187, 173, 160);
-const Color tan = Color.fromARGB(255, 238, 228, 218);
-const Color greyText = Color.fromARGB(255, 119, 110, 101);
-
-const Map<int, Color> numTileColor = {
-  2: tan,
-  4: tan,
-  8: Color.fromARGB(255, 242, 177, 121),
-  16: Color.fromARGB(255, 245, 149, 99),
-  32: Color.fromARGB(255, 246, 124, 95),
-  64: const Color.fromARGB(255, 246, 95, 64),
-  128: const Color.fromARGB(255, 235, 208, 117),
-  256: const Color.fromARGB(255, 237, 203, 103),
-  512: const Color.fromARGB(255, 236, 201, 85),
-  1024: const Color.fromARGB(255, 229, 194, 90),
-  2048: const Color.fromARGB(255, 232, 192, 70),
-};
+import 'constants.dart';
+import 'tile.dart';
 
 void main() {
   runApp(MyApp());
-}
-
-class Tile {
-  final int x;
-  final int y;
-  int val;
-
-  Animation<double> animatedX;
-  Animation<double> animatedY;
-  Animation<int> animatedValue;
-  Animation<double> scale;
-
-  Tile(this.x, this.y, this.val) {
-    resetAnimations();
-  }
-
-  void resetAnimations() {
-    animatedX = AlwaysStoppedAnimation(this.x.toDouble());
-    animatedY = AlwaysStoppedAnimation(this.y.toDouble());
-    animatedValue = AlwaysStoppedAnimation(this.val);
-    scale = AlwaysStoppedAnimation(1.0);
-  }
-
-  void moveTo(Animation<double> parent, int x, int y) {
-    animatedX = Tween(begin: this.x.toDouble(), end: x.toDouble())
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0, .5)));
-    animatedY = Tween(begin: this.y.toDouble(), end: y.toDouble())
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0, .5)));
-  }
-
-  void bounce(Animation<double> parent) {
-    scale = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.2), weight: 1.0),
-      TweenSequenceItem(tween: Tween(begin: 1.2, end: 1.0), weight: 1.0),
-    ]).animate(CurvedAnimation(parent: parent, curve: Interval(.5, 1.0)));
-  }
-
-  void appear(Animation<double> parent) {
-    scale = Tween(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0.5, 1.0)));
-  }
-
-  void changeNumber(Animation<double> parent, int newValue) {
-    animatedValue = TweenSequence([
-      TweenSequenceItem(tween: ConstantTween(val), weight: .01),
-      TweenSequenceItem(tween: ConstantTween(val), weight: .99),
-    ]).animate(CurvedAnimation(parent: parent, curve: Interval(0.5, 1.0)));
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -113,8 +48,8 @@ class _Home2048State extends State<Home2048>
       }
     });
 
-    grid[1][2].val = 4;
-    grid[3][2].val = 16;
+    grid[1][2].val = 2;
+
     flattenedGrid.forEach((element) => element.resetAnimations());
   }
 
@@ -189,37 +124,66 @@ class _Home2048State extends State<Home2048>
 
     return Scaffold(
       backgroundColor: tan,
-      body: Center(
-        child: Container(
-          child: GestureDetector(
-            onVerticalDragEnd: (details) {
-              if (details.velocity.pixelsPerSecond.dy < -250 && canSwipeUp()) {
-                doSwipe(swipeUp);
-              } else if (details.velocity.pixelsPerSecond.dy > 250 &&
-                  canSwipeDown()) {
-                doSwipe(swipeDown);
-              }
-            },
-            onHorizontalDragEnd: (details) {
-              if (details.velocity.pixelsPerSecond.dx < -1000 &&
-                  canSwipeLeft()) {
-                doSwipe(swipeLeft);
-              } else if (details.velocity.pixelsPerSecond.dx > 1000 &&
-                  canSwipeRight()) {
-                doSwipe(swipeRight);
-              }
-            },
-            child: Stack(
-              children: stackItems,
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Row(
+                // modes
+                ),
+            Container(
+              child: GestureDetector(
+                onVerticalDragEnd: (details) {
+                  if (details.velocity.pixelsPerSecond.dy < -250 &&
+                      canSwipeUp()) {
+                    doSwipe(swipeUp);
+                  } else if (details.velocity.pixelsPerSecond.dy > 250 &&
+                      canSwipeDown()) {
+                    doSwipe(swipeDown);
+                  }
+                },
+                onHorizontalDragEnd: (details) {
+                  if (details.velocity.pixelsPerSecond.dx < -1000 &&
+                      canSwipeLeft()) {
+                    doSwipe(swipeLeft);
+                  } else if (details.velocity.pixelsPerSecond.dx > 1000 &&
+                      canSwipeRight()) {
+                    doSwipe(swipeRight);
+                  }
+                },
+                child: Stack(
+                  children: stackItems,
+                ),
+              ),
+              width: gridSize,
+              height: gridSize,
+              padding: EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: darkBrown,
+              ),
             ),
-          ),
-          width: gridSize,
-          height: gridSize,
-          padding: EdgeInsets.all(4.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            color: darkBrown,
-          ),
+            Container(
+              height: 80,
+              width: 400,
+              child: RaisedButton(
+                color: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Text(
+                  "Restart",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 34,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                onPressed: restartGame,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -287,5 +251,17 @@ class _Home2048State extends State<Home2048>
         }
       }
     }
+  }
+
+  void restartGame() {
+    setState(() {
+      flattenedGrid.forEach((e) {
+        e.val = 0;
+        e.resetAnimations();
+      });
+      toAdd.clear();
+      addNewTile();
+      controller.forward(from: 0);
+    });
   }
 }
