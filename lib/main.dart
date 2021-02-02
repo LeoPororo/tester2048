@@ -31,6 +31,8 @@ class _Home2048State extends State<Home2048>
   Iterable<List<Tile>> get cols =>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
+  bool gameMode = false;
+
   @override
   void initState() {
     super.initState();
@@ -38,25 +40,25 @@ class _Home2048State extends State<Home2048>
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        toAdd.forEach((element) {
-          grid[element.y][element.x].val = element.val;
+        setState(() {
+          toAdd.forEach((element) {
+            grid[element.y][element.x].val = element.val;
+          });
+          flattenedGrid.forEach((element) => element.resetAnimations());
+          toAdd.clear();
         });
-        flattenedGrid.forEach((element) {
-          element.resetAnimations();
-        });
-        toAdd.clear();
       }
     });
 
-    grid[1][2].val = 2;
-
-    flattenedGrid.forEach((element) => element.resetAnimations());
+    restartGame();
   }
 
-  void addNewTile() {
+  void addNewTile(List<int> newTiles) {
     List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
     empty.shuffle();
-    toAdd.add(Tile(empty.first.x, empty.first.y, 2)..appear(controller));
+    for (int i = 0; i < newTiles.length; i++) {
+      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
+    }
   }
 
   @override
@@ -102,18 +104,28 @@ class _Home2048State extends State<Home2048>
                           height: (tileSize - 4.0 * 2) * tile.scale.value,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: numTileColor[tile.animatedValue.value]),
+                              color: gameMode == false
+                                  ? numTileColor[tile.animatedValue.value]
+                                  : tan),
                           child: Center(
-                            child: Text(
-                              '${tile.animatedValue.value}',
-                              style: TextStyle(
-                                color: tile.animatedValue.value <= 4
-                                    ? greyText
-                                    : Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
+                            child: gameMode == false
+                                ? Text(
+                                    '${tile.animatedValue.value}',
+                                    style: TextStyle(
+                                      color: tile.animatedValue.value <= 4
+                                          ? greyText
+                                          : Colors.white,
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image.asset(
+                                      'assets/question.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
@@ -130,8 +142,24 @@ class _Home2048State extends State<Home2048>
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Row(
-                // modes
-                ),
+              children: <Widget>[
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    "Visibility",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 34,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  onPressed: changeMode,
+                )
+              ],
+            ),
             Container(
               child: GestureDetector(
                 onVerticalDragEnd: (details) {
@@ -192,7 +220,7 @@ class _Home2048State extends State<Home2048>
   void doSwipe(void Function() swipeFn) {
     setState(() {
       swipeFn();
-      addNewTile();
+      addNewTile([2]);
       controller.forward(from: 0);
     });
   }
@@ -260,8 +288,14 @@ class _Home2048State extends State<Home2048>
         e.resetAnimations();
       });
       toAdd.clear();
-      addNewTile();
+      addNewTile([2, 2]);
       controller.forward(from: 0);
+    });
+  }
+
+  void changeMode() {
+    setState(() {
+      gameMode == false ? gameMode = true : gameMode = false;
     });
   }
 }
