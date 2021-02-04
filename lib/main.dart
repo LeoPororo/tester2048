@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'tile.dart';
+import 'dart:ui';
+import 'custom_paint.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -23,6 +26,8 @@ class Home2048 extends StatefulWidget {
 
 class _Home2048State extends State<Home2048>
     with SingleTickerProviderStateMixin {
+  Timer _timer;
+  int counter = 10;
   AnimationController controller;
   List<List<Tile>> grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
@@ -36,6 +41,8 @@ class _Home2048State extends State<Home2048>
   @override
   void initState() {
     super.initState();
+    // timerSimulator =
+    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     controller.addStatusListener((status) {
@@ -51,6 +58,7 @@ class _Home2048State extends State<Home2048>
     });
 
     restartGame();
+    decreasingProgressBar();
   }
 
   void addNewTile(List<int> newTiles) {
@@ -59,6 +67,24 @@ class _Home2048State extends State<Home2048>
     for (int i = 0; i < newTiles.length; i++) {
       toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
     }
+  }
+
+  void decreasingProgressBar() {
+    counter = 10;
+
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (counter > 0) {
+          counter--;
+        } else {
+          _timer.cancel();
+          restartGame();
+        }
+      });
+    });
   }
 
   @override
@@ -193,6 +219,13 @@ class _Home2048State extends State<Home2048>
               ),
             ),
             Container(
+              width: 400,
+              child: CustomPaint(
+                size: Size(10, 10),
+                painter: MyPainter(paintCounter: counter),
+              ),
+            ),
+            Container(
               height: 80,
               width: 400,
               child: RaisedButton(
@@ -290,6 +323,8 @@ class _Home2048State extends State<Home2048>
       toAdd.clear();
       addNewTile([2, 2]);
       controller.forward(from: 0);
+      decreasingProgressBar();
+      MyPainter(paintCounter: counter);
     });
   }
 
