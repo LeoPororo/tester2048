@@ -45,6 +45,7 @@ class _Home2048State extends State<Home2048>
     //     AnimationController(vsync: this, duration: Duration(seconds: 5));
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
@@ -56,9 +57,8 @@ class _Home2048State extends State<Home2048>
         });
       }
     });
-
-    restartGame();
     decreasingProgressBar();
+    restartGame();
   }
 
   void addNewTile(List<int> newTiles) {
@@ -70,8 +70,6 @@ class _Home2048State extends State<Home2048>
   }
 
   void decreasingProgressBar() {
-    counter = 10;
-
     if (_timer != null) {
       _timer.cancel();
     }
@@ -81,6 +79,7 @@ class _Home2048State extends State<Home2048>
           counter--;
         } else {
           _timer.cancel();
+          counter = 10;
           restartGame();
         }
       });
@@ -323,8 +322,8 @@ class _Home2048State extends State<Home2048>
       toAdd.clear();
       addNewTile([2, 2]);
       controller.forward(from: 0);
+      counter = 10;
       decreasingProgressBar();
-      MyPainter(paintCounter: counter);
     });
   }
 

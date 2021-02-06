@@ -16,7 +16,6 @@ class MyPainter extends CustomPainter {
     final endLine = Offset(375, 10);
     int operation = 407 - 37 * (11 - paintCounter);
     var p3 = Offset(operation.toDouble(), 10);
-    print(operation);
     final rePainted = Paint()
       ..color = Colors.white
       ..strokeCap = StrokeCap.round
