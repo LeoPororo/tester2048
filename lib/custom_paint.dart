@@ -25,6 +25,7 @@ class MyPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter old) {
-    return false;
+    // This should be always true if you want to repaint / redraw the progress bar
+    return true;
   }
 }
