@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'tile.dart';
@@ -32,17 +34,19 @@ class _Home2048State extends State<Home2048>
   List<List<Tile>> grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
   List<Tile> toAdd = [];
+  List<int> toShuffle = [];
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
   Iterable<List<Tile>> get cols =>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
   bool gameMode = false;
+  bool swipeTap = true;
+  bool addMinus = true;
+  bool tileCheck = false;
 
   @override
   void initState() {
     super.initState();
-    // timerSimulator =
-    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
@@ -57,7 +61,7 @@ class _Home2048State extends State<Home2048>
         });
       }
     });
-    decreasingProgressBar();
+    // decreasingProgressBar();
     restartGame();
   }
 
@@ -177,38 +181,104 @@ class _Home2048State extends State<Home2048>
                     "Visibility",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 34,
+                      fontSize: 10,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  onPressed: changeMode,
-                )
+                  onPressed: visibilityMode,
+                ),
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    "Change Mode",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  onPressed: swipeTapMode,
+                ),
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    "Minus",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  onPressed: () {
+                    addMinus ? addMinus = false : addMinus = true;
+                  },
+                ),
+                RaisedButton(
+                  color: Colors.orange,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    "Shuffle",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      flattenedGrid.forEach((e) {
+                        e.val = 0;
+                        e.resetAnimations();
+                      });
+                      toAdd.clear();
+                      addNewTile(toShuffle);
+                      controller.forward(from: 0);
+                    });
+                  },
+                ),
               ],
             ),
             Container(
-              child: GestureDetector(
-                onVerticalDragEnd: (details) {
-                  if (details.velocity.pixelsPerSecond.dy < -250 &&
-                      canSwipeUp()) {
-                    doSwipe(swipeUp);
-                  } else if (details.velocity.pixelsPerSecond.dy > 250 &&
-                      canSwipeDown()) {
-                    doSwipe(swipeDown);
-                  }
-                },
-                onHorizontalDragEnd: (details) {
-                  if (details.velocity.pixelsPerSecond.dx < -1000 &&
-                      canSwipeLeft()) {
-                    doSwipe(swipeLeft);
-                  } else if (details.velocity.pixelsPerSecond.dx > 1000 &&
-                      canSwipeRight()) {
-                    doSwipe(swipeRight);
-                  }
-                },
-                child: Stack(
-                  children: stackItems,
-                ),
-              ),
+              child: swipeTap
+                  ? GestureDetector(
+                      onVerticalDragEnd: (details) {
+                        if (details.velocity.pixelsPerSecond.dy < -250 &&
+                            canSwipeUp()) {
+                          doSwipe(swipeUp);
+                        } else if (details.velocity.pixelsPerSecond.dy > 250 &&
+                            canSwipeDown()) {
+                          doSwipe(swipeDown);
+                        }
+                      },
+                      onHorizontalDragEnd: (details) {
+                        if (details.velocity.pixelsPerSecond.dx < -1000 &&
+                            canSwipeLeft()) {
+                          doSwipe(swipeLeft);
+                        } else if (details.velocity.pixelsPerSecond.dx > 1000 &&
+                            canSwipeRight()) {
+                          doSwipe(swipeRight);
+                        }
+                      },
+                      child: Stack(
+                        children: stackItems,
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        print('Tapped');
+                      },
+                      child: Stack(
+                        children: stackItems,
+                      ),
+                    ),
               width: gridSize,
               height: gridSize,
               padding: EdgeInsets.all(4.0),
@@ -252,7 +322,10 @@ class _Home2048State extends State<Home2048>
   void doSwipe(void Function() swipeFn) {
     setState(() {
       swipeFn();
-      addNewTile([2]);
+      tileCheck ? addNewTile([2, 2, 2]) : addNewTile([2]);
+      toShuffle.clear();
+      tileChecker();
+      print(toShuffle);
       controller.forward(from: 0);
     });
   }
@@ -299,7 +372,17 @@ class _Home2048State extends State<Home2048>
           int resultValue = t.val;
           t.moveTo(controller, tiles[i].x, tiles[i].y);
           if (merge != null) {
-            resultValue += merge.val;
+            double divisionResult;
+            divisionResult = resultValue / 2;
+            addMinus
+                ? resultValue += merge.val
+                : resultValue = divisionResult.toInt();
+            if (resultValue == 1) {
+              resultValue = 0;
+              tileCheck = true;
+            } else {
+              tileCheck = false;
+            }
             merge.moveTo(controller, tiles[i].x, tiles[i].y);
             merge.bounce(controller);
             merge.changeNumber(controller, resultValue);
@@ -308,6 +391,22 @@ class _Home2048State extends State<Home2048>
           }
           t.val = 0;
           tiles[i].val = resultValue;
+        }
+      }
+    }
+  }
+
+  void tileChecker() {
+    flattenedGrid.forEach((e) {
+      e.val != 0 ? toShuffle.add(e.val) : toShuffle.add(0);
+    });
+    int length;
+    tileCheck ? length = 3 : length = 1;
+    for (int i = 0; i < length; i++) {
+      for (int i = 0; i < toShuffle.length; i++) {
+        if (toShuffle[i] == 0) {
+          toShuffle[i] = 2;
+          i = toShuffle.length;
         }
       }
     }
@@ -323,13 +422,19 @@ class _Home2048State extends State<Home2048>
       addNewTile([2, 2]);
       controller.forward(from: 0);
       counter = 10;
-      decreasingProgressBar();
+      // decreasingProgressBar();
     });
   }
 
-  void changeMode() {
+  void visibilityMode() {
     setState(() {
       gameMode == false ? gameMode = true : gameMode = false;
+    });
+  }
+
+  void swipeTapMode() {
+    setState(() {
+      swipeTap == false ? swipeTap = true : swipeTap = false;
     });
   }
 }
