@@ -103,12 +103,17 @@ class _Home2048State extends State<Home2048>
           width: tileSize,
           height: tileSize,
           child: Center(
-            child: Container(
-              width: tileSize - 4.0 * 2,
-              height: tileSize - 4.0 * 2,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: lightBrown,
+            child: GestureDetector(
+              onTap: () {
+                print("Tapped No tile: (" + e.x.toString() + "," + e.y.toString() + ")");
+              },
+              child: Container(
+                width: tileSize - 4.0 * 2,
+                height: tileSize - 4.0 * 2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: lightBrown,
+                ),
               ),
             ),
           ),
@@ -136,25 +141,35 @@ class _Home2048State extends State<Home2048>
                               color: gameMode == false
                                   ? numTileColor[tile.animatedValue.value]
                                   : tan),
-                          child: Center(
-                            child: gameMode == false
-                                ? Text(
-                                    '${tile.animatedValue.value}',
-                                    style: TextStyle(
-                                      color: tile.animatedValue.value <= 4
-                                          ? greyText
-                                          : Colors.white,
-                                      fontSize: 35,
-                                      fontWeight: FontWeight.w900,
+                          child: GestureDetector(
+                            onTap: () {
+                              // TODO: ensure that tap is only enabled when mode is tap
+                              // TODO: Store tile position to a variable as tap #1 then the other number to tap #2.
+                              // then if this is the tap #2 (second tap), check for the values if they are the same (tap #1 and tap #2) using stackItems.
+                              // You can loop the stack items then check for their values.
+                              // Value is stored in Tile class val variable
+                              print("Tapped Number tile: (" + tile.animatedX.value.toString() + "," + tile.animatedY.value.toString() + ")");
+                            },
+                            child: Center(
+                              child: gameMode == false
+                                  ? Text(
+                                      '${tile.animatedValue.value}',
+                                      style: TextStyle(
+                                        color: tile.animatedValue.value <= 4
+                                            ? greyText
+                                            : Colors.white,
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image.asset(
+                                        'assets/question.png',
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Image.asset(
-                                      'assets/question.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                            ),
                           ),
                         ),
                       ),
@@ -272,9 +287,9 @@ class _Home2048State extends State<Home2048>
                       ),
                     )
                   : GestureDetector(
-                      onTap: () {
-                        print('Tapped');
-                      },
+//                      onTap: () {
+//                        print('Tapped');
+//                      },
                       child: Stack(
                         children: stackItems,
                       ),
