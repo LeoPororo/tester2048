@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'constants.dart';
 import 'tile.dart';
@@ -39,9 +38,16 @@ class _Home2048State extends State<Home2048>
   Iterable<List<Tile>> get cols =>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
+  int tapCounter = 0;
+  int tapOne = 0;
+  int tapTwo = 0;
+
   bool gameMode = false;
+  // BLOCKED tiles = TRUE ; NUMBERED tiles = FALSE
   bool swipeTap = true;
+  // swipe mode = TRUE ; tap mode = FALSE
   bool addMinus = true;
+  // add mode = TRUE ; minus mode = FALSE
   bool tileCheck = false;
 
   @override
@@ -70,6 +76,7 @@ class _Home2048State extends State<Home2048>
     empty.shuffle();
     for (int i = 0; i < newTiles.length; i++) {
       toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
+      // print('Indexes: x = ${empty[i].x} and y = ${empty[i].y}');
     }
   }
 
@@ -105,7 +112,11 @@ class _Home2048State extends State<Home2048>
           child: Center(
             child: GestureDetector(
               onTap: () {
-                print("Tapped No tile: (" + e.x.toString() + "," + e.y.toString() + ")");
+                // print("Tapped No tile: (" +
+                //     e.x.toString() +
+                //     "," +
+                //     e.y.toString() +
+                //     ")");
               },
               child: Container(
                 width: tileSize - 4.0 * 2,
@@ -148,7 +159,31 @@ class _Home2048State extends State<Home2048>
                               // then if this is the tap #2 (second tap), check for the values if they are the same (tap #1 and tap #2) using stackItems.
                               // You can loop the stack items then check for their values.
                               // Value is stored in Tile class val variable
-                              print("Tapped Number tile: (" + tile.animatedX.value.toString() + "," + tile.animatedY.value.toString() + ")");
+                              if (swipeTap == false) {
+                                if (tapCounter != 2) {
+                                  print(tapCounter);
+                                  tapCounter == 0
+                                      ? tapOne = tile.animatedValue.value
+                                      : tapTwo = tile.animatedValue.value;
+                                  if (tapOne == tapTwo) {}
+                                  print(tapOne.toString() +
+                                      "and" +
+                                      tapTwo.toString());
+                                  tapCounter++;
+                                } else {
+                                  print(tapCounter);
+                                  tapOne = 0;
+                                  tapTwo = 0;
+                                  tapCounter = 0;
+                                }
+
+                                print("Values: " +
+                                    tile.animatedX.value.toString() +
+                                    "," +
+                                    tile.animatedY.value.toString() +
+                                    "," +
+                                    tile.animatedValue.value.toString());
+                              }
                             },
                             child: Center(
                               child: gameMode == false
@@ -438,6 +473,10 @@ class _Home2048State extends State<Home2048>
       controller.forward(from: 0);
       counter = 10;
       // decreasingProgressBar();
+      gameMode = false;
+      swipeTap = true;
+      addMinus = true;
+      tileCheck = false;
     });
   }
 
