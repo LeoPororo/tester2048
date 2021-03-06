@@ -39,8 +39,15 @@ class _Home2048State extends State<Home2048>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
   int tapCounter = 0;
+  //used to determine the number of taps
   int tapOne = 0;
+  double xTapOne = 0;
+  double yTapOne = 0;
+  //used to save the values of the first tap
   int tapTwo = 0;
+  double xTapTwo = 0;
+  double yTapTwo = 0;
+  //used to save the values of the second tap
 
   bool gameMode = false;
   // BLOCKED tiles = TRUE ; NUMBERED tiles = FALSE
@@ -49,6 +56,7 @@ class _Home2048State extends State<Home2048>
   bool addMinus = true;
   // add mode = TRUE ; minus mode = FALSE
   bool tileCheck = false;
+  // used to determine the number of tiles to be added
 
   @override
   void initState() {
@@ -112,11 +120,18 @@ class _Home2048State extends State<Home2048>
           child: Center(
             child: GestureDetector(
               onTap: () {
-                // print("Tapped No tile: (" +
-                //     e.x.toString() +
-                //     "," +
-                //     e.y.toString() +
-                //     ")");
+                print("Tapped No tile: (" +
+                    e.x.toString() +
+                    "," +
+                    e.y.toString() +
+                    ")");
+                //
+                // y x 0 1 2 3
+                // 0  [a,b,c,d]
+                // 1  [e,f,g,h]
+                // 2  [i,j,k,l]
+                // 3  [m,n,o,p]
+                //
               },
               child: Container(
                 width: tileSize - 4.0 * 2,
@@ -161,29 +176,58 @@ class _Home2048State extends State<Home2048>
                               // Value is stored in Tile class val variable
                               if (swipeTap == false) {
                                 if (tapCounter != 2) {
-                                  print(tapCounter);
                                   tapCounter == 0
                                       ? tapOne = tile.animatedValue.value
                                       : tapTwo = tile.animatedValue.value;
-                                  if (tapOne == tapTwo) {}
+                                  tapCounter == 0
+                                      ? xTapOne = tile.animatedX.value
+                                      : xTapTwo = tile.animatedX.value;
+                                  tapCounter == 0
+                                      ? yTapOne = tile.animatedY.value
+                                      : yTapTwo = tile.animatedY.value;
+
+                                  if (tapOne == tapTwo &&
+                                      (xTapOne != xTapTwo ||
+                                          yTapOne != yTapTwo)) {
+                                    print(" IT'S A MATCH! ");
+                                    // change this to set the value of the first tap to 0
+                                    toAdd.add(Tile(
+                                        xTapOne.toInt(), yTapOne.toInt(), 0)
+                                      ..appear(controller));
+                                    //change this to set the value of the second tapped value
+                                    toAdd.add(Tile(xTapTwo.toInt(),
+                                        yTapTwo.toInt(), tapOne * 2)
+                                      ..appear(controller));
+                                  }
                                   print(tapOne.toString() +
                                       "and" +
                                       tapTwo.toString());
+                                  print(xTapOne.toString() +
+                                      "  " +
+                                      yTapOne.toString() +
+                                      "  " +
+                                      xTapTwo.toString() +
+                                      "  " +
+                                      yTapTwo.toString() +
+                                      "  ");
+                                  print(
+                                      "Tap Counter: " + tapCounter.toString());
                                   tapCounter++;
                                 } else {
-                                  print(tapCounter);
-                                  tapOne = 0;
-                                  tapTwo = 0;
-                                  tapCounter = 0;
+                                  print(
+                                      "Tap Counter: " + tapCounter.toString());
+                                  print("RESET!");
+                                  resetTapTrackers();
                                 }
-
-                                print("Values: " +
-                                    tile.animatedX.value.toString() +
-                                    "," +
-                                    tile.animatedY.value.toString() +
-                                    "," +
-                                    tile.animatedValue.value.toString());
+                                //
+                                // print("Values: " +
+                                //     tile.animatedX.value.toString() +
+                                //     "," +
+                                //     tile.animatedY.value.toString() +
+                                //     "," +
+                                //     tile.animatedValue.value.toString());
                               }
+                              setState(() {});
                             },
                             child: Center(
                               child: gameMode == false
@@ -450,6 +494,7 @@ class _Home2048State extends State<Home2048>
     flattenedGrid.forEach((e) {
       e.val != 0 ? toShuffle.add(e.val) : toShuffle.add(0);
     });
+
     int length;
     tileCheck ? length = 3 : length = 1;
     for (int i = 0; i < length; i++) {
@@ -483,12 +528,90 @@ class _Home2048State extends State<Home2048>
   void visibilityMode() {
     setState(() {
       gameMode == false ? gameMode = true : gameMode = false;
+      print(" Visibility Mode CHANGED!");
     });
   }
 
   void swipeTapMode() {
     setState(() {
       swipeTap == false ? swipeTap = true : swipeTap = false;
+      resetTapTrackers();
+      print(" SwipeTap Mode CHANGED! ");
     });
+  }
+
+  void resetTapTrackers() {
+    tapCounter = 0;
+    tapOne = 0;
+    xTapOne = 0;
+    yTapOne = 0;
+    tapTwo = 0;
+    xTapTwo = 0;
+    yTapTwo = 0;
+  }
+
+  int indexDeterminant(double x, double y) {
+    int determinedIndex;
+
+    if (x == 0.0 && y == 0.0) {
+      determinedIndex = 0;
+    }
+    if (x == 1.0 && y == 0.0) {
+      determinedIndex = 1;
+    }
+    if (x == 2.0 && y == 0.0) {
+      determinedIndex = 2;
+    }
+    if (x == 3.0 && y == 0.0) {
+      determinedIndex = 3;
+    }
+    //second
+    if (x == 0.0 && y == 1.0) {
+      determinedIndex = 4;
+    }
+    if (x == 1.0 && y == 1.0) {
+      determinedIndex = 5;
+    }
+    if (x == 2.0 && y == 1.0) {
+      determinedIndex = 6;
+    }
+    if (x == 3.0 && y == 1.0) {
+      determinedIndex = 7;
+    }
+    // third
+    if (x == 0.0 && y == 2.0) {
+      determinedIndex = 8;
+    }
+    if (x == 1.0 && y == 2.0) {
+      determinedIndex = 9;
+    }
+    if (x == 2.0 && y == 2.0) {
+      determinedIndex = 10;
+    }
+    if (x == 3.0 && y == 2.0) {
+      determinedIndex = 11;
+    }
+    // fourth
+    if (x == 0.0 && y == 3.0) {
+      determinedIndex = 12;
+    }
+    if (x == 1.0 && y == 3.0) {
+      determinedIndex = 13;
+    }
+    if (x == 2.0 && y == 3.0) {
+      determinedIndex = 14;
+    }
+    if (x == 3.0 && y == 3.0) {
+      determinedIndex = 15;
+    }
+
+    return determinedIndex;
+    //
+    // y x 0 1 2 3
+    // 0  [a,b,c,d]
+    // 1  [e,f,g,h]
+    // 2  [i,j,k,l]
+    // 3  [m,n,o,p]
+    //
   }
 }
