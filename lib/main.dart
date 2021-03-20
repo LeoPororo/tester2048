@@ -249,7 +249,7 @@ class _Home2048State extends State<Home2048>
                   child: ElevatedButton(
                     style: buttonStyle,
                     child: Text(
-                      describeEnum(visibilityMode),
+                      describeEnum(visibilityMode) == "NUMBERED" ? "BLOCKED" : "NUMBERED",
                       style: TextStyle(
                         color: buttonText,
                         fontSize: 10,
@@ -263,7 +263,7 @@ class _Home2048State extends State<Home2048>
                   child: ElevatedButton(
                     style: buttonStyle,
                     child: Text(
-                      describeEnum(actionMode),
+                      describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
                       style: TextStyle(
                         color: buttonText,
                         fontSize: 10,
@@ -277,7 +277,7 @@ class _Home2048State extends State<Home2048>
                   child: ElevatedButton(
                     style: buttonStyle,
                     child: Text(
-                      describeEnum(operatorMode),
+                      describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
                       style: TextStyle(
                         color: buttonText,
                         fontSize: 10,
