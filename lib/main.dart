@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -46,15 +47,7 @@ class _Home2048State extends State<Home2048>
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
 
   int tapCounter = 0;
-  //used to determine the number of taps
-  int tapOne = 0;
-  double xTapOne = 0;
-  double yTapOne = 0;
-  //used to save the values of the first tap
-  int tapTwo = 0;
-  double xTapTwo = 0;
-  double yTapTwo = 0;
-  //used to save the values of the second tap
+  Tile tapTileOne, tapTileTwo;
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
@@ -147,65 +140,35 @@ class _Home2048State extends State<Home2048>
                                   : tan),
                           child: GestureDetector(
                             onTap: () {
-                              // TODO: ensure that tap is only enabled when mode is tap
-                              // TODO: Store tile position to a variable as tap #1 then the other number to tap #2.
-                              // then if this is the tap #2 (second tap), check for the values if they are the same (tap #1 and tap #2) using stackItems.
-                              // You can loop the stack items then check for their values.
-                              // Value is stored in Tile class val variable
                               if (actionMode == ActionMode.TAP) {
                                 if (tapCounter != 2) {
-                                  tapCounter == 0
-                                      ? tapOne = tile.animatedValue.value
-                                      : tapTwo = tile.animatedValue.value;
-                                  tapCounter == 0
-                                      ? xTapOne = tile.animatedX.value
-                                      : xTapTwo = tile.animatedX.value;
-                                  tapCounter == 0
-                                      ? yTapOne = tile.animatedY.value
-                                      : yTapTwo = tile.animatedY.value;
-
-                                  if (tapOne == tapTwo &&
-                                      (xTapOne != xTapTwo ||
-                                          yTapOne != yTapTwo)) {
-                                    print(" IT'S A MATCH! ");
-                                    // change this to set the value of the first tap to 0
-                                    toAdd.add(Tile(
-                                        xTapOne.toInt(), yTapOne.toInt(), 0)
-                                      ..appear(controller));
-                                    //change this to set the value of the second tapped value
-                                    toAdd.add(Tile(xTapTwo.toInt(),
-                                        yTapTwo.toInt(), tapOne * 2)
-                                      ..appear(controller));
+                                  if (tapCounter == 0) {
+                                    tapTileOne = tile;
+                                  } else {
+                                    tapTileTwo = tile;
                                   }
-                                  print(tapOne.toString() +
-                                      "and" +
-                                      tapTwo.toString());
-                                  print(xTapOne.toString() +
-                                      "  " +
-                                      yTapOne.toString() +
-                                      "  " +
-                                      xTapTwo.toString() +
-                                      "  " +
-                                      yTapTwo.toString() +
-                                      "  ");
-                                  print(
-                                      "Tap Counter: " + tapCounter.toString());
+
+                                  if (tapCounter == 1) {
+                                    if (tapTileOne.val == tapTileTwo.val) {
+                                      print("IT'S A MATCH! ");
+                                      var tileOne = flattenedGrid.where((e) => e.x == tapTileOne.x).where((e) => e.y == tapTileOne.y).first;
+                                      tileOne.changeNumber(controller, 0);
+                                      tileOne.val = 0;
+
+                                      var tileTwo = flattenedGrid.where((e) => e.x == tapTileTwo.x).where((e) => e.y == tapTileTwo.y).first;
+                                      tileTwo.bounce(controller);
+                                      tileTwo.changeNumber(
+                                          controller, tapTileTwo.val * 2);
+                                      tileTwo.val = tapTileTwo.val * 2;
+
+                                      controller.forward(from: 0);
+                                    }
+                                  }
+
                                   tapCounter++;
-                                } else {
-                                  print(
-                                      "Tap Counter: " + tapCounter.toString());
-                                  print("RESET!");
-                                  resetTapTrackers();
+                                  if (tapCounter == 2) tapCounter = 0;
                                 }
-                                //
-                                // print("Values: " +
-                                //     tile.animatedX.value.toString() +
-                                //     "," +
-                                //     tile.animatedY.value.toString() +
-                                //     "," +
-                                //     tile.animatedValue.value.toString());
                               }
-                              setState(() {});
                             },
                             child: Center(
                               child: visibilityMode == VisibilityMode.NUMBERED
@@ -529,7 +492,6 @@ class _Home2048State extends State<Home2048>
       actionMode == ActionMode.TAP
           ? actionMode = ActionMode.SWIPE
           : actionMode = ActionMode.TAP;
-      resetTapTrackers();
       print("Action Mode: $actionMode");
     });
   }
@@ -571,15 +533,5 @@ class _Home2048State extends State<Home2048>
       });
       controller.forward(from: 0);
     });
-  }
-
-  void resetTapTrackers() {
-    tapCounter = 0;
-    tapOne = 0;
-    xTapOne = 0;
-    yTapOne = 0;
-    tapTwo = 0;
-    xTapTwo = 0;
-    yTapTwo = 0;
   }
 }
