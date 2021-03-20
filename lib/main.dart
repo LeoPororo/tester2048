@@ -72,7 +72,7 @@ class _Home2048State extends State<Home2048>
         });
       }
     });
-    // decreasingProgressBar();
+    decreasingProgressBar();
     restartGame();
   }
 
@@ -425,7 +425,6 @@ class _Home2048State extends State<Home2048>
   bool canSwipeRight() => grid.map((e) => e.reversed.toList()).any(canSwipe);
   bool canSwipeUp() => cols.any(canSwipe);
   bool canSwipeDown() => cols.map((e) => e.reversed.toList()).any(canSwipe);
-
   bool canSwipe(List<Tile> tiles) {
     for (int i = 0; i < tiles.length; i++) {
       if (tiles[i].val == 0) {
@@ -514,7 +513,7 @@ class _Home2048State extends State<Home2048>
       addNewTile([2, 2]);
       controller.forward(from: 0);
       counter = 10;
-      // decreasingProgressBar();
+      decreasingProgressBar();
       gameMode = false;
       swipeTap = true;
       addMinus = true;
@@ -545,70 +544,5 @@ class _Home2048State extends State<Home2048>
     tapTwo = 0;
     xTapTwo = 0;
     yTapTwo = 0;
-  }
-
-  int indexDeterminant(double x, double y) {
-    int determinedIndex;
-
-    if (x == 0.0 && y == 0.0) {
-      determinedIndex = 0;
-    }
-    if (x == 1.0 && y == 0.0) {
-      determinedIndex = 1;
-    }
-    if (x == 2.0 && y == 0.0) {
-      determinedIndex = 2;
-    }
-    if (x == 3.0 && y == 0.0) {
-      determinedIndex = 3;
-    }
-    //second
-    if (x == 0.0 && y == 1.0) {
-      determinedIndex = 4;
-    }
-    if (x == 1.0 && y == 1.0) {
-      determinedIndex = 5;
-    }
-    if (x == 2.0 && y == 1.0) {
-      determinedIndex = 6;
-    }
-    if (x == 3.0 && y == 1.0) {
-      determinedIndex = 7;
-    }
-    // third
-    if (x == 0.0 && y == 2.0) {
-      determinedIndex = 8;
-    }
-    if (x == 1.0 && y == 2.0) {
-      determinedIndex = 9;
-    }
-    if (x == 2.0 && y == 2.0) {
-      determinedIndex = 10;
-    }
-    if (x == 3.0 && y == 2.0) {
-      determinedIndex = 11;
-    }
-    // fourth
-    if (x == 0.0 && y == 3.0) {
-      determinedIndex = 12;
-    }
-    if (x == 1.0 && y == 3.0) {
-      determinedIndex = 13;
-    }
-    if (x == 2.0 && y == 3.0) {
-      determinedIndex = 14;
-    }
-    if (x == 3.0 && y == 3.0) {
-      determinedIndex = 15;
-    }
-
-    return determinedIndex;
-    //
-    // y x 0 1 2 3
-    // 0  [a,b,c,d]
-    // 1  [e,f,g,h]
-    // 2  [i,j,k,l]
-    // 3  [m,n,o,p]
-    //
   }
 }
