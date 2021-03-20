@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'enums/action_mode.dart';
 import 'constants.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
@@ -49,7 +50,7 @@ class _Home2048State extends State<Home2048>
   //used to save the values of the second tap
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
-  bool swipeTap = true;
+  ActionMode actionMode = ActionMode.SWIPE;
   // swipe mode = TRUE ; tap mode = FALSE
   bool addMinus = true;
   // add mode = TRUE ; minus mode = FALSE
@@ -145,7 +146,7 @@ class _Home2048State extends State<Home2048>
                               // then if this is the tap #2 (second tap), check for the values if they are the same (tap #1 and tap #2) using stackItems.
                               // You can loop the stack items then check for their values.
                               // Value is stored in Tile class val variable
-                              if (swipeTap == false) {
+                              if (actionMode == ActionMode.TAP) {
                                 if (tapCounter != 2) {
                                   tapCounter == 0
                                       ? tapOne = tile.animatedValue.value
@@ -265,7 +266,7 @@ class _Home2048State extends State<Home2048>
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  onPressed: swipeTapMode,
+                  onPressed: changeActionMode,
                 ),
                 RaisedButton(
                   color: Colors.orange,
@@ -312,7 +313,7 @@ class _Home2048State extends State<Home2048>
               ],
             ),
             Container(
-              child: swipeTap
+              child: actionMode == ActionMode.SWIPE
                   ? GestureDetector(
                       onVerticalDragEnd: (details) {
                         if (details.velocity.pixelsPerSecond.dy < -250 &&
@@ -515,7 +516,7 @@ class _Home2048State extends State<Home2048>
       counter = 10;
       decreasingProgressBar();
       visibilityMode = VisibilityMode.NUMBERED;
-      swipeTap = true;
+      actionMode = ActionMode.SWIPE;
       addMinus = true;
       tileCheck = false;
     });
@@ -524,15 +525,15 @@ class _Home2048State extends State<Home2048>
   void changeVisibilityMode() {
     setState(() {
       visibilityMode == VisibilityMode.NUMBERED ? visibilityMode = VisibilityMode.BLOCKED : visibilityMode = VisibilityMode.NUMBERED;
-      print("MODE: $visibilityMode");
+      print("Visibility Mode: $visibilityMode");
     });
   }
 
-  void swipeTapMode() {
+  void changeActionMode() {
     setState(() {
-      swipeTap == false ? swipeTap = true : swipeTap = false;
+      actionMode == ActionMode.TAP ? actionMode = ActionMode.SWIPE : actionMode = ActionMode.TAP;
       resetTapTrackers();
-      print(" SwipeTap Mode CHANGED! ");
+      print("Action Mode: $actionMode");
     });
   }
 

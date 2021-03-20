@@ -1,0 +1,4 @@
+enum ActionMode {
+  SWIPE,
+  TAP
+}
