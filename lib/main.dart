@@ -152,6 +152,7 @@ class _Home2048State extends State<Home2048>
                                     if (tapTileOne.val == tapTileTwo.val) {
                                       print("IT'S A MATCH! ");
                                       var tileOne = flattenedGrid.where((e) => e.x == tapTileOne.x).where((e) => e.y == tapTileOne.y).first;
+
                                       tileOne.changeNumber(controller, 0);
                                       tileOne.val = 0;
 
@@ -160,6 +161,8 @@ class _Home2048State extends State<Home2048>
                                       tileTwo.changeNumber(
                                           controller, tapTileTwo.val * 2);
                                       tileTwo.val = tapTileTwo.val * 2;
+
+                                      tileOne.moveTo(controller, tileTwo.x, tileTwo.y);
 
                                       controller.forward(from: 0);
                                     }
