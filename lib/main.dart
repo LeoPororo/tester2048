@@ -48,8 +48,7 @@ class _Home2048State extends State<Home2048>
   double yTapTwo = 0;
   //used to save the values of the second tap
 
-  VisibilityMode gameMode = VisibilityMode.NUMBERED;
-  // BLOCKED tiles = TRUE ; NUMBERED tiles = FALSE
+  VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   bool swipeTap = true;
   // swipe mode = TRUE ; tap mode = FALSE
   bool addMinus = true;
@@ -136,7 +135,7 @@ class _Home2048State extends State<Home2048>
                           height: (tileSize - 4.0 * 2) * tile.scale.value,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: gameMode == VisibilityMode.NUMBERED
+                              color: visibilityMode == VisibilityMode.NUMBERED
                                   ? numTileColor[tile.animatedValue.value]
                                   : tan),
                           child: GestureDetector(
@@ -202,7 +201,7 @@ class _Home2048State extends State<Home2048>
                               setState(() {});
                             },
                             child: Center(
-                              child: gameMode == VisibilityMode.NUMBERED
+                              child: visibilityMode == VisibilityMode.NUMBERED
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
@@ -251,7 +250,7 @@ class _Home2048State extends State<Home2048>
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  onPressed: visibilityMode,
+                  onPressed: changeVisibilityMode,
                 ),
                 RaisedButton(
                   color: Colors.orange,
@@ -515,17 +514,17 @@ class _Home2048State extends State<Home2048>
       controller.forward(from: 0);
       counter = 10;
       decreasingProgressBar();
-      gameMode = VisibilityMode.NUMBERED;
+      visibilityMode = VisibilityMode.NUMBERED;
       swipeTap = true;
       addMinus = true;
       tileCheck = false;
     });
   }
 
-  void visibilityMode() {
+  void changeVisibilityMode() {
     setState(() {
-      gameMode == VisibilityMode.NUMBERED ? gameMode = VisibilityMode.BLOCKED : gameMode = VisibilityMode.NUMBERED;
-      print("MODE: $gameMode");
+      visibilityMode == VisibilityMode.NUMBERED ? visibilityMode = VisibilityMode.BLOCKED : visibilityMode = VisibilityMode.NUMBERED;
+      print("MODE: $visibilityMode");
     });
   }
 
