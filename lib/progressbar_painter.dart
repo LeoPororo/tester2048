@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 
-class MyPainter extends CustomPainter {
-  MyPainter({this.paintCounter});
+import 'constants.dart';
+
+class ProgressBarPainter extends CustomPainter {
+  ProgressBarPainter({this.progressBarValue, this.state});
+
+  int progressBarValue;
+  bool state;
 
   @override
-  int paintCounter;
   void paint(Canvas canvas, Size size) {
     final p1 = Offset(5, 10);
     final p2 = Offset(375, 10);
     final paint = Paint()
-      ..color = Colors.orange
+      ..color = state ? progressBarBg : darkBrown
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 10;
     canvas.drawLine(p1, p2, paint);
     final endLine = Offset(375, 10);
-    int operation = 407 - 37 * (11 - paintCounter);
+    int operation = 407 - 37 * (11 - progressBarValue);
     var p3 = Offset(operation.toDouble(), 10);
     final rePainted = Paint()
-      ..color = Colors.white
+      ..color = progressBarCap
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 10;
     canvas.drawLine(p3, endLine, rePainted);

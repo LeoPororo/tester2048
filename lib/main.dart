@@ -1,13 +1,15 @@
+import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'enums/action_mode.dart';
+
 import 'constants.dart';
+import 'progressbar_painter.dart';
+import 'enums/action_mode.dart';
 import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
-import 'dart:ui';
-import 'custom_paint.dart';
-import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -33,11 +35,14 @@ class _Home2048State extends State<Home2048>
   Timer _timer;
   int counter = 10;
   AnimationController controller;
-  List<List<Tile>> grid = List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
+
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
+  List<List<Tile>> grid =
+  List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
+  Iterable<List<Tile>> get cols =>
+      List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
-  Iterable<List<Tile>> get cols => List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
   int tapCounter = 0;
   //used to determine the number of taps
@@ -53,13 +58,15 @@ class _Home2048State extends State<Home2048>
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
-  bool tileCheck = false;
-  // used to determine the number of tiles to be added
+  bool tileCheck = false; // used to determine the number of tiles to be added
+  bool isTimerOn = false;
+
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -72,7 +79,7 @@ class _Home2048State extends State<Home2048>
         });
       }
     });
-    decreasingProgressBar();
+
     restartGame();
   }
 
@@ -354,7 +361,7 @@ class _Home2048State extends State<Home2048>
               width: 400,
               child: CustomPaint(
                 size: Size(10, 10),
-                painter: MyPainter(paintCounter: counter),
+                painter: ProgressBarPainter(progressBarValue: counter, state: isTimerOn),
               ),
             ),
             Container(
@@ -511,32 +518,41 @@ class _Home2048State extends State<Home2048>
       addNewTile([2, 2]);
       controller.forward(from: 0);
       counter = 10;
-      decreasingProgressBar();
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
       tileCheck = false;
+
+      if (isTimerOn){
+        decreasingProgressBar();
+      }
     });
   }
 
   void changeVisibilityMode() {
     setState(() {
-      visibilityMode == VisibilityMode.NUMBERED ? visibilityMode = VisibilityMode.BLOCKED : visibilityMode = VisibilityMode.NUMBERED;
+      visibilityMode == VisibilityMode.NUMBERED
+          ? visibilityMode = VisibilityMode.BLOCKED
+          : visibilityMode = VisibilityMode.NUMBERED;
       print("Visibility Mode: $visibilityMode");
     });
   }
 
   void changeActionMode() {
     setState(() {
-      actionMode == ActionMode.TAP ? actionMode = ActionMode.SWIPE : actionMode = ActionMode.TAP;
+      actionMode == ActionMode.TAP
+          ? actionMode = ActionMode.SWIPE
+          : actionMode = ActionMode.TAP;
       resetTapTrackers();
       print("Action Mode: $actionMode");
     });
   }
 
   void changeOperatorMode() {
-    setState((){
-      operatorMode == OperatorMode.ADD ? operatorMode = OperatorMode.MINUS : operatorMode = OperatorMode.ADD;
+    setState(() {
+      operatorMode == OperatorMode.ADD
+          ? operatorMode = OperatorMode.MINUS
+          : operatorMode = OperatorMode.ADD;
       print("Operator Mode: $operatorMode");
     });
   }

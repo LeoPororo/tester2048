@@ -5,6 +5,9 @@ const Color darkBrown = Color.fromARGB(255, 187, 173, 160);
 const Color tan = Color.fromARGB(255, 238, 228, 218);
 const Color greyText = Color.fromARGB(255, 119, 110, 101);
 
+const Color progressBarBg = Colors.orange;
+const Color progressBarCap = Colors.white;
+
 const Map<int, Color> numTileColor = {
   2: tan,
   4: tan,
