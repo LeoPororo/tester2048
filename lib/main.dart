@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
@@ -244,75 +245,71 @@ class _Home2048State extends State<Home2048>
           children: <Widget>[
             Row(
               children: <Widget>[
-                RaisedButton(
-                  color: buttonBg,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    "Visibility",
-                    style: TextStyle(
-                      color: buttonText,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(visibilityMode),
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
+                    onPressed: changeVisibilityMode,
                   ),
-                  onPressed: changeVisibilityMode,
                 ),
-                RaisedButton(
-                  color: buttonBg,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    "Change Mode",
-                    style: TextStyle(
-                      color: buttonText,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(actionMode),
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
+                    onPressed: changeActionMode,
                   ),
-                  onPressed: changeActionMode,
                 ),
-                RaisedButton(
-                  color: buttonBg,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    "Minus",
-                    style: TextStyle(
-                      color: buttonText,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(operatorMode),
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
+                    onPressed: changeOperatorMode,
                   ),
-                  onPressed: changeOperatorMode,
                 ),
-                RaisedButton(
-                  color: buttonBg,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    "Shuffle",
-                    style: TextStyle(
-                      color: buttonText,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      "SHUFFLE",
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      flattenedGrid.forEach((e) {
-                        e.val = 0;
-                        e.resetAnimations();
+                    onPressed: () {
+                      setState(() {
+                        flattenedGrid.forEach((e) {
+                          e.val = 0;
+                          e.resetAnimations();
+                        });
+                        toAdd.clear();
+                        addNewTile(toShuffle);
+                        controller.forward(from: 0);
                       });
-                      toAdd.clear();
-                      addNewTile(toShuffle);
-                      controller.forward(from: 0);
-                    });
-                  },
+                    },
+                  ),
                 ),
               ],
             ),
@@ -367,11 +364,8 @@ class _Home2048State extends State<Home2048>
             Container(
               height: 80,
               width: 400,
-              child: RaisedButton(
-                color: buttonBg,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
+              child: ElevatedButton(
+                style: buttonStyle,
                 child: Text(
                   "Restart",
                   style: TextStyle(

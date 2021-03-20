@@ -10,6 +10,12 @@ const Color progressBarCap = Colors.white;
 
 const Color buttonBg = Colors.orange;
 const Color buttonText = Colors.white;
+ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+    primary: buttonBg,
+    shape: new RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0)
+    )
+);
 
 const Map<int, Color> numTileColor = {
   2: tan,
