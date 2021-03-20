@@ -8,6 +8,9 @@ const Color greyText = Color.fromARGB(255, 119, 110, 101);
 const Color progressBarBg = Colors.orange;
 const Color progressBarCap = Colors.white;
 
+const Color buttonBg = Colors.orange;
+const Color buttonText = Colors.white;
+
 const Map<int, Color> numTileColor = {
   2: tan,
   4: tan,

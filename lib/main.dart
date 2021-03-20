@@ -245,14 +245,14 @@ class _Home2048State extends State<Home2048>
             Row(
               children: <Widget>[
                 RaisedButton(
-                  color: Colors.orange,
+                  color: buttonBg,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
                     "Visibility",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: buttonText,
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                     ),
@@ -260,14 +260,14 @@ class _Home2048State extends State<Home2048>
                   onPressed: changeVisibilityMode,
                 ),
                 RaisedButton(
-                  color: Colors.orange,
+                  color: buttonBg,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
                     "Change Mode",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: buttonText,
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                     ),
@@ -275,14 +275,14 @@ class _Home2048State extends State<Home2048>
                   onPressed: changeActionMode,
                 ),
                 RaisedButton(
-                  color: Colors.orange,
+                  color: buttonBg,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
                     "Minus",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: buttonText,
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                     ),
@@ -290,14 +290,14 @@ class _Home2048State extends State<Home2048>
                   onPressed: changeOperatorMode,
                 ),
                 RaisedButton(
-                  color: Colors.orange,
+                  color: buttonBg,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
                     "Shuffle",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: buttonText,
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                     ),
@@ -368,14 +368,14 @@ class _Home2048State extends State<Home2048>
               height: 80,
               width: 400,
               child: RaisedButton(
-                color: Colors.orange,
+                color: buttonBg,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 child: Text(
                   "Restart",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: buttonText,
                     fontSize: 34,
                     fontWeight: FontWeight.w800,
                   ),
