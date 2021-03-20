@@ -549,7 +549,6 @@ class _Home2048State extends State<Home2048>
       List<String> indexes = [];
       var index;
       var x, y;
-      var counter = 0, maxCounter = 5;
       for (int i = 0; i < notZeroTiles.length; i++) {
         do {
           x = new Random().nextInt(4);
@@ -561,10 +560,8 @@ class _Home2048State extends State<Home2048>
             indexes.add(index.toString());
             break;
           }
+        } while (true);
 
-          counter++;
-        } while (counter != maxCounter);
-        
         toAdd.add(Tile(x, y, notZeroTiles[i].val)..appear(controller));
       }
 
