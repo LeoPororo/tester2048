@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'enums/action_mode.dart';
 import 'constants.dart';
+import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
 import 'dart:ui';
@@ -51,9 +52,7 @@ class _Home2048State extends State<Home2048>
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
-  // swipe mode = TRUE ; tap mode = FALSE
-  bool addMinus = true;
-  // add mode = TRUE ; minus mode = FALSE
+  OperatorMode operatorMode = OperatorMode.ADD;
   bool tileCheck = false;
   // used to determine the number of tiles to be added
 
@@ -281,9 +280,7 @@ class _Home2048State extends State<Home2048>
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  onPressed: () {
-                    addMinus ? addMinus = false : addMinus = true;
-                  },
+                  onPressed: changeOperatorMode,
                 ),
                 RaisedButton(
                   color: Colors.orange,
@@ -465,7 +462,7 @@ class _Home2048State extends State<Home2048>
           if (merge != null) {
             double divisionResult;
             divisionResult = resultValue / 2;
-            addMinus
+            operatorMode == OperatorMode.ADD
                 ? resultValue += merge.val
                 : resultValue = divisionResult.toInt();
             if (resultValue == 1) {
@@ -517,7 +514,7 @@ class _Home2048State extends State<Home2048>
       decreasingProgressBar();
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
-      addMinus = true;
+      operatorMode = OperatorMode.ADD;
       tileCheck = false;
     });
   }
@@ -534,6 +531,13 @@ class _Home2048State extends State<Home2048>
       actionMode == ActionMode.TAP ? actionMode = ActionMode.SWIPE : actionMode = ActionMode.TAP;
       resetTapTrackers();
       print("Action Mode: $actionMode");
+    });
+  }
+
+  void changeOperatorMode() {
+    setState((){
+      operatorMode == OperatorMode.ADD ? operatorMode = OperatorMode.MINUS : operatorMode = OperatorMode.ADD;
+      print("Operator Mode: $operatorMode");
     });
   }
 

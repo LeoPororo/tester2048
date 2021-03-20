@@ -1,0 +1,4 @@
+enum OperatorMode {
+  ADD,
+  MINUS
+}
