@@ -30,13 +30,11 @@ class _Home2048State extends State<Home2048>
   Timer _timer;
   int counter = 10;
   AnimationController controller;
-  List<List<Tile>> grid =
-      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
+  List<List<Tile>> grid = List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
-  Iterable<List<Tile>> get cols =>
-      List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
+  Iterable<List<Tile>> get cols => List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
 
   int tapCounter = 0;
   //used to determine the number of taps
@@ -61,8 +59,7 @@ class _Home2048State extends State<Home2048>
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    controller = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -77,32 +74,6 @@ class _Home2048State extends State<Home2048>
     });
     // decreasingProgressBar();
     restartGame();
-  }
-
-  void addNewTile(List<int> newTiles) {
-    List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
-    empty.shuffle();
-    for (int i = 0; i < newTiles.length; i++) {
-      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
-      // print('Indexes: x = ${empty[i].x} and y = ${empty[i].y}');
-    }
-  }
-
-  void decreasingProgressBar() {
-    if (_timer != null) {
-      _timer.cancel();
-    }
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (counter > 0) {
-          counter--;
-        } else {
-          _timer.cancel();
-          counter = 10;
-          restartGame();
-        }
-      });
-    });
   }
 
   @override
@@ -411,6 +382,32 @@ class _Home2048State extends State<Home2048>
         ),
       ),
     );
+  }
+
+  void addNewTile(List<int> newTiles) {
+    List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
+    empty.shuffle();
+    for (int i = 0; i < newTiles.length; i++) {
+      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
+      // print('Indexes: x = ${empty[i].x} and y = ${empty[i].y}');
+    }
+  }
+
+  void decreasingProgressBar() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (counter > 0) {
+          counter--;
+        } else {
+          _timer.cancel();
+          counter = 10;
+          restartGame();
+        }
+      });
+    });
   }
 
   void doSwipe(void Function() swipeFn) {
