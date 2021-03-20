@@ -40,7 +40,7 @@ class _Home2048State extends State<Home2048>
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
-  List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
+      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
   Iterable<List<Tile>> get cols =>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
@@ -61,7 +61,6 @@ class _Home2048State extends State<Home2048>
   OperatorMode operatorMode = OperatorMode.ADD;
   bool tileCheck = false; // used to determine the number of tiles to be added
   bool isTimerOn = false;
-
 
   @override
   void initState() {
@@ -249,7 +248,9 @@ class _Home2048State extends State<Home2048>
                   child: ElevatedButton(
                     style: buttonStyle,
                     child: Text(
-                      describeEnum(visibilityMode) == "NUMBERED" ? "BLOCKED" : "NUMBERED",
+                      describeEnum(visibilityMode) == "NUMBERED"
+                          ? "BLOCKED"
+                          : "NUMBERED",
                       style: TextStyle(
                         color: buttonText,
                         fontSize: 10,
@@ -298,17 +299,7 @@ class _Home2048State extends State<Home2048>
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        flattenedGrid.forEach((e) {
-                          e.val = 0;
-                          e.resetAnimations();
-                        });
-                        toAdd.clear();
-                        addNewTile(toShuffle);
-                        controller.forward(from: 0);
-                      });
-                    },
+                    onPressed: doShuffle,
                   ),
                 ),
               ],
@@ -317,16 +308,20 @@ class _Home2048State extends State<Home2048>
               child: actionMode == ActionMode.SWIPE
                   ? GestureDetector(
                       onVerticalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dy < 1 && canSwipeUp()) {
+                        if (details.velocity.pixelsPerSecond.dy < 1 &&
+                            canSwipeUp()) {
                           doSwipe(swipeUp);
-                        } else if (details.velocity.pixelsPerSecond.dy > 1 && canSwipeDown()) {
+                        } else if (details.velocity.pixelsPerSecond.dy > 1 &&
+                            canSwipeDown()) {
                           doSwipe(swipeDown);
                         }
                       },
                       onHorizontalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dx < 1 && canSwipeLeft()) {
+                        if (details.velocity.pixelsPerSecond.dx < 1 &&
+                            canSwipeLeft()) {
                           doSwipe(swipeLeft);
-                        } else if (details.velocity.pixelsPerSecond.dx > 1 && canSwipeRight()) {
+                        } else if (details.velocity.pixelsPerSecond.dx > 1 &&
+                            canSwipeRight()) {
                           doSwipe(swipeRight);
                         }
                       },
@@ -354,7 +349,8 @@ class _Home2048State extends State<Home2048>
               width: 400,
               child: CustomPaint(
                 size: Size(10, 10),
-                painter: ProgressBarPainter(progressBarValue: counter, state: isTimerOn),
+                painter: ProgressBarPainter(
+                    progressBarValue: counter, state: isTimerOn),
               ),
             ),
             Container(
@@ -513,7 +509,7 @@ class _Home2048State extends State<Home2048>
       operatorMode = OperatorMode.ADD;
       tileCheck = false;
 
-      if (isTimerOn){
+      if (isTimerOn) {
         decreasingProgressBar();
       }
     });
@@ -544,6 +540,39 @@ class _Home2048State extends State<Home2048>
           ? operatorMode = OperatorMode.MINUS
           : operatorMode = OperatorMode.ADD;
       print("Operator Mode: $operatorMode");
+    });
+  }
+
+  void doShuffle() {
+    setState(() {
+      List<Tile> notZeroTiles = flattenedGrid.where((e) => e.val != 0).toList();
+      List<String> indexes = [];
+      var index;
+      var x, y;
+      var counter = 0, maxCounter = 5;
+      for (int i = 0; i < notZeroTiles.length; i++) {
+        do {
+          x = new Random().nextInt(4);
+          y = new Random().nextInt(4);
+          index = "$x$y";
+          print(index);
+
+          if (!indexes.contains(index.toString())) {
+            indexes.add(index.toString());
+            break;
+          }
+
+          counter++;
+        } while (counter != maxCounter);
+        
+        toAdd.add(Tile(x, y, notZeroTiles[i].val)..appear(controller));
+      }
+
+      flattenedGrid.forEach((e) {
+        e.val = 0;
+        e.resetAnimations();
+      });
+      controller.forward(from: 0);
     });
   }
 
