@@ -317,20 +317,16 @@ class _Home2048State extends State<Home2048>
               child: actionMode == ActionMode.SWIPE
                   ? GestureDetector(
                       onVerticalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dy < -250 &&
-                            canSwipeUp()) {
+                        if (details.velocity.pixelsPerSecond.dy < 1 && canSwipeUp()) {
                           doSwipe(swipeUp);
-                        } else if (details.velocity.pixelsPerSecond.dy > 250 &&
-                            canSwipeDown()) {
+                        } else if (details.velocity.pixelsPerSecond.dy > 1 && canSwipeDown()) {
                           doSwipe(swipeDown);
                         }
                       },
                       onHorizontalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dx < -1000 &&
-                            canSwipeLeft()) {
+                        if (details.velocity.pixelsPerSecond.dx < 1 && canSwipeLeft()) {
                           doSwipe(swipeLeft);
-                        } else if (details.velocity.pixelsPerSecond.dx > 1000 &&
-                            canSwipeRight()) {
+                        } else if (details.velocity.pixelsPerSecond.dx > 1 && canSwipeRight()) {
                           doSwipe(swipeRight);
                         }
                       },
