@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'enums/visibility_mode.dart';
 import 'tile.dart';
 import 'dart:ui';
 import 'custom_paint.dart';
@@ -47,7 +48,7 @@ class _Home2048State extends State<Home2048>
   double yTapTwo = 0;
   //used to save the values of the second tap
 
-  bool gameMode = false;
+  VisibilityMode gameMode = VisibilityMode.NUMBERED;
   // BLOCKED tiles = TRUE ; NUMBERED tiles = FALSE
   bool swipeTap = true;
   // swipe mode = TRUE ; tap mode = FALSE
@@ -135,7 +136,7 @@ class _Home2048State extends State<Home2048>
                           height: (tileSize - 4.0 * 2) * tile.scale.value,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              color: gameMode == false
+                              color: gameMode == VisibilityMode.NUMBERED
                                   ? numTileColor[tile.animatedValue.value]
                                   : tan),
                           child: GestureDetector(
@@ -201,7 +202,7 @@ class _Home2048State extends State<Home2048>
                               setState(() {});
                             },
                             child: Center(
-                              child: gameMode == false
+                              child: gameMode == VisibilityMode.NUMBERED
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
@@ -514,7 +515,7 @@ class _Home2048State extends State<Home2048>
       controller.forward(from: 0);
       counter = 10;
       decreasingProgressBar();
-      gameMode = false;
+      gameMode = VisibilityMode.NUMBERED;
       swipeTap = true;
       addMinus = true;
       tileCheck = false;
@@ -523,8 +524,8 @@ class _Home2048State extends State<Home2048>
 
   void visibilityMode() {
     setState(() {
-      gameMode == false ? gameMode = true : gameMode = false;
-      print(" Visibility Mode CHANGED!");
+      gameMode == VisibilityMode.NUMBERED ? gameMode = VisibilityMode.BLOCKED : gameMode = VisibilityMode.NUMBERED;
+      print("MODE: $gameMode");
     });
   }
 

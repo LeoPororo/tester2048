@@ -1,0 +1,4 @@
+enum VisibilityMode {
+  BLOCKED,
+  NUMBERED
+}
