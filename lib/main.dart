@@ -91,18 +91,9 @@ class _Home2048State extends State<Home2048>
           child: Center(
             child: GestureDetector(
               onTap: () {
-                print("Tapped No tile: (" +
-                    e.x.toString() +
-                    "," +
-                    e.y.toString() +
-                    ")");
-                //
-                // y x 0 1 2 3
-                // 0  [a,b,c,d]
-                // 1  [e,f,g,h]
-                // 2  [i,j,k,l]
-                // 3  [m,n,o,p]
-                //
+                setState(() {
+                  tapCounter = 0;
+                });
               },
               child: Container(
                 width: tileSize - 4.0 * 2,
@@ -150,7 +141,7 @@ class _Home2048State extends State<Home2048>
 
                                   if (tapCounter == 1) {
                                     if (tapTileOne.val == tapTileTwo.val) {
-                                      print("IT'S A MATCH! ");
+                                      print("IT'S A MATCH!");
                                       var tileOne = flattenedGrid.where((e) => e.x == tapTileOne.x).where((e) => e.y == tapTileOne.y).first;
 
                                       tileOne.changeNumber(controller, 0);
@@ -296,9 +287,6 @@ class _Home2048State extends State<Home2048>
                       ),
                     )
                   : GestureDetector(
-//                      onTap: () {
-//                        print('Tapped');
-//                      },
                       child: Stack(
                         children: stackItems,
                       ),
@@ -346,7 +334,6 @@ class _Home2048State extends State<Home2048>
     empty.shuffle();
     for (int i = 0; i < newTiles.length; i++) {
       toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
-      // print('Indexes: x = ${empty[i].x} and y = ${empty[i].y}');
     }
   }
 
@@ -373,7 +360,6 @@ class _Home2048State extends State<Home2048>
       tileCheck ? addNewTile([2, 2, 2]) : addNewTile([2]);
       toShuffle.clear();
       tileChecker();
-      print(toShuffle);
       controller.forward(from: 0);
     });
   }
@@ -519,7 +505,6 @@ class _Home2048State extends State<Home2048>
           x = new Random().nextInt(4);
           y = new Random().nextInt(4);
           index = "$x$y";
-          print(index);
 
           if (!indexes.contains(index.toString())) {
             indexes.add(index.toString());
