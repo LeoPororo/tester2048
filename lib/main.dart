@@ -35,7 +35,7 @@ class Home2048 extends StatefulWidget {
 class _Home2048State extends State<Home2048>
     with SingleTickerProviderStateMixin {
   Timer _timer;
-  int counter = 10;
+  int counter = maxTimerInSeconds;
   AnimationController controller;
 
   List<Tile> toAdd = [];
@@ -53,7 +53,7 @@ class _Home2048State extends State<Home2048>
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
   bool tileCheck = false; // used to determine the number of tiles to be added
-  bool isTimerOn = false;
+  bool isTimerOn = true;
 
   @override
   void initState() {
@@ -363,7 +363,7 @@ class _Home2048State extends State<Home2048>
           counter--;
         } else {
           _timer.cancel();
-          counter = 10;
+          counter = maxTimerInSeconds;
           restartGame();
         }
       });
@@ -471,7 +471,7 @@ class _Home2048State extends State<Home2048>
       toAdd.clear();
       addNewTile([2, 2]);
       controller.forward(from: 0);
-      counter = 10;
+      counter = maxTimerInSeconds;
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;

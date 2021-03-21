@@ -17,6 +17,8 @@ ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     )
 );
 
+const int maxTimerInSeconds = 30;
+
 const Map<int, Color> numTileColor = {
   2: tan,
   4: tan,

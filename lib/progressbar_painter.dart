@@ -10,16 +10,20 @@ class ProgressBarPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final p1 = Offset(5, 10);
-    final p2 = Offset(375, 10);
+    double maxWidth = 370;
+    double widthOffset = 5;
+    final p1 = Offset(widthOffset, 10);
+    final p2 = Offset(maxWidth + widthOffset, 10);
     final paint = Paint()
       ..color = state ? progressBarBg : darkBrown
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 10;
     canvas.drawLine(p1, p2, paint);
     final endLine = Offset(375, 10);
-    int operation = 407 - 37 * (11 - progressBarValue);
-    var p3 = Offset(operation.toDouble(), 10);
+    double unit = maxWidth / maxTimerInSeconds;
+    double startingWidth = maxWidth + unit;
+    double operation = startingWidth - unit * ((maxTimerInSeconds + 1) - progressBarValue);
+    var p3 = Offset(operation, 10);
     final rePainted = Paint()
       ..color = progressBarCap
       ..strokeCap = StrokeCap.round
