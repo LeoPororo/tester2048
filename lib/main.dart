@@ -94,19 +94,7 @@ class _Home2048State extends State<Home2048>
           height: tileSize,
           child: Center(
             child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (tapCounter == 1) {
-                    tapTileOne.untap(controller);
-                    tapTileOne.resetAnimations();
-                    tapTileOne.s = 1.0;
-                    controller.forward(from: 0);
-                  }
-                  tapCounter = 0;
-                  tapTileOne = null;
-                  tapTileTwo = null;
-                });
-              },
+              onTap: () => onEmptyTileTap(e),
               child: Container(
                 width: tileSize - 4.0 * 2,
                 height: tileSize - 4.0 * 2,
@@ -134,50 +122,7 @@ class _Home2048State extends State<Home2048>
                       height: tileSize,
                       child: Center(
                         child: GestureDetector(
-                          onTap: () {
-                            if (actionMode == ActionMode.TAP) {
-                              if (tapCounter != 2) {
-                                if (tapCounter == 0) {
-                                  tapTileOne = tile;
-                                  tapTileOne.resetAnimations();
-                                  tapTileOne.tap(controller);
-                                  tapTileOne.s = 1.2;
-                                  controller.forward(from: 0);
-                                } else {
-                                  tapTileTwo = tile;
-                                }
-
-                                if (tapCounter == 1) {
-                                  if (tapTileOne.val == tapTileTwo.val &&
-                                      !tapTileOne.isSame(tapTileTwo)) {
-                                    print("IT'S A MATCH!");
-                                    tapTileOne.s = 1.0;
-                                    tapTileOne.changeNumber(controller, 0);
-                                    tapTileOne.val = 0;
-
-                                    tapTileTwo.bounce(controller);
-                                    tapTileTwo.changeNumber(
-                                        controller, tapTileTwo.val * 2);
-                                    tapTileTwo.val = tapTileTwo.val * 2;
-
-                                    tapTileOne.moveTo(
-                                        controller, tapTileTwo.x, tapTileTwo.y);
-
-                                    addSeconds = 1;
-                                    addNewTile([2, 2, 2]);
-                                    controller.forward(from: 0);
-                                  } else {
-                                    tapTileOne.s = 1.0;
-                                    tapTileOne.resetAnimations();
-                                    controller.forward(from: 0);
-                                  }
-                                }
-
-                                tapCounter++;
-                                if (tapCounter == 2) tapCounter = 0;
-                              }
-                            }
-                          },
+                          onTap: () => onNumberedTileTap(tile),
                           child: Container(
                             width: (tileSize - 4.0 * 2) * tile.scale.value,
                             height: (tileSize - 4.0 * 2) * tile.scale.value,
@@ -535,5 +480,64 @@ class _Home2048State extends State<Home2048>
       });
       controller.forward(from: 0);
     });
+  }
+
+  void onEmptyTileTap(Tile tile){
+    setState(() {
+      if (tapCounter == 1) {
+        tapTileOne.untap(controller);
+        tapTileOne.resetAnimations();
+        tapTileOne.s = 1.0;
+        controller.forward(from: 0);
+      }
+      tapCounter = 0;
+      tapTileOne = null;
+      tapTileTwo = null;
+    });
+  }
+
+  void onNumberedTileTap(Tile tile) {
+    if (actionMode == ActionMode.TAP) {
+      if (tapCounter != 2) {
+        if (tapCounter == 0) {
+          tapTileOne = tile;
+          tapTileOne.resetAnimations();
+          tapTileOne.tap(controller);
+          tapTileOne.s = 1.2;
+          controller.forward(from: 0);
+        } else {
+          tapTileTwo = tile;
+        }
+
+        if (tapCounter == 1) {
+          if (tapTileOne.val == tapTileTwo.val &&
+              !tapTileOne.isSame(tapTileTwo)) {
+            print("IT'S A MATCH!");
+            tapTileOne.s = 1.0;
+            tapTileOne.changeNumber(controller, 0);
+            tapTileOne.val = 0;
+
+            tapTileTwo.bounce(controller);
+            tapTileTwo.changeNumber(
+                controller, tapTileTwo.val * 2);
+            tapTileTwo.val = tapTileTwo.val * 2;
+
+            tapTileOne.moveTo(
+                controller, tapTileTwo.x, tapTileTwo.y);
+
+            addSeconds = 1;
+            addNewTile([2, 2, 2]);
+            controller.forward(from: 0);
+          } else {
+            tapTileOne.s = 1.0;
+            tapTileOne.resetAnimations();
+            controller.forward(from: 0);
+          }
+        }
+
+        tapCounter++;
+        if (tapCounter == 2) tapCounter = 0;
+      }
+    }
   }
 }
