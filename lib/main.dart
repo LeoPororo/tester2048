@@ -92,7 +92,15 @@ class _Home2048State extends State<Home2048>
             child: GestureDetector(
               onTap: () {
                 setState(() {
+                  if (tapCounter == 1) {
+                    tapTileOne.untap(controller);
+                    tapTileOne.resetAnimations();
+                    tapTileOne.s = 1.0;
+                    controller.forward(from: 0);
+                  }
                   tapCounter = 0;
+                  tapTileOne = null;
+                  tapTileTwo = null;
                 });
               },
               child: Container(
@@ -144,7 +152,8 @@ class _Home2048State extends State<Home2048>
                                   }
 
                                   if (tapCounter == 1) {
-                                    if (tapTileOne.val == tapTileTwo.val && !tapTileOne.isSame(tapTileTwo)) {
+                                    if (tapTileOne.val == tapTileTwo.val &&
+                                        !tapTileOne.isSame(tapTileTwo)) {
                                       print("IT'S A MATCH!");
                                       tapTileOne.changeNumber(controller, 0);
                                       tapTileOne.val = 0;
@@ -154,11 +163,11 @@ class _Home2048State extends State<Home2048>
                                           controller, tapTileTwo.val * 2);
                                       tapTileTwo.val = tapTileTwo.val * 2;
 
-                                      tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
+                                      tapTileOne.moveTo(controller,
+                                          tapTileTwo.x, tapTileTwo.y);
 
                                       controller.forward(from: 0);
-                                    }
-                                    else {
+                                    } else {
                                       tapTileOne.s = 1.0;
                                       tapTileOne.resetAnimations();
                                       controller.forward(from: 0);
@@ -339,7 +348,8 @@ class _Home2048State extends State<Home2048>
     List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
     empty.shuffle();
     for (int i = 0; i < newTiles.length; i++) {
-      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
+      toAdd.add(
+          Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
     }
   }
 
