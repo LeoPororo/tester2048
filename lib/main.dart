@@ -71,8 +71,7 @@ class _Home2048State extends State<Home2048>
           toAdd.clear();
 
           counter += addSeconds;
-          if (counter > maxTimerInSeconds)
-            counter = maxTimerInSeconds;
+          if (counter > maxTimerInSeconds) counter = maxTimerInSeconds;
           addSeconds = 0;
         });
       }
@@ -134,59 +133,59 @@ class _Home2048State extends State<Home2048>
                       width: tileSize,
                       height: tileSize,
                       child: Center(
-                        child: Container(
-                          width: (tileSize - 4.0 * 2) * tile.scale.value,
-                          height: (tileSize - 4.0 * 2) * tile.scale.value,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: visibilityMode == VisibilityMode.NUMBERED
-                                  ? numTileColor[tile.animatedValue.value]
-                                  : tan),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (actionMode == ActionMode.TAP) {
-                                if (tapCounter != 2) {
-                                  if (tapCounter == 0) {
-                                    tapTileOne = tile;
-                                    tapTileOne.resetAnimations();
-                                    tapTileOne.tap(controller);
-                                    tapTileOne.s = 1.2;
+                        child: GestureDetector(
+                          onTap: () {
+                            if (actionMode == ActionMode.TAP) {
+                              if (tapCounter != 2) {
+                                if (tapCounter == 0) {
+                                  tapTileOne = tile;
+                                  tapTileOne.resetAnimations();
+                                  tapTileOne.tap(controller);
+                                  tapTileOne.s = 1.2;
+                                  controller.forward(from: 0);
+                                } else {
+                                  tapTileTwo = tile;
+                                }
+
+                                if (tapCounter == 1) {
+                                  if (tapTileOne.val == tapTileTwo.val &&
+                                      !tapTileOne.isSame(tapTileTwo)) {
+                                    print("IT'S A MATCH!");
+                                    tapTileOne.s = 1.0;
+                                    tapTileOne.changeNumber(controller, 0);
+                                    tapTileOne.val = 0;
+
+                                    tapTileTwo.bounce(controller);
+                                    tapTileTwo.changeNumber(
+                                        controller, tapTileTwo.val * 2);
+                                    tapTileTwo.val = tapTileTwo.val * 2;
+
+                                    tapTileOne.moveTo(
+                                        controller, tapTileTwo.x, tapTileTwo.y);
+
+                                    addSeconds = 1;
+                                    addNewTile([2, 2, 2]);
                                     controller.forward(from: 0);
                                   } else {
-                                    tapTileTwo = tile;
+                                    tapTileOne.s = 1.0;
+                                    tapTileOne.resetAnimations();
+                                    controller.forward(from: 0);
                                   }
-
-                                  if (tapCounter == 1) {
-                                    if (tapTileOne.val == tapTileTwo.val &&
-                                        !tapTileOne.isSame(tapTileTwo)) {
-                                      print("IT'S A MATCH!");
-                                      tapTileOne.s = 1.0;
-                                      tapTileOne.changeNumber(controller, 0);
-                                      tapTileOne.val = 0;
-
-                                      tapTileTwo.bounce(controller);
-                                      tapTileTwo.changeNumber(
-                                          controller, tapTileTwo.val * 2);
-                                      tapTileTwo.val = tapTileTwo.val * 2;
-
-                                      tapTileOne.moveTo(controller,
-                                          tapTileTwo.x, tapTileTwo.y);
-
-                                      addSeconds = 1;
-                                      addNewTile([2, 2, 2]);
-                                      controller.forward(from: 0);
-                                    } else {
-                                      tapTileOne.s = 1.0;
-                                      tapTileOne.resetAnimations();
-                                      controller.forward(from: 0);
-                                    }
-                                  }
-
-                                  tapCounter++;
-                                  if (tapCounter == 2) tapCounter = 0;
                                 }
+
+                                tapCounter++;
+                                if (tapCounter == 2) tapCounter = 0;
                               }
-                            },
+                            }
+                          },
+                          child: Container(
+                            width: (tileSize - 4.0 * 2) * tile.scale.value,
+                            height: (tileSize - 4.0 * 2) * tile.scale.value,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: visibilityMode == VisibilityMode.NUMBERED
+                                    ? numTileColor[tile.animatedValue.value]
+                                    : tan),
                             child: Center(
                               child: visibilityMode == VisibilityMode.NUMBERED
                                   ? Text(
@@ -386,8 +385,7 @@ class _Home2048State extends State<Home2048>
   void doSwipe(void Function() swipeFn) {
     setState(() {
       swipeFn();
-      if (toAdd.length == 0)
-        addNewTile([2]);
+      if (toAdd.length == 0) addNewTile([2]);
       controller.forward(from: 0);
     });
   }
@@ -445,10 +443,8 @@ class _Home2048State extends State<Home2048>
               t.disappear(controller);
               merge.val = 0;
 
-              if (toAdd.length == 0)
-                addNewTile([2, 2, 2]);
-            }
-            else {
+              if (toAdd.length == 0) addNewTile([2, 2, 2]);
+            } else {
               merge.moveTo(controller, tiles[i].x, tiles[i].y);
               merge.bounce(controller);
               merge.changeNumber(controller, resultValue);
