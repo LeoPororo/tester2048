@@ -444,7 +444,9 @@ class _Home2048State extends State<Home2048>
               merge.disappear(controller);
               t.disappear(controller);
               merge.val = 0;
-              addNewTile([2, 2, 2]);
+
+              if (toAdd.length == 0)
+                addNewTile([2, 2, 2]);
             }
             else {
               merge.moveTo(controller, tiles[i].x, tiles[i].y);
@@ -453,7 +455,6 @@ class _Home2048State extends State<Home2048>
 
               merge.val = 0;
               t.changeNumber(controller, 0);
-              addNewTile([2]);
             }
             addSeconds += 1;
           }
