@@ -38,6 +38,11 @@ class Tile {
 
   void appear(Animation<double> parent) {
     scale = Tween(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 1.0)));
+  }
+
+  void disappear(Animation<double> parent) {
+    scale = Tween(begin: 1.0, end: 0.0)
         .animate(CurvedAnimation(parent: parent, curve: Interval(0.5, 1.0)));
   }
 

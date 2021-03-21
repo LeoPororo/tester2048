@@ -439,13 +439,19 @@ class _Home2048State extends State<Home2048>
                 : resultValue = divisionResult.toInt();
             if (resultValue == 1) {
               resultValue = 0;
+              merge.moveTo(controller, tiles[i].x, tiles[i].y);
+              merge.disappear(controller);
+              t.disappear(controller);
+              merge.val = 0;
             }
-            merge.moveTo(controller, tiles[i].x, tiles[i].y);
-            merge.bounce(controller);
-            merge.changeNumber(controller, resultValue);
-            merge.val = 0;
-            t.changeNumber(controller, 0);
+            else {
+              merge.moveTo(controller, tiles[i].x, tiles[i].y);
+              merge.bounce(controller);
+              merge.changeNumber(controller, resultValue);
 
+              merge.val = 0;
+              t.changeNumber(controller, 0);
+            }
             addSeconds += 1;
           }
           t.val = 0;
