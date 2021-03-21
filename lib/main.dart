@@ -35,6 +35,7 @@ class Home2048 extends StatefulWidget {
 class _Home2048State extends State<Home2048>
     with SingleTickerProviderStateMixin {
   Timer _timer;
+  Timer _readySetTimer;
   int counter = maxTimerInSeconds;
   AnimationController controller;
 
@@ -54,6 +55,9 @@ class _Home2048State extends State<Home2048>
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
   bool isTimerOn = true;
+  bool isReady = false;
+  int readyCount = 0;
+  List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
 
   @override
   void initState() {
@@ -76,8 +80,7 @@ class _Home2048State extends State<Home2048>
         });
       }
     });
-
-    restartGame();
+    startReadySet();
   }
 
   @override
@@ -165,135 +168,175 @@ class _Home2048State extends State<Home2048>
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(visibilityMode) == "NUMBERED"
-                          ? "BLOCKED"
-                          : "NUMBERED",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    onPressed: changeVisibilityMode,
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    onPressed: changeActionMode,
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    onPressed: changeOperatorMode,
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      "SHUFFLE",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    onPressed: doShuffle,
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              child: actionMode == ActionMode.SWIPE
-                  ? GestureDetector(
-                      onVerticalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dy < 1 &&
-                            canSwipeUp()) {
-                          doSwipe(swipeUp);
-                        } else if (details.velocity.pixelsPerSecond.dy > 1 &&
-                            canSwipeDown()) {
-                          doSwipe(swipeDown);
-                        }
-                      },
-                      onHorizontalDragEnd: (details) {
-                        if (details.velocity.pixelsPerSecond.dx < 1 &&
-                            canSwipeLeft()) {
-                          doSwipe(swipeLeft);
-                        } else if (details.velocity.pixelsPerSecond.dx > 1 &&
-                            canSwipeRight()) {
-                          doSwipe(swipeRight);
-                        }
-                      },
-                      child: Stack(
-                        children: stackItems,
-                      ),
-                    )
-                  : GestureDetector(
-                      child: Stack(
-                        children: stackItems,
-                      ),
-                    ),
-              width: gridSize,
-              height: gridSize,
-              padding: EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: darkBrown,
-              ),
-            ),
-            Container(
-              width: 400,
-              child: CustomPaint(
-                size: Size(10, 10),
-                painter: ProgressBarPainter(
-                    progressBarValue: counter, state: isTimerOn),
-              ),
-            ),
-            Container(
-              height: 80,
-              width: 400,
-              child: ElevatedButton(
-                style: buttonStyle,
-                child: Text(
-                  "Restart",
-                  style: TextStyle(
-                    color: buttonText,
-                    fontSize: 34,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                onPressed: restartGame,
-              ),
-            ),
-          ],
+          children: setupGameView(stackItems, gridSize),
         ),
       ),
     );
+  }
+
+  List<Widget> setupGameView(List<Widget> stackItems, double gridSize) {
+    return <Widget>[
+      Row(
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              style: buttonStyle,
+              child: Text(
+                describeEnum(visibilityMode) == "NUMBERED"
+                    ? "BLOCKED"
+                    : "NUMBERED",
+                style: TextStyle(
+                  color: buttonText,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: changeVisibilityMode,
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              style: buttonStyle,
+              child: Text(
+                describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
+                style: TextStyle(
+                  color: buttonText,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: changeActionMode,
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              style: buttonStyle,
+              child: Text(
+                describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
+                style: TextStyle(
+                  color: buttonText,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: changeOperatorMode,
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              style: buttonStyle,
+              child: Text(
+                "SHUFFLE",
+                style: TextStyle(
+                  color: buttonText,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              onPressed: doShuffle,
+            ),
+          ),
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            child: actionMode == ActionMode.SWIPE
+                ? GestureDetector(
+                    onVerticalDragEnd: (details) {
+                      if (details.velocity.pixelsPerSecond.dy < 1 &&
+                          canSwipeUp()) {
+                        doSwipe(swipeUp);
+                      } else if (details.velocity.pixelsPerSecond.dy > 1 &&
+                          canSwipeDown()) {
+                        doSwipe(swipeDown);
+                      }
+                    },
+                    onHorizontalDragEnd: (details) {
+                      if (details.velocity.pixelsPerSecond.dx < 1 &&
+                          canSwipeLeft()) {
+                        doSwipe(swipeLeft);
+                      } else if (details.velocity.pixelsPerSecond.dx > 1 &&
+                          canSwipeRight()) {
+                        doSwipe(swipeRight);
+                      }
+                    },
+                    child: Stack(
+                      children: stackItems,
+                    ),
+                  )
+                : GestureDetector(
+                    child: Stack(
+                      children: stackItems,
+                    ),
+                  ),
+            width: gridSize,
+            height: gridSize,
+            padding: EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              color: darkBrown,
+            ),
+          ),
+          Container(
+            width: gridSize,
+            height: gridSize,
+            padding: EdgeInsets.all(4.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return ScaleTransition(child: child, scale: animation);
+                  },
+                  child: Text(
+                    readySetStrings[readyCount],
+                    key: ValueKey<int>(readyCount),
+                    style: TextStyle(
+                        fontSize: 50,
+                        color: greyText,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+      Container(
+        width: 400,
+        child: CustomPaint(
+          size: Size(10, 10),
+          painter:
+              ProgressBarPainter(progressBarValue: counter, state: isTimerOn),
+        ),
+      ),
+      Container(
+        height: 80,
+        width: 400,
+        child: ElevatedButton(
+          style: buttonStyle,
+          child: Text(
+            "Restart",
+            style: TextStyle(
+              color: buttonText,
+              fontSize: 34,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          onPressed: () {
+            setState(() {
+              readyCount = 0;
+              _timer.cancel();
+              startReadySet();
+            });
+          },
+        ),
+      ),
+    ];
   }
 
   void addNewTile(List<int> newTiles) {
@@ -310,6 +353,22 @@ class _Home2048State extends State<Home2048>
     }
   }
 
+  void startReadySet() {
+    if (_readySetTimer != null) {
+      _readySetTimer.cancel();
+    }
+    _readySetTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (readyCount == readySetStrings.length - 2) {
+          _readySetTimer.cancel();
+          restartGame();
+        }
+
+        readyCount += 1;
+      });
+    });
+  }
+
   void decreasingProgressBar() {
     if (_timer != null) {
       _timer.cancel();
@@ -321,7 +380,8 @@ class _Home2048State extends State<Home2048>
         } else {
           _timer.cancel();
           counter = maxTimerInSeconds;
-          restartGame();
+          readyCount = 0;
+          startReadySet();
         }
       });
     });
@@ -482,7 +542,7 @@ class _Home2048State extends State<Home2048>
     });
   }
 
-  void onEmptyTileTap(Tile tile){
+  void onEmptyTileTap(Tile tile) {
     setState(() {
       if (tapCounter == 1) {
         tapTileOne.untap(controller);
@@ -518,12 +578,10 @@ class _Home2048State extends State<Home2048>
             tapTileOne.val = 0;
 
             tapTileTwo.bounce(controller);
-            tapTileTwo.changeNumber(
-                controller, tapTileTwo.val * 2);
+            tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
             tapTileTwo.val = tapTileTwo.val * 2;
 
-            tapTileOne.moveTo(
-                controller, tapTileTwo.x, tapTileTwo.y);
+            tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
             addSeconds = 1;
             addNewTile([2, 2, 2]);
