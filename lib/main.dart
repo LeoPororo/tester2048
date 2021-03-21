@@ -41,7 +41,7 @@ class _Home2048State extends State<Home2048>
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
-      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0)));
+      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
   Iterable<List<Tile>> get cols =>
       List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
@@ -135,6 +135,9 @@ class _Home2048State extends State<Home2048>
                                 if (tapCounter != 2) {
                                   if (tapCounter == 0) {
                                     tapTileOne = tile;
+                                    tile.s = 1.2;
+                                    tile.tap(controller);
+                                    controller.forward(from: 0);
                                   } else {
                                     tapTileTwo = tile;
                                   }
@@ -333,7 +336,7 @@ class _Home2048State extends State<Home2048>
     List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
     empty.shuffle();
     for (int i = 0; i < newTiles.length; i++) {
-      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i])..appear(controller));
+      toAdd.add(Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
     }
   }
 
@@ -512,7 +515,7 @@ class _Home2048State extends State<Home2048>
           }
         } while (true);
 
-        toAdd.add(Tile(x, y, notZeroTiles[i].val)..appear(controller));
+        toAdd.add(Tile(x, y, notZeroTiles[i].val, 1.0)..appear(controller));
       }
 
       flattenedGrid.forEach((e) {

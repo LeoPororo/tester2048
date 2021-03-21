@@ -4,13 +4,14 @@ class Tile {
   final int x;
   final int y;
   int val;
+  double s;
 
   Animation<double> animatedX;
   Animation<double> animatedY;
   Animation<int> animatedValue;
   Animation<double> scale;
 
-  Tile(this.x, this.y, this.val) {
+  Tile(this.x, this.y, this.val, this.s) {
     resetAnimations();
   }
 
@@ -18,7 +19,7 @@ class Tile {
     animatedX = AlwaysStoppedAnimation(this.x.toDouble());
     animatedY = AlwaysStoppedAnimation(this.y.toDouble());
     animatedValue = AlwaysStoppedAnimation(this.val);
-    scale = AlwaysStoppedAnimation(1.0);
+    scale = AlwaysStoppedAnimation(s);
   }
 
   void moveTo(Animation<double> parent, int x, int y) {
@@ -45,5 +46,10 @@ class Tile {
       TweenSequenceItem(tween: ConstantTween(val), weight: .01),
       TweenSequenceItem(tween: ConstantTween(val), weight: .99),
     ]).animate(CurvedAnimation(parent: parent, curve: Interval(0.5, 1.0)));
+  }
+
+  void tap(Animation<double> parent) {
+    scale = Tween(begin: 1.0, end: 1.2)
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 1.0)));
   }
 }
