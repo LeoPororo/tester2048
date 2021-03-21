@@ -47,6 +47,7 @@ class _Home2048State extends State<Home2048>
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
 
   int tapCounter = 0;
+  int addSeconds = 0;
   Tile tapTileOne, tapTileTwo;
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
@@ -69,6 +70,11 @@ class _Home2048State extends State<Home2048>
           });
           flattenedGrid.forEach((element) => element.resetAnimations());
           toAdd.clear();
+
+          counter += addSeconds;
+          if (counter > maxTimerInSeconds)
+            counter = maxTimerInSeconds;
+          addSeconds = 0;
         });
       }
     });
@@ -166,6 +172,7 @@ class _Home2048State extends State<Home2048>
                                       tapTileOne.moveTo(controller,
                                           tapTileTwo.x, tapTileTwo.y);
 
+                                      addSeconds = 1;
                                       controller.forward(from: 0);
                                     } else {
                                       tapTileOne.s = 1.0;
@@ -437,6 +444,8 @@ class _Home2048State extends State<Home2048>
             merge.changeNumber(controller, resultValue);
             merge.val = 0;
             t.changeNumber(controller, 0);
+
+            addSeconds += 1;
           }
           t.val = 0;
           tiles[i].val = resultValue;
