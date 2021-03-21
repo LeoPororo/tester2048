@@ -42,6 +42,8 @@ class Tile {
   }
 
   void changeNumber(Animation<double> parent, int newValue) {
+    // TODO: Know how Animation works in flutter
+    // TODO: Know why setting val to newValue after this call is not working but it is okay outside method call
     animatedValue = TweenSequence([
       TweenSequenceItem(tween: ConstantTween(val), weight: .01),
       TweenSequenceItem(tween: ConstantTween(val), weight: .99),
@@ -50,6 +52,16 @@ class Tile {
 
   void tap(Animation<double> parent) {
     scale = Tween(begin: 1.0, end: 1.2)
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 1.0)));
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 0.5)));
+  }
+
+  void untap(Animation<double> parent) {
+    scale = Tween(begin: 1.0, end: 1.2)
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 0.5)));
+  }
+
+  bool isSame(Tile t)
+  {
+    return this.x == t.x && this.y == t.y;
   }
 }

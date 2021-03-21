@@ -135,29 +135,32 @@ class _Home2048State extends State<Home2048>
                                 if (tapCounter != 2) {
                                   if (tapCounter == 0) {
                                     tapTileOne = tile;
-                                    tile.s = 1.2;
-                                    tile.tap(controller);
+                                    tapTileOne.resetAnimations();
+                                    tapTileOne.tap(controller);
+                                    tapTileOne.s = 1.2;
                                     controller.forward(from: 0);
                                   } else {
                                     tapTileTwo = tile;
                                   }
 
                                   if (tapCounter == 1) {
-                                    if (tapTileOne.val == tapTileTwo.val) {
+                                    if (tapTileOne.val == tapTileTwo.val && !tapTileOne.isSame(tapTileTwo)) {
                                       print("IT'S A MATCH!");
-                                      var tileOne = flattenedGrid.where((e) => e.x == tapTileOne.x).where((e) => e.y == tapTileOne.y).first;
+                                      tapTileOne.changeNumber(controller, 0);
+                                      tapTileOne.val = 0;
 
-                                      tileOne.changeNumber(controller, 0);
-                                      tileOne.val = 0;
-
-                                      var tileTwo = flattenedGrid.where((e) => e.x == tapTileTwo.x).where((e) => e.y == tapTileTwo.y).first;
-                                      tileTwo.bounce(controller);
-                                      tileTwo.changeNumber(
+                                      tapTileTwo.bounce(controller);
+                                      tapTileTwo.changeNumber(
                                           controller, tapTileTwo.val * 2);
-                                      tileTwo.val = tapTileTwo.val * 2;
+                                      tapTileTwo.val = tapTileTwo.val * 2;
 
-                                      tileOne.moveTo(controller, tileTwo.x, tileTwo.y);
+                                      tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
+                                      controller.forward(from: 0);
+                                    }
+                                    else {
+                                      tapTileOne.s = 1.0;
+                                      tapTileOne.resetAnimations();
                                       controller.forward(from: 0);
                                     }
                                   }
