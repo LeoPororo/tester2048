@@ -53,7 +53,6 @@ class _Home2048State extends State<Home2048>
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
-  bool tileCheck = false; // used to determine the number of tiles to be added
   bool isTimerOn = true;
 
   @override
@@ -161,6 +160,7 @@ class _Home2048State extends State<Home2048>
                                     if (tapTileOne.val == tapTileTwo.val &&
                                         !tapTileOne.isSame(tapTileTwo)) {
                                       print("IT'S A MATCH!");
+                                      tapTileOne.s = 1.0;
                                       tapTileOne.changeNumber(controller, 0);
                                       tapTileOne.val = 0;
 
@@ -173,6 +173,7 @@ class _Home2048State extends State<Home2048>
                                           tapTileTwo.x, tapTileTwo.y);
 
                                       addSeconds = 1;
+                                      addNewTile([2, 2, 2]);
                                       controller.forward(from: 0);
                                     } else {
                                       tapTileOne.s = 1.0;
@@ -354,7 +355,12 @@ class _Home2048State extends State<Home2048>
   void addNewTile(List<int> newTiles) {
     List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
     empty.shuffle();
-    for (int i = 0; i < newTiles.length; i++) {
+    bool canAddAll = empty.length >= newTiles.length;
+    int maxCount = newTiles.length;
+    if (!canAddAll) {
+      maxCount = empty.length;
+    }
+    for (int i = 0; i < maxCount; i++) {
       toAdd.add(
           Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
     }
@@ -380,9 +386,7 @@ class _Home2048State extends State<Home2048>
   void doSwipe(void Function() swipeFn) {
     setState(() {
       swipeFn();
-      tileCheck ? addNewTile([2, 2, 2]) : addNewTile([2]);
-      toShuffle.clear();
-      tileChecker();
+      addNewTile([2]);
       controller.forward(from: 0);
     });
   }
@@ -435,9 +439,6 @@ class _Home2048State extends State<Home2048>
                 : resultValue = divisionResult.toInt();
             if (resultValue == 1) {
               resultValue = 0;
-              tileCheck = true;
-            } else {
-              tileCheck = false;
             }
             merge.moveTo(controller, tiles[i].x, tiles[i].y);
             merge.bounce(controller);
@@ -449,23 +450,6 @@ class _Home2048State extends State<Home2048>
           }
           t.val = 0;
           tiles[i].val = resultValue;
-        }
-      }
-    }
-  }
-
-  void tileChecker() {
-    flattenedGrid.forEach((e) {
-      e.val != 0 ? toShuffle.add(e.val) : toShuffle.add(0);
-    });
-
-    int length;
-    tileCheck ? length = 3 : length = 1;
-    for (int i = 0; i < length; i++) {
-      for (int i = 0; i < toShuffle.length; i++) {
-        if (toShuffle[i] == 0) {
-          toShuffle[i] = 2;
-          i = toShuffle.length;
         }
       }
     }
@@ -484,7 +468,6 @@ class _Home2048State extends State<Home2048>
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
-      tileCheck = false;
 
       if (isTimerOn) {
         decreasingProgressBar();
