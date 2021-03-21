@@ -386,6 +386,8 @@ class _Home2048State extends State<Home2048>
   void doSwipe(void Function() swipeFn) {
     setState(() {
       swipeFn();
+      if (toAdd.length == 0)
+        addNewTile([2]);
       controller.forward(from: 0);
     });
   }
