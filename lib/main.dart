@@ -34,9 +34,16 @@ class Home2048 extends StatefulWidget {
 
 class _Home2048State extends State<Home2048>
     with SingleTickerProviderStateMixin {
-  Timer _timer;
+  Timer _progressBarTimer;
+  int _progressBarCounter = maxTimerInSeconds;
+
   Timer _readySetTimer;
-  int counter = maxTimerInSeconds;
+  int _readyCounter = 0;
+
+  Timer _changeModeTimer;
+  int _changeModeCounter = 0;
+  String _currentMode = "";
+
   AnimationController controller;
 
   List<Tile> toAdd = [];
@@ -55,8 +62,9 @@ class _Home2048State extends State<Home2048>
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
   bool isTimerOn = true;
+  bool isTestingOn = false;
   bool isReady = false;
-  int readyCount = 0;
+
   List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
 
   @override
@@ -74,13 +82,14 @@ class _Home2048State extends State<Home2048>
           flattenedGrid.forEach((element) => element.resetAnimations());
           toAdd.clear();
 
-          counter += addSeconds;
-          if (counter > maxTimerInSeconds) counter = maxTimerInSeconds;
+          _progressBarCounter += addSeconds;
+          if (_progressBarCounter > maxTimerInSeconds)
+            _progressBarCounter = maxTimerInSeconds;
           addSeconds = 0;
         });
       }
     });
-    startReadySet();
+    startReadySetTimer();
   }
 
   @override
@@ -176,68 +185,82 @@ class _Home2048State extends State<Home2048>
 
   List<Widget> setupGameView(List<Widget> stackItems, double gridSize) {
     return <Widget>[
-      Row(
-        children: <Widget>[
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(visibilityMode) == "NUMBERED"
-                    ? "BLOCKED"
-                    : "NUMBERED",
-                style: TextStyle(
-                  color: buttonText,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
+      isTestingOn
+          ? Row(
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(visibilityMode) == "NUMBERED"
+                          ? "BLOCKED"
+                          : "NUMBERED",
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    onPressed: changeVisibilityMode,
+                  ),
                 ),
-              ),
-              onPressed: changeVisibilityMode,
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
-                style: TextStyle(
-                  color: buttonText,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    onPressed: () => changeActionMode(null),
+                  ),
                 ),
-              ),
-              onPressed: changeActionMode,
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
-                style: TextStyle(
-                  color: buttonText,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    onPressed: () => changeOperatorMode(null),
+                  ),
                 ),
-              ),
-              onPressed: changeOperatorMode,
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                "SHUFFLE",
-                style: TextStyle(
-                  color: buttonText,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w800,
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      "SHUFFLE",
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    onPressed: doShuffle,
+                  ),
                 ),
-              ),
-              onPressed: doShuffle,
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                    child: Center(
+                      child: Text("$_currentMode",
+                      style: TextStyle(
+                        color: greyText,
+                        fontSize: 21,
+                        fontWeight: FontWeight.w900,
+                      )),
+                ))
+              ],
             ),
-          ),
-        ],
-      ),
       Stack(
         children: <Widget>[
           Container(
@@ -293,8 +316,8 @@ class _Home2048State extends State<Home2048>
                     return ScaleTransition(child: child, scale: animation);
                   },
                   child: Text(
-                    readySetStrings[readyCount],
-                    key: ValueKey<int>(readyCount),
+                    readySetStrings[_readyCounter],
+                    key: ValueKey<int>(_readyCounter),
                     style: TextStyle(
                         fontSize: 50,
                         color: greyText,
@@ -310,8 +333,8 @@ class _Home2048State extends State<Home2048>
         width: 400,
         child: CustomPaint(
           size: Size(10, 10),
-          painter:
-              ProgressBarPainter(progressBarValue: counter, state: isTimerOn),
+          painter: ProgressBarPainter(
+              progressBarValue: _progressBarCounter, state: isTimerOn),
         ),
       ),
       Container(
@@ -329,9 +352,9 @@ class _Home2048State extends State<Home2048>
           ),
           onPressed: () {
             setState(() {
-              readyCount = 0;
-              _timer.cancel();
-              startReadySet();
+              _readyCounter = 0;
+              _progressBarTimer.cancel();
+              startReadySetTimer();
             });
           },
         ),
@@ -353,35 +376,53 @@ class _Home2048State extends State<Home2048>
     }
   }
 
-  void startReadySet() {
+  void startReadySetTimer() {
+    // TODO: Add sounds per increment
     if (_readySetTimer != null) {
       _readySetTimer.cancel();
     }
     _readySetTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (readyCount == readySetStrings.length - 2) {
+        if (_readyCounter == readySetStrings.length - 2) {
           _readySetTimer.cancel();
           restartGame();
+          startChangeModeTimer();
         }
 
-        readyCount += 1;
+        _readyCounter += 1;
       });
     });
   }
 
-  void decreasingProgressBar() {
-    if (_timer != null) {
-      _timer.cancel();
+  void startChangeModeTimer() {
+    if (_changeModeTimer != null) {
+      _changeModeTimer.cancel();
     }
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _changeModeTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (counter > 0) {
-          counter--;
+        _changeModeCounter += 1;
+
+        if (_changeModeCounter == 5) {
+          setRandomMode();
+          _changeModeCounter = 0;
+        }
+      });
+    });
+  }
+
+  void startProgressBarTimer() {
+    if (_progressBarTimer != null) {
+      _progressBarTimer.cancel();
+    }
+    _progressBarTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_progressBarCounter > 0) {
+          _progressBarCounter--;
         } else {
-          _timer.cancel();
-          counter = maxTimerInSeconds;
-          readyCount = 0;
-          startReadySet();
+          _progressBarTimer.cancel();
+          _progressBarCounter = maxTimerInSeconds;
+          _readyCounter = 0;
+          startReadySetTimer();
         }
       });
     });
@@ -475,13 +516,13 @@ class _Home2048State extends State<Home2048>
       toAdd.clear();
       addNewTile([2, 2]);
       controller.forward(from: 0);
-      counter = maxTimerInSeconds;
+      _progressBarCounter = maxTimerInSeconds;
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
 
       if (isTimerOn) {
-        decreasingProgressBar();
+        startProgressBarTimer();
       }
     });
   }
@@ -495,21 +536,33 @@ class _Home2048State extends State<Home2048>
     });
   }
 
-  void changeActionMode() {
+  void changeActionMode(ActionMode newAction) {
     setState(() {
-      actionMode == ActionMode.TAP
-          ? actionMode = ActionMode.SWIPE
-          : actionMode = ActionMode.TAP;
-      print("Action Mode: $actionMode");
+      // Passing null is for test purposes only
+      if (newAction == null) {
+        actionMode == ActionMode.TAP
+            ? actionMode = ActionMode.SWIPE
+            : actionMode = ActionMode.TAP;
+        print("Action Mode: $actionMode");
+      } else {
+        actionMode = newAction;
+        print("Action Mode: $actionMode");
+      }
     });
   }
 
-  void changeOperatorMode() {
+  void changeOperatorMode(OperatorMode newOperator) {
     setState(() {
-      operatorMode == OperatorMode.ADD
-          ? operatorMode = OperatorMode.MINUS
-          : operatorMode = OperatorMode.ADD;
-      print("Operator Mode: $operatorMode");
+      // Passing null is for test purposes only
+      if (newOperator == null) {
+        operatorMode == OperatorMode.ADD
+            ? operatorMode = OperatorMode.MINUS
+            : operatorMode = OperatorMode.ADD;
+        print("Operator Mode: $operatorMode");
+      } else {
+        operatorMode = newOperator;
+        print("Operator Mode: $operatorMode");
+      }
     });
   }
 
@@ -597,5 +650,17 @@ class _Home2048State extends State<Home2048>
         if (tapCounter == 2) tapCounter = 0;
       }
     }
+  }
+
+  void setRandomMode() {
+    var actions = [ActionMode.TAP, ActionMode.SWIPE];
+    var operators = [OperatorMode.ADD, OperatorMode.MINUS];
+    var newAction = actions[new Random().nextInt(actions.length)];
+    var newOperator = operators[new Random().nextInt(operators.length)];
+    changeActionMode(newAction);
+    changeOperatorMode(newOperator);
+    var actionDesc = describeEnum(newAction);
+    var operatorDesc = describeEnum(newOperator);
+    _currentMode = "NEW MODE: $actionDesc - $operatorDesc";
   }
 }
