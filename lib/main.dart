@@ -679,6 +679,6 @@ class _Home2048State extends State<Home2048>
     changeOperatorMode(newOperator);
     var actionDesc = describeEnum(newAction);
     var operatorDesc = describeEnum(newOperator);
-    _currentMode = "NEW MODE: $actionDesc - $operatorDesc";
+    _currentMode = "MODE: $actionDesc - $operatorDesc";
   }
 }
