@@ -13,6 +13,13 @@ import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
 
+// TODO: move classes to their own files
+// TODO: move constants to constants.dart file
+// TODO: move creation of child widgets to functions for easy debugging
+// TODO: pointing system
+// TODO: how points should be shown
+// TODO: how visibility works
+// TODO: try swapping color of the tile to color of the tile-text when action mode changes
 void main() {
   runApp(MyApp());
 }
@@ -34,6 +41,7 @@ class Home2048 extends StatefulWidget {
 
 class _Home2048State extends State<Home2048>
     with SingleTickerProviderStateMixin {
+  // TODO: Fix naming convention. private should have _ at the start of their names
   Timer _progressBarTimer;
   int _progressBarCounter = maxTimerInSeconds;
 
@@ -395,6 +403,7 @@ class _Home2048State extends State<Home2048>
   }
 
   void startChangeModeTimer() {
+    // TODO: Add sounds when changing modes
     if (_changeModeTimer != null) {
       _changeModeTimer.cancel();
     }
@@ -429,6 +438,7 @@ class _Home2048State extends State<Home2048>
   }
 
   void doSwipe(void Function() swipeFn) {
+    // TODO: Add sounds for successful swipes.
     setState(() {
       swipeFn();
       if (toAdd.length == 0) addNewTile([2]);
