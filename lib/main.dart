@@ -640,9 +640,16 @@ class _Home2048State extends State<Home2048>
             tapTileOne.changeNumber(controller, 0);
             tapTileOne.val = 0;
 
-            tapTileTwo.bounce(controller);
-            tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
-            tapTileTwo.val = tapTileTwo.val * 2;
+            if (operatorMode == OperatorMode.ADD) {
+              tapTileTwo.bounce(controller);
+              tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
+              tapTileTwo.val = tapTileTwo.val * 2;
+            }
+            else {
+              tapTileTwo.disappear(controller);
+              tapTileTwo.changeNumber(controller, 0);
+              tapTileTwo.val = 0;
+            }
 
             tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
