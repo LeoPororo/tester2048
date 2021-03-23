@@ -260,7 +260,7 @@ class _Home2048State extends State<Home2048>
               children: [
                 Expanded(
                     child: Center(
-                      child: Text("$_currentMode",
+                  child: Text("$_currentMode",
                       style: TextStyle(
                         color: greyText,
                         fontSize: 21,
@@ -411,7 +411,7 @@ class _Home2048State extends State<Home2048>
       setState(() {
         _changeModeCounter += 1;
 
-        if (_changeModeCounter == 5) {
+        if (_changeModeCounter == 7) {
           setRandomMode();
           _changeModeCounter = 0;
         }
@@ -645,17 +645,18 @@ class _Home2048State extends State<Home2048>
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
               tapTileTwo.val = tapTileTwo.val * 2;
-            }
-            else {
+              addNewTile([2]);
+            } else {
               tapTileTwo.disappear(controller);
               tapTileTwo.changeNumber(controller, 0);
               tapTileTwo.val = 0;
+              addNewTile([2, 2, 2]);
             }
 
             tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
             addSeconds = 1;
-            addNewTile([2, 2, 2]);
+
             controller.forward(from: 0);
           } else {
             tapTileOne.s = 1.0;
