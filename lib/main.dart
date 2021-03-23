@@ -671,6 +671,11 @@ class _Home2048State extends State<Home2048>
   }
 
   void setRandomMode() {
+    addSeconds = 0;
+    tapCounter = 0;
+    tapTileOne = null;
+    tapTileTwo = null;
+
     var actions = [ActionMode.TAP, ActionMode.SWIPE];
     var operators = [OperatorMode.ADD, OperatorMode.MINUS];
     var newAction = actions[new Random().nextInt(actions.length)];
