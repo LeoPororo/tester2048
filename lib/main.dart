@@ -529,7 +529,7 @@ class _Home2048State extends State<Home2048>
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
-      setModeDecription();
+      setModeDescription();
       if (isTimerOn) {
         startProgressBarTimer();
         startChangeModeTimer();
@@ -682,10 +682,10 @@ class _Home2048State extends State<Home2048>
     changeActionMode(newAction);
     changeOperatorMode(newOperator);
 
-    setModeDecription();
+    setModeDescription();
   }
 
-  void setModeDecription()
+  void setModeDescription()
   {
     var actionDesc = describeEnum(actionMode);
     var operatorDesc = describeEnum(operatorMode);
