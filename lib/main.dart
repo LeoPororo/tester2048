@@ -394,7 +394,6 @@ class _Home2048State extends State<Home2048>
         if (_readyCounter == readySetStrings.length - 2) {
           _readySetTimer.cancel();
           restartGame();
-          startChangeModeTimer();
         }
 
         _readyCounter += 1;
