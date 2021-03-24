@@ -54,6 +54,8 @@ class _Home2048State extends State<Home2048>
 
   AnimationController controller;
 
+  int highestValueTile = 0;
+
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
@@ -98,6 +100,7 @@ class _Home2048State extends State<Home2048>
       }
     });
     startReadySetTimer();
+    _currentMode = "MODE: SWIPE - ADD";
   }
 
   @override
@@ -363,6 +366,7 @@ class _Home2048State extends State<Home2048>
               _readyCounter = 0;
               _progressBarTimer.cancel();
               startReadySetTimer();
+              restartGame();
             });
           },
         ),
@@ -499,7 +503,7 @@ class _Home2048State extends State<Home2048>
               t.disappear(controller);
               merge.val = 0;
 
-              if (toAdd.length == 0) addNewTile([2, 2, 2]);
+              if (toAdd.length == 0) addNewTile([2, highestValueTile]);
             } else {
               merge.moveTo(controller, tiles[i].x, tiles[i].y);
               merge.bounce(controller);
@@ -512,6 +516,7 @@ class _Home2048State extends State<Home2048>
           }
           t.val = 0;
           tiles[i].val = resultValue;
+          tileValueChecker();
         }
       }
     }
@@ -530,6 +535,9 @@ class _Home2048State extends State<Home2048>
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
+      _changeModeCounter = 0;
+      highestValueTile = 0;
+      _currentMode = "MODE: SWIPE - ADD";
 
       if (isTimerOn) {
         startProgressBarTimer();
@@ -573,6 +581,17 @@ class _Home2048State extends State<Home2048>
       } else {
         operatorMode = newOperator;
         print("Operator Mode: $operatorMode");
+      }
+    });
+  }
+
+  void tileValueChecker() {
+    setState(() {
+      List<Tile> tileCheck = flattenedGrid.where((e) => e.val != 0).toList();
+      for (int i = 0; i < tileCheck.length; i++) {
+        if (tileCheck[i].val > highestValueTile) {
+          highestValueTile = tileCheck[i].val;
+        }
       }
     });
   }
@@ -645,12 +664,19 @@ class _Home2048State extends State<Home2048>
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
               tapTileTwo.val = tapTileTwo.val * 2;
-              addNewTile([2]);
+              addNewTile([2, 2]);
             } else {
               tapTileTwo.disappear(controller);
-              tapTileTwo.changeNumber(controller, 0);
-              tapTileTwo.val = 0;
-              addNewTile([2, 2, 2]);
+              double decreasedValue = tapTileTwo.val / 2;
+              if (decreasedValue == 1) {
+                tapTileTwo.changeNumber(controller, 0);
+                tapTileTwo.val = 0;
+              } else {
+                tapTileTwo.changeNumber(controller, decreasedValue.toInt());
+                tapTileTwo.val = decreasedValue.toInt();
+              }
+
+              addNewTile([2, highestValueTile]);
             }
 
             tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
@@ -667,6 +693,7 @@ class _Home2048State extends State<Home2048>
 
         tapCounter++;
         if (tapCounter == 2) tapCounter = 0;
+        tileValueChecker();
       }
     }
   }
