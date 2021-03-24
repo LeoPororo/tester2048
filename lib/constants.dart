@@ -12,9 +12,25 @@ const Color buttonBg = Colors.orange;
 const Color buttonText = Colors.white;
 ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     primary: buttonBg,
-    shape: new RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0)
-    )
+    shape:
+        new RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)));
+
+const TextStyle textStyleSize34FontWeight800 = TextStyle(
+  color: buttonText,
+  fontSize: 34,
+  fontWeight: FontWeight.w800,
+);
+
+const TextStyle textStyleSize21FontWeight900 = TextStyle(
+  color: greyText,
+  fontSize: 21,
+  fontWeight: FontWeight.w900,
+);
+
+const TextStyle textStyleSize10FontWeight800 = TextStyle(
+  color: buttonText,
+  fontSize: 10,
+  fontWeight: FontWeight.w800,
 );
 
 const int maxTimerInSeconds = 30;

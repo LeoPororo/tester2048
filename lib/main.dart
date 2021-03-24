@@ -203,11 +203,7 @@ class _Home2048State extends State<Home2048>
                       describeEnum(visibilityMode) == "NUMBERED"
                           ? "BLOCKED"
                           : "NUMBERED",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: textStyleSize10FontWeight800,
                     ),
                     onPressed: changeVisibilityMode,
                   ),
@@ -217,11 +213,7 @@ class _Home2048State extends State<Home2048>
                     style: buttonStyle,
                     child: Text(
                       describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: textStyleSize10FontWeight800,
                     ),
                     onPressed: () => changeActionMode(null),
                   ),
@@ -231,11 +223,7 @@ class _Home2048State extends State<Home2048>
                     style: buttonStyle,
                     child: Text(
                       describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: textStyleSize10FontWeight800,
                     ),
                     onPressed: () => changeOperatorMode(null),
                   ),
@@ -245,11 +233,7 @@ class _Home2048State extends State<Home2048>
                     style: buttonStyle,
                     child: Text(
                       "SHUFFLE",
-                      style: TextStyle(
-                        color: buttonText,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style: textStyleSize10FontWeight800,
                     ),
                     onPressed: doShuffle,
                   ),
@@ -259,14 +243,11 @@ class _Home2048State extends State<Home2048>
           : Row(
               children: [
                 Expanded(
-                    child: Center(
-                      child: Text("$_currentMode",
-                      style: TextStyle(
-                        color: greyText,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w900,
-                      )),
-                ))
+                  child: Center(
+                    child: Text("$_currentMode",
+                        style: textStyleSize21FontWeight900),
+                  ),
+                )
               ],
             ),
       Stack(
@@ -352,11 +333,7 @@ class _Home2048State extends State<Home2048>
           style: buttonStyle,
           child: Text(
             "Restart",
-            style: TextStyle(
-              color: buttonText,
-              fontSize: 34,
-              fontWeight: FontWeight.w800,
-            ),
+            style: textStyleSize34FontWeight800,
           ),
           onPressed: () {
             setState(() {
@@ -644,8 +621,7 @@ class _Home2048State extends State<Home2048>
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
               tapTileTwo.val = tapTileTwo.val * 2;
-            }
-            else {
+            } else {
               tapTileTwo.disappear(controller);
               tapTileTwo.changeNumber(controller, 0);
               tapTileTwo.val = 0;
@@ -685,8 +661,7 @@ class _Home2048State extends State<Home2048>
     setModeDescription();
   }
 
-  void setModeDescription()
-  {
+  void setModeDescription() {
     var actionDesc = describeEnum(actionMode);
     var operatorDesc = describeEnum(operatorMode);
     _currentMode = "MODE: $actionDesc - $operatorDesc";
