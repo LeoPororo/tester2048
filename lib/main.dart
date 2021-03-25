@@ -342,7 +342,6 @@ class _Home2048State extends State<Home2048>
               _readyCounter = 0;
               _progressBarTimer.cancel();
               startReadySetTimer();
-              restartGame();
             });
           },
         ),
