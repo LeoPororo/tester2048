@@ -100,7 +100,6 @@ class _Home2048State extends State<Home2048>
       }
     });
     startReadySetTimer();
-    _currentMode = "MODE: SWIPE - ADD";
   }
 
   @override
