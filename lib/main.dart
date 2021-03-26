@@ -70,7 +70,6 @@ class _Home2048State extends State<Home2048>
   int tapCounter = 0;
   int addSeconds = 0;
   Tile tapTileOne, tapTileTwo;
-  bool hasMerged = false;
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
@@ -176,17 +175,13 @@ class _Home2048State extends State<Home2048>
                                 (tileSize - _boardSize * 2) * tile.scale.value,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: visibilityMode == VisibilityMode.NUMBERED
-                                    ? numTileColor[tile.animatedValue.value]
-                                    : tan),
+                                color: getNumberedTileColor(tile, false)),
                             child: Center(
                               child: visibilityMode == VisibilityMode.NUMBERED
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
-                                        color: tile.animatedValue.value <= 4
-                                            ? greyText
-                                            : Colors.white,
+                                        color: getNumberedTileTextColor(tile, false),
                                         fontSize: 35,
                                         fontWeight: FontWeight.w900,
                                       ),
@@ -724,6 +719,30 @@ class _Home2048State extends State<Home2048>
         tileValueChecker();
       }
     }
+  }
+
+  Color getNumberedTileColor(Tile tile, bool reverseTextAndTileColor) {
+    Color color = tan;
+
+    if (visibilityMode == VisibilityMode.NUMBERED)
+      color = numTileColor[tile.animatedValue.value];
+
+    if (actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
+      return getNumberedTileTextColor(tile, true);
+    }
+
+    return color;
+  }
+
+  Color getNumberedTileTextColor(Tile tile, bool reverseTextAndTileColor) {
+    Color color = Colors.white;
+    if (tile.animatedValue.value <= 4)
+      color = greyText;
+    if (actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
+      return getNumberedTileColor(tile, true);
+    }
+
+    return color;
   }
 
   void setRandomMode() {
