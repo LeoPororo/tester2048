@@ -700,6 +700,12 @@ class _Home2048State extends State<Home2048>
   void setRandomMode() {
     addSeconds = 0;
     tapCounter = 0;
+    if (tapTileOne != null){
+      tapTileOne.untap(controller);
+      tapTileOne.resetAnimations();
+      tapTileOne.s = 1.0;
+      controller.forward(from: 0);
+    }
     tapTileOne = null;
     tapTileTwo = null;
 
@@ -720,6 +726,7 @@ class _Home2048State extends State<Home2048>
   }
 
   void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
+    // TODO: Save high score
     if (additionalScore == 0) return;
 
     if (additionalScore == 1 || forceMultiply)
