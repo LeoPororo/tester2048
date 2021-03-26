@@ -34,6 +34,7 @@ const TextStyle textStyleSize10FontWeight800 = TextStyle(
 );
 
 const int maxTimerInSeconds = 30;
+const int maxChangeModeTimerInSeconds = 7;
 
 const Map<int, Color> numTileColor = {
   2: tan,

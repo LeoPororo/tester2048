@@ -411,7 +411,7 @@ class _Home2048State extends State<Home2048>
       setState(() {
         _changeModeCounter += 1;
 
-        if (_changeModeCounter == 7) {
+        if (_changeModeCounter == maxChangeModeTimerInSeconds) {
           setRandomMode();
           _changeModeCounter = 0;
         }
