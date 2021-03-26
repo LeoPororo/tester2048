@@ -77,6 +77,9 @@ class _Home2048State extends State<Home2048>
 
   List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
 
+  int _score = 0;
+  int _highScore = 0;
+
   @override
   void initState() {
     super.initState();
@@ -248,6 +251,18 @@ class _Home2048State extends State<Home2048>
                   child: Center(
                     child: Text("$_currentMode",
                         style: textStyleSize21FontWeight900),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text("Score: $_score",
+                            style: textStyleSize21FontWeight900),
+                        Text("High Score: $_highScore",
+                            style: textStyleSize21FontWeight900),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -470,6 +485,8 @@ class _Home2048State extends State<Home2048>
             operatorMode == OperatorMode.ADD
                 ? resultValue += merge.val
                 : resultValue = divisionResult.toInt();
+            int scoreToAdd = resultValue;
+
             if (resultValue == 1) {
               resultValue = 0;
               merge.moveTo(controller, tiles[i].x, tiles[i].y);
@@ -487,6 +504,8 @@ class _Home2048State extends State<Home2048>
               t.changeNumber(controller, 0);
             }
             addSeconds += 1;
+
+            setScore(scoreToAdd, t.val);
           }
           t.val = 0;
           tiles[i].val = resultValue;
@@ -502,6 +521,9 @@ class _Home2048State extends State<Home2048>
         e.val = 0;
         e.resetAnimations();
       });
+
+      _score = 0;
+
       toAdd.clear();
       addNewTile([2, 2]);
       controller.forward(from: 0);
@@ -630,19 +652,25 @@ class _Home2048State extends State<Home2048>
             tapTileOne.s = 1.0;
             tapTileOne.changeNumber(controller, 0);
             tapTileOne.val = 0;
-
+            int scoreToAdd = 0;
+            int multiplier = 1;
+            
             if (operatorMode == OperatorMode.ADD) {
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
               tapTileTwo.val = tapTileTwo.val * 2;
               addNewTile([2, 2]);
+              scoreToAdd = tapTileOne.val;
             } else {
+              multiplier = tapTileTwo.val;
               tapTileTwo.disappear(controller);
               double decreasedValue = tapTileTwo.val / 2;
               if (decreasedValue == 1) {
                 tapTileTwo.changeNumber(controller, 0);
                 tapTileTwo.val = 0;
+                scoreToAdd = decreasedValue.toInt();
               } else {
+                scoreToAdd = 1;
                 tapTileTwo.changeNumber(controller, decreasedValue.toInt());
                 tapTileTwo.val = decreasedValue.toInt();
               }
@@ -653,7 +681,7 @@ class _Home2048State extends State<Home2048>
             tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
             addSeconds = 1;
-
+            setScore(scoreToAdd, multiplier);
             controller.forward(from: 0);
           } else {
             tapTileOne.s = 1.0;
@@ -689,5 +717,18 @@ class _Home2048State extends State<Home2048>
     var actionDesc = describeEnum(actionMode);
     var operatorDesc = describeEnum(operatorMode);
     _currentMode = "MODE: $actionDesc - $operatorDesc";
+  }
+
+  void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
+    if (additionalScore == 0) return;
+
+    if (additionalScore == 1 || forceMultiply)
+      _score += additionalScore * multiplier;
+    else
+      _score += additionalScore;
+
+    if (_score > _highScore) {
+      _highScore = _score;
+    }
   }
 }
