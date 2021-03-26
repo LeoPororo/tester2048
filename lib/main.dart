@@ -14,8 +14,6 @@ import 'enums/visibility_mode.dart';
 import 'tile.dart';
 
 // TODO: [Issue] Tap-Add does not have a score
-// TODO: [Issue] Tapping multiple times in the second tile (correct merge) force the tile animations to redo.
-
 
 // TODO: move classes to their own files
 // TODO: move constants to constants.dart file
@@ -74,6 +72,7 @@ class _Home2048State extends State<Home2048>
   int tapCounter = 0;
   int addSeconds = 0;
   Tile tapTileOne, tapTileTwo;
+  bool hasMerged = false;
 
   VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
   ActionMode actionMode = ActionMode.SWIPE;
@@ -660,7 +659,7 @@ class _Home2048State extends State<Home2048>
   }
 
   void onNumberedTileTap(Tile tile) {
-    if (actionMode == ActionMode.TAP) {
+    if (actionMode == ActionMode.TAP && !controller.isAnimating) {
       if (tapCounter != 2) {
         if (tapCounter == 0) {
           tapTileOne = tile;
@@ -710,6 +709,9 @@ class _Home2048State extends State<Home2048>
             addSeconds = 1;
             setScore(scoreToAdd, multiplier);
             controller.forward(from: 0);
+
+            tapTileOne = null;
+            tapTileTwo = null;
           } else {
             tapTileOne.s = 1.0;
             tapTileOne.resetAnimations();
