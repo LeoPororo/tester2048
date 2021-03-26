@@ -69,6 +69,7 @@ class _Home2048State extends State<Home2048>
     return List.generate(
         _boardSize, (x) => List.generate(_boardSize, (y) => grid[y][x]));
   }
+
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
 
   int tapCounter = 0;
@@ -185,7 +186,8 @@ class _Home2048State extends State<Home2048>
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
-                                        color: getNumberedTileTextColor(tile, false),
+                                        color: getNumberedTileTextColor(
+                                            tile, false),
                                         fontSize: 35,
                                         fontWeight: FontWeight.w900,
                                       ),
@@ -371,6 +373,7 @@ class _Home2048State extends State<Home2048>
               _readyCounter = 0;
               _progressBarTimer.cancel();
               _changeModeTimer.cancel();
+              _changeModeCounter = 0;
               startReadySetTimer();
             });
           },
@@ -671,7 +674,6 @@ class _Home2048State extends State<Home2048>
         if (tapCounter == 1) {
           if (tapTileOne.val == tapTileTwo.val &&
               !tapTileOne.isSame(tapTileTwo)) {
-
             int scoreToAdd = tapTileOne.val;
             int multiplier = 1;
 
@@ -740,8 +742,7 @@ class _Home2048State extends State<Home2048>
 
   Color getNumberedTileTextColor(Tile tile, bool reverseTextAndTileColor) {
     Color color = Colors.white;
-    if (tile.animatedValue.value <= 4)
-      color = greyText;
+    if (tile.animatedValue.value <= 4) color = greyText;
     if (actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
       return getNumberedTileColor(tile, true);
     }
@@ -788,7 +789,8 @@ class _Home2048State extends State<Home2048>
     _currentMode = "$actionDesc - $operatorDesc";
   }
 
-  void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
+  void setScore(int additionalScore,
+      [int multiplier = 1, bool forceMultiply = false]) {
     // TODO: Save high score
     if (additionalScore == 0) return;
 
