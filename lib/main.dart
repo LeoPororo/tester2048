@@ -711,8 +711,19 @@ class _Home2048State extends State<Home2048>
 
     var actions = [ActionMode.TAP, ActionMode.SWIPE];
     var operators = [OperatorMode.ADD, OperatorMode.MINUS];
-    var newAction = actions[new Random().nextInt(actions.length)];
-    var newOperator = operators[new Random().nextInt(operators.length)];
+    var isSameMode = true;
+    var newAction, newOperator;
+
+    do {
+      newAction = actions[new Random().nextInt(actions.length)];
+      newOperator = operators[new Random().nextInt(operators.length)];
+
+      if (newAction != actionMode || newOperator != operatorMode) {
+        isSameMode = false;
+        break;
+      }
+    } while (isSameMode);
+
     changeActionMode(newAction);
     changeOperatorMode(newOperator);
 
