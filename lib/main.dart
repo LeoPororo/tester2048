@@ -58,7 +58,7 @@ class _Home2048State extends State<Home2048>
 
   AnimationController controller;
 
-  int highestValueTile = 0;
+  int _highestValueTile = 0;
 
   int _boardSize = 4;
   List<Tile> toAdd = [];
@@ -373,7 +373,6 @@ class _Home2048State extends State<Home2048>
               _readyCounter = 0;
               _progressBarTimer.cancel();
               _changeModeTimer.cancel();
-              _changeModeCounter = 0;
               startReadySetTimer();
             });
           },
@@ -512,7 +511,7 @@ class _Home2048State extends State<Home2048>
               t.disappear(controller);
               merge.val = 0;
 
-              if (toAdd.length == 0) addNewTile([2, highestValueTile]);
+              if (toAdd.length == 0) addNewTile([2, _highestValueTile]);
             } else {
               merge.moveTo(controller, tiles[i].x, tiles[i].y);
               merge.bounce(controller);
@@ -554,6 +553,7 @@ class _Home2048State extends State<Home2048>
       addNewTile([2, 2]);
       controller.forward(from: 0);
       _progressBarCounter = maxTimerInSeconds;
+      _changeModeCounter = 0;
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
@@ -608,8 +608,8 @@ class _Home2048State extends State<Home2048>
     setState(() {
       List<Tile> tileCheck = flattenedGrid.where((e) => e.val != 0).toList();
       for (int i = 0; i < tileCheck.length; i++) {
-        if (tileCheck[i].val > highestValueTile) {
-          highestValueTile = tileCheck[i].val;
+        if (tileCheck[i].val > _highestValueTile) {
+          _highestValueTile = tileCheck[i].val;
         }
       }
     });
@@ -702,7 +702,7 @@ class _Home2048State extends State<Home2048>
                 tapTileTwo.val = decreasedValue.toInt();
               }
 
-              addNewTile([2, highestValueTile]);
+              addNewTile([2, _highestValueTile]);
               setScore(scoreToAdd, multiplier);
             }
 
