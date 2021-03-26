@@ -743,11 +743,11 @@ class _Home2048State extends State<Home2048>
     _currentMode = "$actionDesc - $operatorDesc";
   }
 
-  void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
+  void setScore(int additionalScore, [int multiplier = 1]) {
     // TODO: Save high score
     if (additionalScore == 0) return;
 
-    if (additionalScore == 1 || forceMultiply)
+    if (additionalScore == 1)
       _score += additionalScore * multiplier;
     else
       _score += additionalScore;
