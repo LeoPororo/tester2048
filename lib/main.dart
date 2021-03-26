@@ -56,12 +56,15 @@ class _Home2048State extends State<Home2048>
 
   int highestValueTile = 0;
 
+  int _boardSize = 4;
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
-  Iterable<List<Tile>> get cols =>
-      List.generate(4, (x) => List.generate(4, (y) => grid[y][x]));
+  Iterable<List<Tile>> get cols {
+    return List.generate(
+        _boardSize, (x) => List.generate(_boardSize, (y) => grid[y][x]));
+  }
   Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
 
   int tapCounter = 0;
@@ -74,6 +77,8 @@ class _Home2048State extends State<Home2048>
   bool isTimerOn = true;
   bool isTestingOn = false;
   bool isReady = false;
+  bool _increaseBoardSizeEnabled = false;
+  bool _shouldIncreaseBoardSize = false;
 
   List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
 
@@ -107,9 +112,24 @@ class _Home2048State extends State<Home2048>
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: tan,
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: setupGameView(),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> setupGameView() {
     double gridSize = MediaQuery.of(context).size.width - 16.0 * 2;
-    double tileSize = (gridSize - 4.0 * 2) / 4;
+    double tileSize = (gridSize - 4.0 * 2) / _boardSize;
+
     List<Widget> stackItems = [];
+
     stackItems.addAll(
       flattenedGrid.map(
         (e) => Positioned(
@@ -121,8 +141,8 @@ class _Home2048State extends State<Home2048>
             child: GestureDetector(
               onTap: () => onEmptyTileTap(e),
               child: Container(
-                width: tileSize - 4.0 * 2,
-                height: tileSize - 4.0 * 2,
+                width: tileSize - _boardSize * 2,
+                height: tileSize - _boardSize * 2,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   color: lightBrown,
@@ -149,8 +169,10 @@ class _Home2048State extends State<Home2048>
                         child: GestureDetector(
                           onTap: () => onNumberedTileTap(tile),
                           child: Container(
-                            width: (tileSize - 4.0 * 2) * tile.scale.value,
-                            height: (tileSize - 4.0 * 2) * tile.scale.value,
+                            width:
+                                (tileSize - _boardSize * 2) * tile.scale.value,
+                            height:
+                                (tileSize - _boardSize * 2) * tile.scale.value,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: visibilityMode == VisibilityMode.NUMBERED
@@ -184,19 +206,6 @@ class _Home2048State extends State<Home2048>
           ),
     );
 
-    return Scaffold(
-      backgroundColor: tan,
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: setupGameView(stackItems, gridSize),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> setupGameView(List<Widget> stackItems, double gridSize) {
     return <Widget>[
       isTestingOn
           ? Row(
@@ -251,8 +260,7 @@ class _Home2048State extends State<Home2048>
                   child: Center(
                     child: Column(
                       children: [
-                        Text("MODE",
-                            style: textStyleSize21FontWeight900),
+                        Text("MODE", style: textStyleSize21FontWeight900),
                         Text("$_currentMode",
                             style: textStyleSize21FontWeight900),
                       ],
@@ -524,6 +532,14 @@ class _Home2048State extends State<Home2048>
 
   void restartGame() {
     setState(() {
+      if (_increaseBoardSizeEnabled && _shouldIncreaseBoardSize) {
+        _boardSize += 1;
+        if (_boardSize > 5) _boardSize = 10;
+      }
+
+      grid = List.generate(_boardSize,
+          (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
+
       flattenedGrid.forEach((e) {
         e.val = 0;
         e.resetAnimations();
@@ -604,8 +620,8 @@ class _Home2048State extends State<Home2048>
       var x, y;
       for (int i = 0; i < notZeroTiles.length; i++) {
         do {
-          x = new Random().nextInt(4);
-          y = new Random().nextInt(4);
+          x = new Random().nextInt(_boardSize);
+          y = new Random().nextInt(_boardSize);
           index = "$x$y";
 
           if (!indexes.contains(index.toString())) {
@@ -661,7 +677,7 @@ class _Home2048State extends State<Home2048>
             tapTileOne.val = 0;
             int scoreToAdd = 0;
             int multiplier = 1;
-            
+
             if (operatorMode == OperatorMode.ADD) {
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
@@ -707,7 +723,7 @@ class _Home2048State extends State<Home2048>
   void setRandomMode() {
     addSeconds = 0;
     tapCounter = 0;
-    if (tapTileOne != null){
+    if (tapTileOne != null) {
       tapTileOne.untap(controller);
       tapTileOne.resetAnimations();
       tapTileOne.s = 1.0;
@@ -751,6 +767,10 @@ class _Home2048State extends State<Home2048>
       _score += additionalScore * multiplier;
     else
       _score += additionalScore;
+
+    if (_score > 10) {
+      _shouldIncreaseBoardSize = true;
+    }
 
     if (_score > _highScore) {
       _highScore = _score;
