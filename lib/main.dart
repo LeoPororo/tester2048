@@ -362,6 +362,7 @@ class _Home2048State extends State<Home2048>
             setState(() {
               _readyCounter = 0;
               _progressBarTimer.cancel();
+              _changeModeTimer.cancel();
               startReadySetTimer();
             });
           },
