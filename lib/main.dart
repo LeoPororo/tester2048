@@ -13,8 +13,6 @@ import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
 
-// TODO: [Issue] Tap-Add does not have a score
-
 // TODO: move classes to their own files
 // TODO: move constants to constants.dart file
 // TODO: move creation of child widgets to functions for easy debugging
@@ -674,19 +672,21 @@ class _Home2048State extends State<Home2048>
         if (tapCounter == 1) {
           if (tapTileOne.val == tapTileTwo.val &&
               !tapTileOne.isSame(tapTileTwo)) {
-            print("IT'S A MATCH!");
+
+            int scoreToAdd = tapTileOne.val;
+            int multiplier = 1;
+
             tapTileOne.s = 1.0;
             tapTileOne.changeNumber(controller, 0);
             tapTileOne.val = 0;
-            int scoreToAdd = 0;
-            int multiplier = 1;
 
             if (operatorMode == OperatorMode.ADD) {
               tapTileTwo.bounce(controller);
               tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
               tapTileTwo.val = tapTileTwo.val * 2;
               addNewTile([2, 2]);
-              scoreToAdd = tapTileOne.val;
+              multiplier = 2;
+              setScore(scoreToAdd, multiplier, true);
             } else {
               multiplier = tapTileTwo.val;
               tapTileTwo.disappear(controller);
@@ -702,12 +702,12 @@ class _Home2048State extends State<Home2048>
               }
 
               addNewTile([2, highestValueTile]);
+              setScore(scoreToAdd, multiplier);
             }
 
             tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
 
             addSeconds = 1;
-            setScore(scoreToAdd, multiplier);
             controller.forward(from: 0);
 
             tapTileOne = null;
@@ -765,11 +765,11 @@ class _Home2048State extends State<Home2048>
     _currentMode = "$actionDesc - $operatorDesc";
   }
 
-  void setScore(int additionalScore, [int multiplier = 1]) {
+  void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
     // TODO: Save high score
     if (additionalScore == 0) return;
 
-    if (additionalScore == 1)
+    if (additionalScore == 1 || forceMultiply)
       _score += additionalScore * multiplier;
     else
       _score += additionalScore;
