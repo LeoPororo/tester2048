@@ -772,6 +772,7 @@ class _Home2048State extends State<Home2048>
     else
       _score += additionalScore;
 
+    // TODO: Add required score in order to increase the board
     if (_score > 10) {
       _shouldIncreaseBoardSize = true;
     }
