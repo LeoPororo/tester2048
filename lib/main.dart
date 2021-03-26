@@ -15,11 +15,15 @@ import 'tile.dart';
 
 // TODO: move classes to their own files
 // TODO: move constants to constants.dart file
-// TODO: move creation of child widgets to functions for easy debugging
-// TODO: pointing system
-// TODO: how points should be shown
 // TODO: how visibility works
-// TODO: try swapping color of the tile to color of the tile-text when action mode changes
+// Pointing system:
+// If the mode is ADD the value will be the merged value.
+// Example: 2 and 2. 2 + 2. it will be 4 points
+//          16 and 16. 16 + 16. it will be 32 points
+// If the mode is MINUS the value will be half of the merged value
+// Example: 2 and 2. 4 / 2. it will be 2 points
+//          8 and 8. 16 / 2. it will be 8 points
+
 void main() {
   runApp(MyApp());
 }
