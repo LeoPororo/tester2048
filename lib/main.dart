@@ -13,6 +13,10 @@ import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
 
+// TODO: [Issue] Tap-Add does not have a score
+// TODO: [Issue] Tapping multiple times in the second tile (correct merge) force the tile animations to redo.
+
+
 // TODO: move classes to their own files
 // TODO: move constants to constants.dart file
 // TODO: move creation of child widgets to functions for easy debugging
