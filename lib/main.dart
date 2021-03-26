@@ -50,7 +50,7 @@ class _Home2048State extends State<Home2048>
 
   Timer _changeModeTimer;
   int _changeModeCounter = 0;
-  String _currentMode = "";
+  String _currentMode = "-";
 
   AnimationController controller;
 
@@ -249,8 +249,14 @@ class _Home2048State extends State<Home2048>
               children: [
                 Expanded(
                   child: Center(
-                    child: Text("$_currentMode",
-                        style: textStyleSize21FontWeight900),
+                    child: Column(
+                      children: [
+                        Text("MODE",
+                            style: textStyleSize21FontWeight900),
+                        Text("$_currentMode",
+                            style: textStyleSize21FontWeight900),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -733,7 +739,7 @@ class _Home2048State extends State<Home2048>
   void setModeDescription() {
     var actionDesc = describeEnum(actionMode);
     var operatorDesc = describeEnum(operatorMode);
-    _currentMode = "MODE: $actionDesc - $operatorDesc";
+    _currentMode = "$actionDesc - $operatorDesc";
   }
 
   void setScore(int additionalScore, [int multiplier = 1, bool forceMultiply = false]) {
