@@ -12,6 +12,7 @@ import 'enums/action_mode.dart';
 import 'enums/operator_mode.dart';
 import 'enums/visibility_mode.dart';
 import 'tile.dart';
+import 'main_menu.dart';
 
 // TODO: move classes to their own files
 // TODO: move constants to constants.dart file
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '2048',
-      home: Home2048(),
+      home: MainMenu(),
     );
   }
 }
@@ -554,6 +555,7 @@ class _Home2048State extends State<Home2048>
       controller.forward(from: 0);
       _progressBarCounter = maxTimerInSeconds;
       _changeModeCounter = 0;
+      _highestValueTile = 0;
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
