@@ -769,6 +769,8 @@ class _GameViewState extends State<GameView>
     changeOperatorMode(newOperator);
 
     setModeDescription();
+
+    doShuffle();
   }
 
   void setModeDescription() {
