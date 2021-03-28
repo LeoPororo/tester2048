@@ -67,8 +67,6 @@ class _GameViewState extends State<GameView>
   bool isTimerOn = true;
   bool isTestingOn = false;
   bool isReady = false;
-  bool _increaseBoardSizeEnabled = false;
-  bool _shouldIncreaseBoardSize = false;
 
   List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
 
@@ -521,11 +519,6 @@ class _GameViewState extends State<GameView>
 
   void restartGame() {
     setState(() {
-      if (_increaseBoardSizeEnabled && _shouldIncreaseBoardSize) {
-        _boardSize += 1;
-        if (_boardSize > 5) _boardSize = 10;
-      }
-
       grid = List.generate(_boardSize,
           (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
 
@@ -788,11 +781,6 @@ class _GameViewState extends State<GameView>
       _score += additionalScore * multiplier;
     else
       _score += additionalScore;
-
-    // TODO: Add required score in order to increase the board
-    if (_score > 10) {
-      _shouldIncreaseBoardSize = true;
-    }
 
     if (_score > _highScore) {
       _highScore = _score;
