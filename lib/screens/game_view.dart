@@ -49,7 +49,7 @@ class _GameViewState extends State<GameView>
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
-  List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
+      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
   Iterable<List<Tile>> get cols {
     return List.generate(
         _boardSize, (x) => List.generate(_boardSize, (y) => grid[y][x]));
@@ -122,7 +122,7 @@ class _GameViewState extends State<GameView>
 
     stackItems.addAll(
       flattenedGrid.map(
-            (e) => Positioned(
+        (e) => Positioned(
           left: e.x * tileSize,
           top: e.y * tileSize,
           width: tileSize,
@@ -147,159 +147,161 @@ class _GameViewState extends State<GameView>
     stackItems.addAll(
       [flattenedGrid, toAdd].expand((tile) => tile).map(
             (tile) => AnimatedBuilder(
-          animation: controller,
-          builder: (context, child) => tile.animatedValue.value == 0
-              ? SizedBox()
-              : Positioned(
-            left: tile.animatedX.value * tileSize,
-            top: tile.animatedY.value * tileSize,
-            width: tileSize,
-            height: tileSize,
-            child: Center(
-              child: GestureDetector(
-                onTap: () => onNumberedTileTap(tile),
-                child: Container(
-                  width:
-                  (tileSize - _boardSize * 2) * tile.scale.value,
-                  height:
-                  (tileSize - _boardSize * 2) * tile.scale.value,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: getNumberedTileColor(tile, false)),
-                  child: Center(
-                    child: visibilityMode == VisibilityMode.NUMBERED
-                        ? Text(
-                      '${tile.animatedValue.value}',
-                      style: TextStyle(
-                        color: getNumberedTileTextColor(
-                            tile, false),
-                        fontSize: 35,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    )
-                        : Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        'assets/question.png',
-                        fit: BoxFit.cover,
+              animation: controller,
+              builder: (context, child) => tile.animatedValue.value == 0
+                  ? SizedBox()
+                  : Positioned(
+                      left: tile.animatedX.value * tileSize,
+                      top: tile.animatedY.value * tileSize,
+                      width: tileSize,
+                      height: tileSize,
+                      child: Center(
+                        child: GestureDetector(
+                          onTap: () => onNumberedTileTap(tile),
+                          child: Container(
+                            width:
+                                (tileSize - _boardSize * 2) * tile.scale.value,
+                            height:
+                                (tileSize - _boardSize * 2) * tile.scale.value,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: getNumberedTileColor(tile, false)),
+                            child: Center(
+                              child: visibilityMode == VisibilityMode.NUMBERED
+                                  ? Text(
+                                      '${tile.animatedValue.value}',
+                                      style: TextStyle(
+                                        color: getNumberedTileTextColor(
+                                            tile, false),
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image.asset(
+                                        'assets/question.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
             ),
           ),
-        ),
-      ),
     );
 
     return <Widget>[
+      // This is for the banner space
+      SizedBox(),
       isTestingOn
           ? Row(
-        children: <Widget>[
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(visibilityMode) == "NUMBERED"
-                    ? "BLOCKED"
-                    : "NUMBERED",
-                style: textStyleSize10FontWeight800,
-              ),
-              onPressed: changeVisibilityMode,
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
-                style: textStyleSize10FontWeight800,
-              ),
-              onPressed: () => changeActionMode(null),
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
-                style: textStyleSize10FontWeight800,
-              ),
-              onPressed: () => changeOperatorMode(null),
-            ),
-          ),
-          Expanded(
-            child: ElevatedButton(
-              style: buttonStyle,
-              child: Text(
-                "SHUFFLE",
-                style: textStyleSize10FontWeight800,
-              ),
-              onPressed: doShuffle,
-            ),
-          ),
-        ],
-      )
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(visibilityMode) == "NUMBERED"
+                          ? "BLOCKED"
+                          : "NUMBERED",
+                      style: textStyleSize10FontWeight800,
+                    ),
+                    onPressed: changeVisibilityMode,
+                  ),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
+                      style: textStyleSize10FontWeight800,
+                    ),
+                    onPressed: () => changeActionMode(null),
+                  ),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
+                      style: textStyleSize10FontWeight800,
+                    ),
+                    onPressed: () => changeOperatorMode(null),
+                  ),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: buttonStyle,
+                    child: Text(
+                      "SHUFFLE",
+                      style: textStyleSize10FontWeight800,
+                    ),
+                    onPressed: doShuffle,
+                  ),
+                ),
+              ],
+            )
           : Row(
-        children: [
-          Expanded(
-            child: Center(
-              child: Column(
-                children: [
-                  Text("MODE", style: textStyleSize21FontWeight900),
-                  Text("$_currentMode",
-                      style: textStyleSize21FontWeight900),
-                ],
-              ),
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text("MODE", style: textStyleSize21FontWeight900),
+                        Text("$_currentMode",
+                            style: textStyleSize21FontWeight900),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text("Score: $_score",
+                            style: textStyleSize21FontWeight900),
+                        Text("High Score: $_highScore",
+                            style: textStyleSize21FontWeight900),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-          ),
-          Expanded(
-            child: Center(
-              child: Column(
-                children: [
-                  Text("Score: $_score",
-                      style: textStyleSize21FontWeight900),
-                  Text("High Score: $_highScore",
-                      style: textStyleSize21FontWeight900),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
       Stack(
         children: <Widget>[
           Container(
             child: actionMode == ActionMode.SWIPE
                 ? GestureDetector(
-              onVerticalDragEnd: (details) {
-                if (details.velocity.pixelsPerSecond.dy < 1 &&
-                    canSwipeUp()) {
-                  doSwipe(swipeUp);
-                } else if (details.velocity.pixelsPerSecond.dy > 1 &&
-                    canSwipeDown()) {
-                  doSwipe(swipeDown);
-                }
-              },
-              onHorizontalDragEnd: (details) {
-                if (details.velocity.pixelsPerSecond.dx < 1 &&
-                    canSwipeLeft()) {
-                  doSwipe(swipeLeft);
-                } else if (details.velocity.pixelsPerSecond.dx > 1 &&
-                    canSwipeRight()) {
-                  doSwipe(swipeRight);
-                }
-              },
-              child: Stack(
-                children: stackItems,
-              ),
-            )
+                    onVerticalDragEnd: (details) {
+                      if (details.velocity.pixelsPerSecond.dy < 1 &&
+                          canSwipeUp()) {
+                        doSwipe(swipeUp);
+                      } else if (details.velocity.pixelsPerSecond.dy > 1 &&
+                          canSwipeDown()) {
+                        doSwipe(swipeDown);
+                      }
+                    },
+                    onHorizontalDragEnd: (details) {
+                      if (details.velocity.pixelsPerSecond.dx < 1 &&
+                          canSwipeLeft()) {
+                        doSwipe(swipeLeft);
+                      } else if (details.velocity.pixelsPerSecond.dx > 1 &&
+                          canSwipeRight()) {
+                        doSwipe(swipeRight);
+                      }
+                    },
+                    child: Stack(
+                      children: stackItems,
+                    ),
+                  )
                 : GestureDetector(
-              child: Stack(
-                children: stackItems,
-              ),
-            ),
+                    child: Stack(
+                      children: stackItems,
+                    ),
+                  ),
             width: gridSize,
             height: gridSize,
             padding: EdgeInsets.all(4.0),
@@ -453,7 +455,7 @@ class _GameViewState extends State<GameView>
         }
       } else {
         Tile nextNonZero =
-        tiles.skip(i + 1).firstWhere((e) => e.val != 0, orElse: () => null);
+            tiles.skip(i + 1).firstWhere((e) => e.val != 0, orElse: () => null);
         if (nextNonZero != null && nextNonZero.val == tiles[i].val) {
           return true;
         }
@@ -470,11 +472,11 @@ class _GameViewState extends State<GameView>
   void mergeTiles(List<Tile> tiles) {
     for (int i = 0; i < tiles.length; i++) {
       Iterable<Tile> toCheck =
-      tiles.skip(i).skipWhile((value) => value.val == 0);
+          tiles.skip(i).skipWhile((value) => value.val == 0);
       if (toCheck.isNotEmpty) {
         Tile t = toCheck.first;
         Tile merge =
-        toCheck.skip(1).firstWhere((t) => t.val != 0, orElse: () => null);
+            toCheck.skip(1).firstWhere((t) => t.val != 0, orElse: () => null);
         if (merge != null && merge.val != t.val) {
           merge = null;
         }
@@ -525,7 +527,7 @@ class _GameViewState extends State<GameView>
       }
 
       grid = List.generate(_boardSize,
-              (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
+          (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
 
       flattenedGrid.forEach((e) {
         e.val = 0;

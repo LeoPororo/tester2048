@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import '../admob/ad_manager.dart';
 import '../constants.dart';
-import '../main.dart';
 import 'game_view.dart';
 
 class MainMenuWidget extends StatefulWidget {
@@ -44,7 +43,6 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
       size: AdSize.banner,
     );
 
-    // TODO: Load a Banner Ad
     _loadBannerAd();
   }
 
