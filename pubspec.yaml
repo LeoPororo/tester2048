@@ -26,9 +26,8 @@ dependencies:
   google_fonts: ^0.3.9
   firebase_admob: ^0.9.3
   animated_text_kit: ^3.0.0
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  shared_preferences: ^0.5.12+4
 
 dev_dependencies:
   flutter_test:

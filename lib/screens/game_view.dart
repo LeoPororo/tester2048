@@ -15,6 +15,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../enums/action_mode.dart';
 import '../enums/operator_mode.dart';
@@ -96,6 +97,8 @@ class _GameViewState extends State<GameView>
         });
       }
     });
+
+    loadHighScore();
     startReadySetTimer();
   }
 
@@ -425,6 +428,7 @@ class _GameViewState extends State<GameView>
           _progressBarTimer.cancel();
           _changeModeTimer.cancel();
           _isGameOver = true;
+          saveHighScore();
         }
       });
     });
@@ -516,7 +520,6 @@ class _GameViewState extends State<GameView>
   }
 
   void restartGame() {
-
     setState(() {
       grid = List.generate(_boardSize,
           (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
@@ -541,7 +544,7 @@ class _GameViewState extends State<GameView>
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
       setModeDescription();
-      
+
       if (isTimerOn) {
         startProgressBarTimer();
         startChangeModeTimer();
@@ -780,7 +783,7 @@ class _GameViewState extends State<GameView>
 
   void setScore(int additionalScore,
       [int multiplier = 1, bool forceMultiply = false]) {
-    // TODO: Save high score
+
     if (additionalScore == 0) return;
 
     if (additionalScore == 1 || forceMultiply)
@@ -791,5 +794,17 @@ class _GameViewState extends State<GameView>
     if (_score > _highScore) {
       _highScore = _score;
     }
+  }
+
+  Future<void> saveHighScore() async {
+    if (_score != _highScore) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('highScore', _highScore);
+  }
+
+  Future<void> loadHighScore() async {
+    final prefs = await SharedPreferences.getInstance();
+    _highScore = prefs.getInt('highScore') ?? 0;
   }
 }
