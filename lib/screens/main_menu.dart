@@ -1,8 +1,12 @@
-// TODO: Fix issue related to illegalArgumentException
+// TODO: Fix issue related to illegalArgumentException for AdMob
 // W/ConnectionTracker(21265): Exception thrown while unbinding
 // W/ConnectionTracker(21265): java.lang.IllegalArgumentException: Service not registered: com.google.android.gms.measurement.internal.zzja@2e6d7b1
 // Said issue can be ignored:
 // https://github.com/firebase/firebase-android-sdk/issues/1662
+
+// TODO: Move constant designs to constants.dart once main menu design is complete
+// TODO: Add version number at the lower right of the screen
+// TODO: Change FlatButton to ElevatedButton because it is already deprecated - see game_view.dart for implementation
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
