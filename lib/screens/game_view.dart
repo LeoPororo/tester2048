@@ -72,6 +72,7 @@ class _GameViewState extends State<GameView>
 
   int _score = 0;
   int _highScore = 0;
+  bool _isGameOver = false;
 
   @override
   void initState() {
@@ -271,7 +272,7 @@ class _GameViewState extends State<GameView>
       Stack(
         children: <Widget>[
           Container(
-            child: actionMode == ActionMode.SWIPE
+            child: actionMode == ActionMode.SWIPE && !_isGameOver
                 ? GestureDetector(
                     onVerticalDragEnd: (details) {
                       if (details.velocity.pixelsPerSecond.dy < 1 &&
@@ -295,10 +296,8 @@ class _GameViewState extends State<GameView>
                       children: stackItems,
                     ),
                   )
-                : GestureDetector(
-                    child: Stack(
-                      children: stackItems,
-                    ),
+                : Stack(
+                    children: stackItems,
                   ),
             width: gridSize,
             height: gridSize,
@@ -424,9 +423,8 @@ class _GameViewState extends State<GameView>
           _progressBarCounter--;
         } else {
           _progressBarTimer.cancel();
-          _progressBarCounter = maxTimerInSeconds;
-          _readyCounter = 0;
-          startReadySetTimer();
+          _changeModeTimer.cancel();
+          _isGameOver = true;
         }
       });
     });
@@ -518,6 +516,7 @@ class _GameViewState extends State<GameView>
   }
 
   void restartGame() {
+
     setState(() {
       grid = List.generate(_boardSize,
           (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
@@ -527,18 +526,22 @@ class _GameViewState extends State<GameView>
         e.resetAnimations();
       });
 
-      _score = 0;
-
       toAdd.clear();
       addNewTile([2, 2]);
-      controller.forward(from: 0);
+
+      _score = 0;
+      _isGameOver = false;
       _progressBarCounter = maxTimerInSeconds;
       _changeModeCounter = 0;
       _highestValueTile = 0;
+
+      controller.forward(from: 0);
+
       visibilityMode = VisibilityMode.NUMBERED;
       actionMode = ActionMode.SWIPE;
       operatorMode = OperatorMode.ADD;
       setModeDescription();
+      
       if (isTimerOn) {
         startProgressBarTimer();
         startChangeModeTimer();
@@ -626,6 +629,8 @@ class _GameViewState extends State<GameView>
   }
 
   void onEmptyTileTap(Tile tile) {
+    if (_isGameOver) return;
+
     setState(() {
       if (tapCounter == 1) {
         tapTileOne.untap(controller);
@@ -640,71 +645,72 @@ class _GameViewState extends State<GameView>
   }
 
   void onNumberedTileTap(Tile tile) {
-    if (actionMode == ActionMode.TAP && !controller.isAnimating) {
-      if (tapCounter != 2) {
-        if (tapCounter == 0) {
-          tapTileOne = tile;
-          tapTileOne.resetAnimations();
-          tapTileOne.tap(controller);
-          tapTileOne.s = 1.2;
-          controller.forward(from: 0);
-        } else {
-          tapTileTwo = tile;
-        }
+    if (actionMode != ActionMode.TAP || controller.isAnimating || _isGameOver)
+      return;
 
-        if (tapCounter == 1) {
-          if (tapTileOne.val == tapTileTwo.val &&
-              !tapTileOne.isSame(tapTileTwo)) {
-            int scoreToAdd = tapTileOne.val;
-            int multiplier = 1;
+    if (tapCounter != 2) {
+      if (tapCounter == 0) {
+        tapTileOne = tile;
+        tapTileOne.resetAnimations();
+        tapTileOne.tap(controller);
+        tapTileOne.s = 1.2;
+        controller.forward(from: 0);
+      } else {
+        tapTileTwo = tile;
+      }
 
-            tapTileOne.s = 1.0;
-            tapTileOne.changeNumber(controller, 0);
-            tapTileOne.val = 0;
+      if (tapCounter == 1) {
+        if (tapTileOne.val == tapTileTwo.val &&
+            !tapTileOne.isSame(tapTileTwo)) {
+          int scoreToAdd = tapTileOne.val;
+          int multiplier = 1;
 
-            if (operatorMode == OperatorMode.ADD) {
-              tapTileTwo.bounce(controller);
-              tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
-              tapTileTwo.val = tapTileTwo.val * 2;
-              addNewTile([2, 2]);
-              multiplier = 2;
-              setScore(scoreToAdd, multiplier, true);
+          tapTileOne.s = 1.0;
+          tapTileOne.changeNumber(controller, 0);
+          tapTileOne.val = 0;
+
+          if (operatorMode == OperatorMode.ADD) {
+            tapTileTwo.bounce(controller);
+            tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
+            tapTileTwo.val = tapTileTwo.val * 2;
+            addNewTile([2, 2]);
+            multiplier = 2;
+            setScore(scoreToAdd, multiplier, true);
+          } else {
+            multiplier = tapTileTwo.val;
+            tapTileTwo.disappear(controller);
+            double decreasedValue = tapTileTwo.val / 2;
+            if (decreasedValue == 1) {
+              tapTileTwo.changeNumber(controller, 0);
+              tapTileTwo.val = 0;
+              scoreToAdd = decreasedValue.toInt();
             } else {
-              multiplier = tapTileTwo.val;
-              tapTileTwo.disappear(controller);
-              double decreasedValue = tapTileTwo.val / 2;
-              if (decreasedValue == 1) {
-                tapTileTwo.changeNumber(controller, 0);
-                tapTileTwo.val = 0;
-                scoreToAdd = decreasedValue.toInt();
-              } else {
-                scoreToAdd = 1;
-                tapTileTwo.changeNumber(controller, decreasedValue.toInt());
-                tapTileTwo.val = decreasedValue.toInt();
-              }
-
-              addNewTile([2, _highestValueTile]);
-              setScore(scoreToAdd, multiplier);
+              scoreToAdd = 1;
+              tapTileTwo.changeNumber(controller, decreasedValue.toInt());
+              tapTileTwo.val = decreasedValue.toInt();
             }
 
-            tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
-
-            addSeconds = 1;
-            controller.forward(from: 0);
-
-            tapTileOne = null;
-            tapTileTwo = null;
-          } else {
-            tapTileOne.s = 1.0;
-            tapTileOne.resetAnimations();
-            controller.forward(from: 0);
+            addNewTile([2, _highestValueTile]);
+            setScore(scoreToAdd, multiplier);
           }
-        }
 
-        tapCounter++;
-        if (tapCounter == 2) tapCounter = 0;
-        tileValueChecker();
+          tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
+
+          addSeconds = 1;
+          controller.forward(from: 0);
+
+          tapTileOne = null;
+          tapTileTwo = null;
+        } else {
+          tapTileOne.s = 1.0;
+          tapTileOne.resetAnimations();
+          controller.forward(from: 0);
+        }
       }
+
+      tapCounter++;
+      if (tapCounter == 2) tapCounter = 0;
+      tileValueChecker();
     }
   }
 
