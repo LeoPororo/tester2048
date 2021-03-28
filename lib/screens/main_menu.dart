@@ -8,9 +8,10 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'admob/ad_manager.dart';
-import 'constants.dart';
-import 'main.dart';
+import '../admob/ad_manager.dart';
+import '../constants.dart';
+import '../main.dart';
+import 'game_view.dart';
 
 class MainMenuWidget extends StatefulWidget {
   @override
@@ -149,7 +150,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               padding: EdgeInsets.all(10.0),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Home2048()));
+                    MaterialPageRoute(builder: (context) => GameView()));
               },
               child: Text(
                 "S T A R T   G A M E ",
