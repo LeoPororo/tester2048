@@ -1,10 +1,54 @@
+// TODO: Fix issue related to illegalArgumentException
+// W/ConnectionTracker(21265): Exception thrown while unbinding
+// W/ConnectionTracker(21265): java.lang.IllegalArgumentException: Service not registered: com.google.android.gms.measurement.internal.zzja@2e6d7b1
+// Said issue can be ignored:
+// https://github.com/firebase/firebase-android-sdk/issues/1662
+
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'admob/ad_manager.dart';
 import 'constants.dart';
 import 'main.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenuWidget extends StatefulWidget {
+  @override
+  _MainMenuWidgetState createState() => _MainMenuWidgetState();
+}
+
+class _MainMenuWidgetState extends State<MainMenuWidget> {
+  BannerAd _bannerAd;
+
+  Future<void> _initAdMob() {
+    print("LOADING...");
+    return FirebaseAdMob.instance.initialize(appId: AdManager.appId);
+  }
+
+  void _loadBannerAd() {
+    _bannerAd
+      ..load()
+      ..show(anchorType: AnchorType.top);
+  }
+
+  @protected
+  @mustCallSuper
+  void initState() {
+    _bannerAd = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.banner,
+    );
+
+    // TODO: Load a Banner Ad
+    _loadBannerAd();
+  }
+
+  @protected
+  @mustCallSuper
+  void dispose() {
+    _bannerAd?.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "396737970719",
+    "project_id": "plus-4d248",
+    "storage_bucket": "plus-4d248.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396737970719:android:b417e6eb3e3ebfc4a8cb2a",
+        "android_client_info": {
+          "package_name": "com.panchos.twentyfourtyeightplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396737970719-9b8uarkqjsfrttvpccnphfe88210cnrk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyTcASxzx1Et3F1X7T4o4YdyTJ49XB6Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396737970719-9b8uarkqjsfrttvpccnphfe88210cnrk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

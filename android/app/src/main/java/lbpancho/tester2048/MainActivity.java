@@ -1,4 +1,4 @@
-package lbpancho.tester2048;
+package com.panchos.twentyfourtyeightplus;
 
 import io.flutter.embedding.android.FlutterActivity;
 

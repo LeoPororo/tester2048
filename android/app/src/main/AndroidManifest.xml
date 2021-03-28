@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="lbpancho.tester2048">
+    package="com.panchos.twentyfourtyeightplus">
    <application
-        android:label="tester2048"
+        android:label="twentyfourtyeightplus"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -37,5 +37,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-3259383160721715~3478552105"/>
     </application>
 </manifest>
