@@ -43,6 +43,7 @@ class _GameViewState extends State<GameView>
   String _currentMode = "-";
 
   Timer _changeVisibilityTimer;
+  int _changeVisibilityCounter = 0;
 
   AnimationController controller;
 
