@@ -30,28 +30,39 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
   void _loadBannerAd() {
     _bannerAd
       ..load()
-      ..show(anchorType: AnchorType.top, anchorOffset: 50);
+      ..show(anchorType: AnchorType.top, anchorOffset: getAnchorValue());
+  }
+
+  double getAnchorValue() {
+    var height = MediaQuery.of(context).size.height;
+    print(height);
+    if (height > 700)
+      return 50;
+
+    return 25;
   }
 
   @protected
   @mustCallSuper
   void initState() {
+    super.initState();
     _bannerAd = BannerAd(
       adUnitId: AdManager.bannerAdUnitId,
       size: AdSize.banner,
     );
-
-    _loadBannerAd();
   }
 
   @protected
   @mustCallSuper
   void dispose() {
     _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _loadBannerAd();
+
     return Scaffold(
       body: Container(
         color: tan,
@@ -126,6 +137,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                         fontSize: 125.0,
                         fontFamily: 'Monofett',
                         color: Color.fromARGB(255, 232, 192, 70),
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                       alignment: AlignmentDirectional.center,
