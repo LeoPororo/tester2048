@@ -192,7 +192,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               SizedBox(
                 height: 78.0,
               ),
-              Text('Version 1.0',
+              Text('Version 1.0.0',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.grey,
