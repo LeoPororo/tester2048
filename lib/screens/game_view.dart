@@ -66,7 +66,6 @@ class _GameViewState extends State<GameView>
   ActionMode actionMode = ActionMode.SWIPE;
   OperatorMode operatorMode = OperatorMode.ADD;
   bool isTimerOn = true;
-  bool isTestingOn = false;
   bool isReady = false;
 
   List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
@@ -198,80 +197,31 @@ class _GameViewState extends State<GameView>
     return <Widget>[
       // This is for the banner space
       SizedBox(),
-      isTestingOn
-          ? Row(
-              children: <Widget>[
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(visibilityMode) == "NUMBERED"
-                          ? "BLOCKED"
-                          : "NUMBERED",
-                      style: textStyleSize10FontWeight800,
-                    ),
-                    onPressed: changeVisibilityMode,
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(actionMode) == "SWIPE" ? "TAP" : "SWIPE",
-                      style: textStyleSize10FontWeight800,
-                    ),
-                    onPressed: () => changeActionMode(null),
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      describeEnum(operatorMode) == "ADD" ? "MINUS" : "ADD",
-                      style: textStyleSize10FontWeight800,
-                    ),
-                    onPressed: () => changeOperatorMode(null),
-                  ),
-                ),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle,
-                    child: Text(
-                      "SHUFFLE",
-                      style: textStyleSize10FontWeight800,
-                    ),
-                    onPressed: doShuffle,
-                  ),
-                ),
-              ],
-            )
-          : Row(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Text("MODE", style: textStyleSize21FontWeight900),
-                        Text("$_currentMode",
-                            style: textStyleSize21FontWeight900),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Text("Score: $_score",
-                            style: textStyleSize21FontWeight900),
-                        Text("High Score: $_highScore",
-                            style: textStyleSize21FontWeight900),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+      Row(
+        children: [
+          Expanded(
+            child: Center(
+              child: Column(
+                children: [
+                  Text("MODE", style: textStyleSize21FontWeight900),
+                  Text("$_currentMode", style: textStyleSize21FontWeight900),
+                ],
+              ),
             ),
+          ),
+          Expanded(
+            child: Center(
+              child: Column(
+                children: [
+                  Text("Score: $_score", style: textStyleSize21FontWeight900),
+                  Text("High Score: $_highScore",
+                      style: textStyleSize21FontWeight900),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
       Stack(
         children: <Widget>[
           Container(
@@ -563,31 +513,15 @@ class _GameViewState extends State<GameView>
 
   void changeActionMode(ActionMode newAction) {
     setState(() {
-      // Passing null is for test purposes only
-      if (newAction == null) {
-        actionMode == ActionMode.TAP
-            ? actionMode = ActionMode.SWIPE
-            : actionMode = ActionMode.TAP;
-        print("Action Mode: $actionMode");
-      } else {
-        actionMode = newAction;
-        print("Action Mode: $actionMode");
-      }
+      actionMode = newAction;
+      print("Action Mode: $actionMode");
     });
   }
 
   void changeOperatorMode(OperatorMode newOperator) {
     setState(() {
-      // Passing null is for test purposes only
-      if (newOperator == null) {
-        operatorMode == OperatorMode.ADD
-            ? operatorMode = OperatorMode.MINUS
-            : operatorMode = OperatorMode.ADD;
-        print("Operator Mode: $operatorMode");
-      } else {
-        operatorMode = newOperator;
-        print("Operator Mode: $operatorMode");
-      }
+      operatorMode = newOperator;
+      print("Operator Mode: $operatorMode");
     });
   }
 
@@ -783,7 +717,6 @@ class _GameViewState extends State<GameView>
 
   void setScore(int additionalScore,
       [int multiplier = 1, bool forceMultiply = false]) {
-
     if (additionalScore == 0) return;
 
     if (additionalScore == 1 || forceMultiply)
