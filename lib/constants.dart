@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const String aboutUs =
+    "       We are two siblings that are highly enthusiastic about building apps that aim to provide enjoyment, information, or both. One is equipped with astounding coding skills that make each app easy to do, while the other has cuteness that baffles everyone. With our combined efforts, an astonishing app will be born!";
 const Color lightBrown = Color.fromARGB(255, 205, 193, 180);
 const Color darkBrown = Color.fromARGB(255, 187, 173, 160);
 const Color tan = Color.fromARGB(255, 238, 228, 218);
