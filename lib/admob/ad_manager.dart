@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:admob_flutter/admob_flutter.dart';
+
 class AdManager {
 
   static String get appId {
@@ -41,4 +43,24 @@ class AdManager {
       throw new UnsupportedError("Unsupported platform");
     }
   }
+
+  static void handleEvent(
+      AdmobAdEvent event, Map<String, dynamic> args, String adType) {
+    switch (event) {
+      case AdmobAdEvent.loaded:
+        print('New Admob $adType Ad loaded!');
+        break;
+      case AdmobAdEvent.opened:
+        print('Admob $adType Ad opened!');
+        break;
+      case AdmobAdEvent.closed:
+        print('Admob $adType Ad closed!');
+        break;
+      case AdmobAdEvent.failedToLoad:
+        print('Admob $adType failed to load. :(');
+        break;
+      default:
+    }
+  }
+
 }

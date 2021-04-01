@@ -9,11 +9,13 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../admob/ad_manager.dart';
 import '../enums/action_mode.dart';
 import '../enums/operator_mode.dart';
 import '../constants.dart';
@@ -27,6 +29,8 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
+  AdmobBannerSize bannerSize;
+
   Timer _progressBarTimer;
   int _progressBarCounter = maxTimerInSeconds;
 
@@ -66,6 +70,8 @@ class _GameViewState extends State<GameView>
   @override
   void initState() {
     super.initState();
+    bannerSize = AdmobBannerSize.BANNER;
+
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
@@ -176,7 +182,22 @@ class _GameViewState extends State<GameView>
 
     return <Widget>[
       // This is for the banner space
-      SizedBox(),
+      Container(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: AdmobBanner(
+          adUnitId: AdmobBanner.testAdUnitId,
+          adSize: bannerSize,
+          listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+            AdManager.handleEvent(event, args, 'Banner');
+          },
+          onBannerCreated: (AdmobBannerController controller) {
+            // Dispose is called automatically for you when Flutter removes the banner from the widget tree.
+            // Normally you don't need to worry about disposing this yourself, it's handled.
+            // If you need direct access to dispose, this is your guy!
+            // controller.dispose();
+          },
+        ),
+      ),
       Row(
         children: [
           Expanded(

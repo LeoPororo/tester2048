@@ -6,6 +6,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 import 'screens/main_menu.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   Admob.initialize();
 
   runApp(MyApp());
