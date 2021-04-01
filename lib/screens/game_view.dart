@@ -1,6 +1,4 @@
-// TODO: remove testing buttons once it is already final
 // TODO: move constants to constants.dart file
-// TODO: how visibility works
 // Pointing system:
 // If the mode is ADD the value will be the merged value.
 // Example: 2 and 2. 2 + 2. it will be 4 points
