@@ -40,8 +40,10 @@ const TextStyle textStyleSize10FontWeight800 = TextStyle(
   fontWeight: FontWeight.w800,
 );
 
+const int boardSize = 4;
 const int maxTimerInSeconds = 30;
 const int maxChangeModeTimerInSeconds = 7;
+const readySetStrings = ["READY", "SET", "GO!!!", ""];
 
 const Map<int, Color> numTileColor = {
   2: tan,

@@ -1,4 +1,3 @@
-// TODO: move constants to constants.dart file
 // Pointing system:
 // If the mode is ADD the value will be the merged value.
 // Example: 2 and 2. 2 + 2. it will be 4 points
@@ -42,13 +41,12 @@ class _GameViewState extends State<GameView>
 
   int _highestValueTile = 0;
 
-  int _boardSize = 4;
   List<Tile> _toAdd = [];
   List<List<Tile>> _grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
   Iterable<List<Tile>> get _cols {
     return List.generate(
-        _boardSize, (x) => List.generate(_boardSize, (y) => _grid[y][x]));
+        boardSize, (x) => List.generate(boardSize, (y) => _grid[y][x]));
   }
 
   Iterable<Tile> get _flattenedGrid => _grid.expand((e) => e);
@@ -60,8 +58,6 @@ class _GameViewState extends State<GameView>
   ActionMode _actionMode = ActionMode.SWIPE;
   OperatorMode _operatorMode = OperatorMode.ADD;
   bool _isTimerOn = true;
-
-  List<String> _readySetStrings = ["READY", "SET", "GO!!!", ""];
 
   int _score = 0;
   int _highScore = 0;
@@ -110,7 +106,7 @@ class _GameViewState extends State<GameView>
 
   List<Widget> setupGameView() {
     double gridSize = MediaQuery.of(context).size.width - 16.0 * 2;
-    double tileSize = (gridSize - 4.0 * 2) / _boardSize;
+    double tileSize = (gridSize - 4.0 * 2) / boardSize;
 
     List<Widget> stackItems = [];
 
@@ -125,8 +121,8 @@ class _GameViewState extends State<GameView>
             child: GestureDetector(
               onTap: () => onEmptyTileTap(e),
               child: Container(
-                width: tileSize - _boardSize * 2,
-                height: tileSize - _boardSize * 2,
+                width: tileSize - boardSize * 2,
+                height: tileSize - boardSize * 2,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   color: lightBrown,
@@ -154,9 +150,9 @@ class _GameViewState extends State<GameView>
                           onTap: () => onNumberedTileTap(tile),
                           child: Container(
                             width:
-                                (tileSize - _boardSize * 2) * tile.scale.value,
+                                (tileSize - boardSize * 2) * tile.scale.value,
                             height:
-                                (tileSize - _boardSize * 2) * tile.scale.value,
+                                (tileSize - boardSize * 2) * tile.scale.value,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: getNumberedTileColor(tile, false)),
@@ -259,7 +255,7 @@ class _GameViewState extends State<GameView>
                     return ScaleTransition(child: child, scale: animation);
                   },
                   child: Text(
-                    _readySetStrings[_readyCounter],
+                    readySetStrings[_readyCounter],
                     key: ValueKey<int>(_readyCounter),
                     style: TextStyle(
                         fontSize: 50,
@@ -323,7 +319,7 @@ class _GameViewState extends State<GameView>
     }
     _readySetTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (_readyCounter == _readySetStrings.length - 2) {
+        if (_readyCounter == readySetStrings.length - 2) {
           _readySetTimer.cancel();
           restartGame();
         }
@@ -456,8 +452,8 @@ class _GameViewState extends State<GameView>
 
   void restartGame() {
     setState(() {
-      _grid = List.generate(_boardSize,
-          (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
+      _grid = List.generate(boardSize,
+          (y) => List.generate(boardSize, (x) => Tile(x, y, 0, 1.0)));
 
       _flattenedGrid.forEach((e) {
         e.val = 0;
