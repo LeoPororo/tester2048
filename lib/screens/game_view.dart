@@ -682,8 +682,8 @@ class _GameViewState extends State<GameView>
   }
 
   Future<void> playSwipe() async {
-    const alarmAudioPath = "sound_alarm.mp3";
+    const file = "audios/swipe.wav";
     AudioCache player = new AudioCache();
-    player.play(alarmAudioPath);
+    player.play(file);
   }
 }
