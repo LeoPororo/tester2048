@@ -17,7 +17,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../enums/action_mode.dart';
 import '../enums/operator_mode.dart';
-import '../enums/visibility_mode.dart';
 import '../constants.dart';
 import '../progressbar_painter.dart';
 import '../tile.dart';
@@ -58,7 +57,6 @@ class _GameViewState extends State<GameView>
   int _addSeconds = 0;
   Tile _tapTileOne, _tapTileTwo;
 
-  VisibilityMode _visibilityMode = VisibilityMode.NUMBERED;
   ActionMode _actionMode = ActionMode.SWIPE;
   OperatorMode _operatorMode = OperatorMode.ADD;
   bool _isTimerOn = true;
@@ -477,7 +475,6 @@ class _GameViewState extends State<GameView>
 
       _controller.forward(from: 0);
 
-      _visibilityMode = VisibilityMode.NUMBERED;
       _actionMode = ActionMode.SWIPE;
       _operatorMode = OperatorMode.ADD;
       setModeDescription();
