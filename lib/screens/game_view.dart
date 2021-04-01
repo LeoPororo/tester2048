@@ -63,7 +63,6 @@ class _GameViewState extends State<GameView>
   ActionMode _actionMode = ActionMode.SWIPE;
   OperatorMode _operatorMode = OperatorMode.ADD;
   bool _isTimerOn = true;
-  bool _isReady = false;
 
   List<String> _readySetStrings = ["READY", "SET", "GO!!!", ""];
 
