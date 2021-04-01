@@ -30,7 +30,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
   void _loadBannerAd() {
     _bannerAd
       ..load()
-      ..show(anchorType: AnchorType.top);
+      ..show(anchorType: AnchorType.top, anchorOffset: 50);
   }
 
   @protected
