@@ -8,12 +8,12 @@ const Color greyText = Color.fromARGB(255, 119, 110, 101);
 const Color progressBarBg = Colors.orange;
 const Color progressBarCap = Colors.white;
 
-const Color buttonBg = Colors.orange;
+const Color buttonBg = Color.fromARGB(255, 246, 124, 95);
 const Color buttonText = Colors.white;
 ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     primary: buttonBg,
     shape:
-        new RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)));
+        new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)));
 
 const TextStyle textStyleSize34FontWeight800 = TextStyle(
   color: buttonText,

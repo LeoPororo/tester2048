@@ -6,7 +6,6 @@
 
 // TODO: Move constant designs to constants.dart once main menu design is complete
 // TODO: Add version number at the lower right of the screen
-// TODO: Change FlatButton to ElevatedButton because it is already deprecated - see game_view.dart for implementation
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
@@ -139,83 +138,71 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
             SizedBox(
               height: 30.0,
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+            ElevatedButton(
+              style: buttonStyle,
+              child: Container(
+                width: 270.0,
+                height: 60.0,
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "S T A R T   G A M E ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 30.0,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
+                ),
               ),
-              minWidth: 300.0,
-              height: 60.0,
-              hoverColor: Colors.amberAccent,
-              color: Color.fromARGB(255, 246, 124, 95),
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.grey,
-              padding: EdgeInsets.all(10.0),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => GameView()));
               },
-              child: Text(
-                "S T A R T   G A M E ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 30.0,
-                  color: Colors.yellowAccent,
-                  fontFamily: 'PatrickHand',
-                ),
-              ),
             ),
             SizedBox(
               height: 10.0,
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              minWidth: 300.0,
-              height: 60.0,
-              hoverColor: Colors.amberAccent,
-              color: Color.fromARGB(255, 246, 124, 95),
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.grey,
-              padding: EdgeInsets.all(10.0),
-              onPressed: () {},
-              child: Text(
-                "H O W   T O   P L A Y ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 30.0,
-                  color: Colors.yellowAccent,
-                  fontFamily: 'PatrickHand',
+            ElevatedButton(
+              style: buttonStyle,
+              child: Container(
+                width: 270.0,
+                height: 60.0,
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "H O W   T O   P L A Y ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 30.0,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
+              onPressed: () {},
             ),
             SizedBox(
               height: 10.0,
             ),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              minWidth: 300.0,
-              height: 60.0,
-              hoverColor: Colors.amberAccent,
-              color: Color.fromARGB(255, 246, 124, 95),
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.grey,
-              padding: EdgeInsets.all(10.0),
-              onPressed: () {},
-              child: Text(
-                "A B O U T   U S ",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 30.0,
-                  color: Colors.yellowAccent,
-                  fontFamily: 'PatrickHand',
+            ElevatedButton(
+              style: buttonStyle,
+              child: Container(
+                width: 270.0,
+                height: 60.0,
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "A B O U T   U S ",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 30.0,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
+              onPressed: () {},
             ),
             SizedBox(
               height: 55.0,
