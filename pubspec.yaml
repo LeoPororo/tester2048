@@ -24,11 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.0.0
-  animated_text_kit: ^3.0.0
+  animated_text_kit: ^4.1.1
   cupertino_icons: ^1.0.0
   shared_preferences: ^2.0.5
   admob_flutter: ^1.0.1
-  
+
 
 dev_dependencies:
   flutter_test:
