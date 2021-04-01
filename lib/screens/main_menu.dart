@@ -52,8 +52,8 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Scaffold(
+      body: Container(
         color: tan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

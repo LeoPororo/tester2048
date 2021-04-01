@@ -9,6 +9,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -401,6 +402,8 @@ class _GameViewState extends State<GameView>
   void swipeDown() => _cols.map((e) => e.reversed.toList()).forEach(mergeTiles);
 
   void mergeTiles(List<Tile> tiles) {
+    playSwipe();
+
     for (int i = 0; i < tiles.length; i++) {
       Iterable<Tile> toCheck =
           tiles.skip(i).skipWhile((value) => value.val == 0);
@@ -676,5 +679,11 @@ class _GameViewState extends State<GameView>
   Future<void> loadHighScore() async {
     final prefs = await SharedPreferences.getInstance();
     _highScore = prefs.getInt('highScore') ?? 0;
+  }
+
+  Future<void> playSwipe() async {
+    const alarmAudioPath = "sound_alarm.mp3";
+    AudioCache player = new AudioCache();
+    player.play(alarmAudioPath);
   }
 }

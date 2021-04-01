@@ -28,6 +28,7 @@ dependencies:
   animated_text_kit: ^3.0.0
   cupertino_icons: ^1.0.0
   shared_preferences: ^0.5.12+4
+  audioplayers: ^0.16.2
 
 dev_dependencies:
   flutter_test:
