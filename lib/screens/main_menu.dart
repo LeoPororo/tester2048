@@ -5,7 +5,6 @@
 // https://github.com/firebase/firebase-android-sdk/issues/1662
 
 // TODO: Move constant designs to constants.dart once main menu design is complete
-// TODO: Add version number at the lower right of the screen
 
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
@@ -147,12 +146,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                 child: Text(
                   "S T A R T   G A M E ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30.0,
-                    color: Colors.yellowAccent,
-                    fontFamily: 'PatrickHand',
-                  ),
+                  style: mainMenuTextStyle,
                 ),
               ),
               onPressed: () {
@@ -172,12 +166,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                 child: Text(
                   "H O W   T O   P L A Y ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30.0,
-                    color: Colors.yellowAccent,
-                    fontFamily: 'PatrickHand',
-                  ),
+                  style: mainMenuTextStyle,
                 ),
               ),
               onPressed: () {},
@@ -194,12 +183,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                 child: Text(
                   "A B O U T   U S ",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30.0,
-                    color: Colors.yellowAccent,
-                    fontFamily: 'PatrickHand',
-                  ),
+                  style: mainMenuTextStyle,
                 ),
               ),
               onPressed: () {},

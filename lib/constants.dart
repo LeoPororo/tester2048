@@ -15,6 +15,13 @@ ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     shape:
         new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)));
 
+const TextStyle mainMenuTextStyle = TextStyle(
+  fontWeight: FontWeight.w900,
+  fontSize: 30.0,
+  color: Colors.yellowAccent,
+  fontFamily: 'PatrickHand',
+);
+
 const TextStyle textStyleSize34FontWeight800 = TextStyle(
   color: buttonText,
   fontSize: 34,
