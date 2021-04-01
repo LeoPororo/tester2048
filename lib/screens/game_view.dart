@@ -10,6 +10,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:admob_flutter/admob_flutter.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +31,8 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
+  static AudioCache player = AudioCache(prefix: 'assets/audios/', fixedPlayer: AudioPlayer());
+
   AdmobBannerSize bannerSize;
 
   Timer _progressBarTimer;
@@ -70,6 +74,9 @@ class _GameViewState extends State<GameView>
   @override
   void initState() {
     super.initState();
+
+    player.load('swipe.mp3');
+
     bannerSize = AdmobBannerSize.BANNER;
 
     _controller =
@@ -701,10 +708,8 @@ class _GameViewState extends State<GameView>
     _highScore = prefs.getInt('highScore') ?? 0;
   }
 
-  Future<void> playSwipe() async {
-    const file = "audios/swipe.wav";
-    // TODO: Fix audio
-//    AudioCache player = new AudioCache();
-//    player.play(file);
+  playSwipe() {
+    player.fixedPlayer.stop();
+    player.play("swipe.mp3");
   }
 }
