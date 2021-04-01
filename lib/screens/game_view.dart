@@ -161,7 +161,7 @@ class _GameViewState extends State<GameView>
                                 '${tile.animatedValue.value}',
                                 style: TextStyle(
                                   color: getNumberedTileTextColor(tile, false),
-                                  fontSize: 35,
+                                  fontSize: tile.val > fourDigitLimit ? 30 : 35,
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
@@ -533,7 +533,7 @@ class _GameViewState extends State<GameView>
         _tapTileOne.resetAnimations();
         _tapTileOne.tap(_controller);
         _tapTileOne.s = 1.2;
-        _controller.forward(from: 0);
+        _controller.forward(from: 0.8);
       } else {
         _tapTileTwo = tile;
       }
@@ -583,7 +583,7 @@ class _GameViewState extends State<GameView>
         } else {
           _tapTileOne.s = 1.0;
           _tapTileOne.resetAnimations();
-          _controller.forward(from: 0);
+          _controller.forward(from: 0.8);
         }
       }
 

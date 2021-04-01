@@ -57,12 +57,12 @@ class Tile {
 
   void tap(Animation<double> parent) {
     scale = Tween(begin: 1.0, end: 1.2)
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 0.5)));
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.8, 1)));
   }
 
   void untap(Animation<double> parent) {
     scale = Tween(begin: 1.0, end: 1.2)
-        .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 0.5)));
+        .animate(CurvedAnimation(parent: parent, curve: Interval(0.8, 1)));
   }
 
   bool isSame(Tile t)
