@@ -6,7 +6,6 @@
 
 // TODO: Move constant designs to constants.dart once main menu design is complete
 
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -20,18 +19,6 @@ class MainMenuWidget extends StatefulWidget {
 }
 
 class _MainMenuWidgetState extends State<MainMenuWidget> {
-  BannerAd _bannerAd;
-
-  Future<void> _initAdMob() {
-    print("LOADING...");
-    return FirebaseAdMob.instance.initialize(appId: AdManager.appId);
-  }
-
-  void _loadBannerAd() {
-    _bannerAd
-      ..load()
-      ..show(anchorType: AnchorType.top, anchorOffset: getAnchorValue());
-  }
 
   double getAnchorValue() {
     var height = MediaQuery.of(context).size.height;
@@ -42,27 +29,8 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
     return 25;
   }
 
-  @protected
-  @mustCallSuper
-  void initState() {
-    super.initState();
-    _bannerAd = BannerAd(
-      adUnitId: AdManager.bannerAdUnitId,
-      size: AdSize.banner,
-    );
-  }
-
-  @protected
-  @mustCallSuper
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    _loadBannerAd();
-
     return Scaffold(
       body: Container(
         color: tan,
