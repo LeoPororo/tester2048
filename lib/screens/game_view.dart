@@ -29,7 +29,7 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
-  // TODO: Fix naming convention. private should have _ at the start of their names
+
   Timer _progressBarTimer;
   int _progressBarCounter = maxTimerInSeconds;
 
@@ -40,32 +40,32 @@ class _GameViewState extends State<GameView>
   int _changeModeCounter = 0;
   String _currentMode = "-";
 
-  AnimationController controller;
+  AnimationController _controller;
 
   int _highestValueTile = 0;
 
   int _boardSize = 4;
-  List<Tile> toAdd = [];
-  List<List<Tile>> grid =
+  List<Tile> _toAdd = [];
+  List<List<Tile>> _grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
-  Iterable<List<Tile>> get cols {
+  Iterable<List<Tile>> get _cols {
     return List.generate(
-        _boardSize, (x) => List.generate(_boardSize, (y) => grid[y][x]));
+        _boardSize, (x) => List.generate(_boardSize, (y) => _grid[y][x]));
   }
 
-  Iterable<Tile> get flattenedGrid => grid.expand((e) => e);
+  Iterable<Tile> get _flattenedGrid => _grid.expand((e) => e);
 
-  int tapCounter = 0;
-  int addSeconds = 0;
-  Tile tapTileOne, tapTileTwo;
+  int _tapCounter = 0;
+  int _addSeconds = 0;
+  Tile _tapTileOne, _tapTileTwo;
 
-  VisibilityMode visibilityMode = VisibilityMode.NUMBERED;
-  ActionMode actionMode = ActionMode.SWIPE;
-  OperatorMode operatorMode = OperatorMode.ADD;
-  bool isTimerOn = true;
-  bool isReady = false;
+  VisibilityMode _visibilityMode = VisibilityMode.NUMBERED;
+  ActionMode _actionMode = ActionMode.SWIPE;
+  OperatorMode _operatorMode = OperatorMode.ADD;
+  bool _isTimerOn = true;
+  bool _isReady = false;
 
-  List<String> readySetStrings = ["READY", "SET", "GO!!!", ""];
+  List<String> _readySetStrings = ["READY", "SET", "GO!!!", ""];
 
   int _score = 0;
   int _highScore = 0;
@@ -74,22 +74,22 @@ class _GameViewState extends State<GameView>
   @override
   void initState() {
     super.initState();
-    controller =
+    _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
-    controller.addStatusListener((status) {
+    _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          toAdd.forEach((element) {
-            grid[element.y][element.x].val = element.val;
+          _toAdd.forEach((element) {
+            _grid[element.y][element.x].val = element.val;
           });
-          flattenedGrid.forEach((element) => element.resetAnimations());
-          toAdd.clear();
+          _flattenedGrid.forEach((element) => element.resetAnimations());
+          _toAdd.clear();
 
-          _progressBarCounter += addSeconds;
+          _progressBarCounter += _addSeconds;
           if (_progressBarCounter > maxTimerInSeconds)
             _progressBarCounter = maxTimerInSeconds;
-          addSeconds = 0;
+          _addSeconds = 0;
         });
       }
     });
@@ -119,7 +119,7 @@ class _GameViewState extends State<GameView>
     List<Widget> stackItems = [];
 
     stackItems.addAll(
-      flattenedGrid.map(
+      _flattenedGrid.map(
         (e) => Positioned(
           left: e.x * tileSize,
           top: e.y * tileSize,
@@ -143,9 +143,9 @@ class _GameViewState extends State<GameView>
     );
 
     stackItems.addAll(
-      [flattenedGrid, toAdd].expand((tile) => tile).map(
+      [_flattenedGrid, _toAdd].expand((tile) => tile).map(
             (tile) => AnimatedBuilder(
-              animation: controller,
+              animation: _controller,
               builder: (context, child) => tile.animatedValue.value == 0
                   ? SizedBox()
                   : Positioned(
@@ -165,7 +165,7 @@ class _GameViewState extends State<GameView>
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: getNumberedTileColor(tile, false)),
                             child: Center(
-                              child: visibilityMode == VisibilityMode.NUMBERED
+                              child: _visibilityMode == VisibilityMode.NUMBERED
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
@@ -222,7 +222,7 @@ class _GameViewState extends State<GameView>
       Stack(
         children: <Widget>[
           Container(
-            child: actionMode == ActionMode.SWIPE && !_isGameOver
+            child: _actionMode == ActionMode.SWIPE && !_isGameOver
                 ? GestureDetector(
                     onVerticalDragEnd: (details) {
                       if (details.velocity.pixelsPerSecond.dy < 1 &&
@@ -272,7 +272,7 @@ class _GameViewState extends State<GameView>
                     return ScaleTransition(child: child, scale: animation);
                   },
                   child: Text(
-                    readySetStrings[_readyCounter],
+                    _readySetStrings[_readyCounter],
                     key: ValueKey<int>(_readyCounter),
                     style: TextStyle(
                         fontSize: 50,
@@ -290,7 +290,7 @@ class _GameViewState extends State<GameView>
         child: CustomPaint(
           size: Size(10, 10),
           painter: ProgressBarPainter(
-              progressBarValue: _progressBarCounter, state: isTimerOn),
+              progressBarValue: _progressBarCounter, state: _isTimerOn),
         ),
       ),
       Container(
@@ -316,7 +316,7 @@ class _GameViewState extends State<GameView>
   }
 
   void addNewTile(List<int> newTiles) {
-    List<Tile> empty = flattenedGrid.where((e) => e.val == 0).toList();
+    List<Tile> empty = _flattenedGrid.where((e) => e.val == 0).toList();
     empty.shuffle();
     bool canAddAll = empty.length >= newTiles.length;
     int maxCount = newTiles.length;
@@ -324,8 +324,8 @@ class _GameViewState extends State<GameView>
       maxCount = empty.length;
     }
     for (int i = 0; i < maxCount; i++) {
-      toAdd.add(
-          Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
+      _toAdd.add(
+          Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(_controller));
     }
   }
 
@@ -336,7 +336,7 @@ class _GameViewState extends State<GameView>
     }
     _readySetTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (_readyCounter == readySetStrings.length - 2) {
+        if (_readyCounter == _readySetStrings.length - 2) {
           _readySetTimer.cancel();
           restartGame();
         }
@@ -385,15 +385,15 @@ class _GameViewState extends State<GameView>
     // TODO: Add sounds for successful swipes.
     setState(() {
       swipeFn();
-      if (toAdd.length == 0) addNewTile([2]);
-      controller.forward(from: 0);
+      if (_toAdd.length == 0) addNewTile([2]);
+      _controller.forward(from: 0);
     });
   }
 
-  bool canSwipeLeft() => grid.any(canSwipe);
-  bool canSwipeRight() => grid.map((e) => e.reversed.toList()).any(canSwipe);
-  bool canSwipeUp() => cols.any(canSwipe);
-  bool canSwipeDown() => cols.map((e) => e.reversed.toList()).any(canSwipe);
+  bool canSwipeLeft() => _grid.any(canSwipe);
+  bool canSwipeRight() => _grid.map((e) => e.reversed.toList()).any(canSwipe);
+  bool canSwipeUp() => _cols.any(canSwipe);
+  bool canSwipeDown() => _cols.map((e) => e.reversed.toList()).any(canSwipe);
   bool canSwipe(List<Tile> tiles) {
     for (int i = 0; i < tiles.length; i++) {
       if (tiles[i].val == 0) {
@@ -411,10 +411,10 @@ class _GameViewState extends State<GameView>
     return false;
   }
 
-  void swipeLeft() => grid.forEach(mergeTiles);
-  void swipeRight() => grid.map((e) => e.reversed.toList()).forEach(mergeTiles);
-  void swipeUp() => cols.forEach(mergeTiles);
-  void swipeDown() => cols.map((e) => e.reversed.toList()).forEach(mergeTiles);
+  void swipeLeft() => _grid.forEach(mergeTiles);
+  void swipeRight() => _grid.map((e) => e.reversed.toList()).forEach(mergeTiles);
+  void swipeUp() => _cols.forEach(mergeTiles);
+  void swipeDown() => _cols.map((e) => e.reversed.toList()).forEach(mergeTiles);
 
   void mergeTiles(List<Tile> tiles) {
     for (int i = 0; i < tiles.length; i++) {
@@ -429,32 +429,32 @@ class _GameViewState extends State<GameView>
         }
         if (tiles[i] != t || merge != null) {
           int resultValue = t.val;
-          t.moveTo(controller, tiles[i].x, tiles[i].y);
+          t.moveTo(_controller, tiles[i].x, tiles[i].y);
           if (merge != null) {
             double divisionResult;
             divisionResult = resultValue / 2;
-            operatorMode == OperatorMode.ADD
+            _operatorMode == OperatorMode.ADD
                 ? resultValue += merge.val
                 : resultValue = divisionResult.toInt();
             int scoreToAdd = resultValue;
 
             if (resultValue == 1) {
               resultValue = 0;
-              merge.moveTo(controller, tiles[i].x, tiles[i].y);
-              merge.disappear(controller);
-              t.disappear(controller);
+              merge.moveTo(_controller, tiles[i].x, tiles[i].y);
+              merge.disappear(_controller);
+              t.disappear(_controller);
               merge.val = 0;
 
-              if (toAdd.length == 0) addNewTile([2, _highestValueTile]);
+              if (_toAdd.length == 0) addNewTile([2, _highestValueTile]);
             } else {
-              merge.moveTo(controller, tiles[i].x, tiles[i].y);
-              merge.bounce(controller);
-              merge.changeNumber(controller, resultValue);
+              merge.moveTo(_controller, tiles[i].x, tiles[i].y);
+              merge.bounce(_controller);
+              merge.changeNumber(_controller, resultValue);
 
               merge.val = 0;
-              t.changeNumber(controller, 0);
+              t.changeNumber(_controller, 0);
             }
-            addSeconds += 1;
+            _addSeconds += 1;
 
             setScore(scoreToAdd, t.val);
           }
@@ -468,15 +468,15 @@ class _GameViewState extends State<GameView>
 
   void restartGame() {
     setState(() {
-      grid = List.generate(_boardSize,
+      _grid = List.generate(_boardSize,
           (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
 
-      flattenedGrid.forEach((e) {
+      _flattenedGrid.forEach((e) {
         e.val = 0;
         e.resetAnimations();
       });
 
-      toAdd.clear();
+      _toAdd.clear();
       addNewTile([2, 2]);
 
       _score = 0;
@@ -485,14 +485,14 @@ class _GameViewState extends State<GameView>
       _changeModeCounter = 0;
       _highestValueTile = 0;
 
-      controller.forward(from: 0);
+      _controller.forward(from: 0);
 
-      visibilityMode = VisibilityMode.NUMBERED;
-      actionMode = ActionMode.SWIPE;
-      operatorMode = OperatorMode.ADD;
+      _visibilityMode = VisibilityMode.NUMBERED;
+      _actionMode = ActionMode.SWIPE;
+      _operatorMode = OperatorMode.ADD;
       setModeDescription();
 
-      if (isTimerOn) {
+      if (_isTimerOn) {
         startProgressBarTimer();
         startChangeModeTimer();
       }
@@ -501,21 +501,21 @@ class _GameViewState extends State<GameView>
 
   void changeActionMode(ActionMode newAction) {
     setState(() {
-      actionMode = newAction;
-      print("Action Mode: $actionMode");
+      _actionMode = newAction;
+      print("Action Mode: $_actionMode");
     });
   }
 
   void changeOperatorMode(OperatorMode newOperator) {
     setState(() {
-      operatorMode = newOperator;
-      print("Operator Mode: $operatorMode");
+      _operatorMode = newOperator;
+      print("Operator Mode: $_operatorMode");
     });
   }
 
   void tileValueChecker() {
     setState(() {
-      List<Tile> tileCheck = flattenedGrid.where((e) => e.val != 0).toList();
+      List<Tile> tileCheck = _flattenedGrid.where((e) => e.val != 0).toList();
       for (int i = 0; i < tileCheck.length; i++) {
         if (tileCheck[i].val > _highestValueTile) {
           _highestValueTile = tileCheck[i].val;
@@ -528,84 +528,84 @@ class _GameViewState extends State<GameView>
     if (_isGameOver) return;
 
     setState(() {
-      if (tapCounter == 1) {
-        tapTileOne.untap(controller);
-        tapTileOne.resetAnimations();
-        tapTileOne.s = 1.0;
-        controller.forward(from: 0);
+      if (_tapCounter == 1) {
+        _tapTileOne.untap(_controller);
+        _tapTileOne.resetAnimations();
+        _tapTileOne.s = 1.0;
+        _controller.forward(from: 0);
       }
-      tapCounter = 0;
-      tapTileOne = null;
-      tapTileTwo = null;
+      _tapCounter = 0;
+      _tapTileOne = null;
+      _tapTileTwo = null;
     });
   }
 
   void onNumberedTileTap(Tile tile) {
-    if (actionMode != ActionMode.TAP || controller.isAnimating || _isGameOver)
+    if (_actionMode != ActionMode.TAP || _controller.isAnimating || _isGameOver)
       return;
 
-    if (tapCounter != 2) {
-      if (tapCounter == 0) {
-        tapTileOne = tile;
-        tapTileOne.resetAnimations();
-        tapTileOne.tap(controller);
-        tapTileOne.s = 1.2;
-        controller.forward(from: 0);
+    if (_tapCounter != 2) {
+      if (_tapCounter == 0) {
+        _tapTileOne = tile;
+        _tapTileOne.resetAnimations();
+        _tapTileOne.tap(_controller);
+        _tapTileOne.s = 1.2;
+        _controller.forward(from: 0);
       } else {
-        tapTileTwo = tile;
+        _tapTileTwo = tile;
       }
 
-      if (tapCounter == 1) {
-        if (tapTileOne.val == tapTileTwo.val &&
-            !tapTileOne.isSame(tapTileTwo)) {
-          int scoreToAdd = tapTileOne.val;
+      if (_tapCounter == 1) {
+        if (_tapTileOne.val == _tapTileTwo.val &&
+            !_tapTileOne.isSame(_tapTileTwo)) {
+          int scoreToAdd = _tapTileOne.val;
           int multiplier = 1;
 
-          tapTileOne.s = 1.0;
-          tapTileOne.changeNumber(controller, 0);
-          tapTileOne.val = 0;
+          _tapTileOne.s = 1.0;
+          _tapTileOne.changeNumber(_controller, 0);
+          _tapTileOne.val = 0;
 
-          if (operatorMode == OperatorMode.ADD) {
-            tapTileTwo.bounce(controller);
-            tapTileTwo.changeNumber(controller, tapTileTwo.val * 2);
-            tapTileTwo.val = tapTileTwo.val * 2;
+          if (_operatorMode == OperatorMode.ADD) {
+            _tapTileTwo.bounce(_controller);
+            _tapTileTwo.changeNumber(_controller, _tapTileTwo.val * 2);
+            _tapTileTwo.val = _tapTileTwo.val * 2;
             addNewTile([2, 2]);
             multiplier = 2;
             setScore(scoreToAdd, multiplier, true);
           } else {
-            multiplier = tapTileTwo.val;
-            tapTileTwo.disappear(controller);
-            double decreasedValue = tapTileTwo.val / 2;
+            multiplier = _tapTileTwo.val;
+            _tapTileTwo.disappear(_controller);
+            double decreasedValue = _tapTileTwo.val / 2;
             if (decreasedValue == 1) {
-              tapTileTwo.changeNumber(controller, 0);
-              tapTileTwo.val = 0;
+              _tapTileTwo.changeNumber(_controller, 0);
+              _tapTileTwo.val = 0;
               scoreToAdd = decreasedValue.toInt();
             } else {
               scoreToAdd = 1;
-              tapTileTwo.changeNumber(controller, decreasedValue.toInt());
-              tapTileTwo.val = decreasedValue.toInt();
+              _tapTileTwo.changeNumber(_controller, decreasedValue.toInt());
+              _tapTileTwo.val = decreasedValue.toInt();
             }
 
             addNewTile([2, _highestValueTile]);
             setScore(scoreToAdd, multiplier);
           }
 
-          tapTileOne.moveTo(controller, tapTileTwo.x, tapTileTwo.y);
+          _tapTileOne.moveTo(_controller, _tapTileTwo.x, _tapTileTwo.y);
 
-          addSeconds = 1;
-          controller.forward(from: 0);
+          _addSeconds = 1;
+          _controller.forward(from: 0);
 
-          tapTileOne = null;
-          tapTileTwo = null;
+          _tapTileOne = null;
+          _tapTileTwo = null;
         } else {
-          tapTileOne.s = 1.0;
-          tapTileOne.resetAnimations();
-          controller.forward(from: 0);
+          _tapTileOne.s = 1.0;
+          _tapTileOne.resetAnimations();
+          _controller.forward(from: 0);
         }
       }
 
-      tapCounter++;
-      if (tapCounter == 2) tapCounter = 0;
+      _tapCounter++;
+      if (_tapCounter == 2) _tapCounter = 0;
       tileValueChecker();
     }
   }
@@ -613,10 +613,10 @@ class _GameViewState extends State<GameView>
   Color getNumberedTileColor(Tile tile, bool reverseTextAndTileColor) {
     Color color = tan;
 
-    if (visibilityMode == VisibilityMode.NUMBERED)
+    if (_visibilityMode == VisibilityMode.NUMBERED)
       color = numTileColor[tile.animatedValue.value];
 
-    if (actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
+    if (_actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
       return getNumberedTileTextColor(tile, true);
     }
 
@@ -626,7 +626,7 @@ class _GameViewState extends State<GameView>
   Color getNumberedTileTextColor(Tile tile, bool reverseTextAndTileColor) {
     Color color = Colors.white;
     if (tile.animatedValue.value <= 4) color = greyText;
-    if (actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
+    if (_actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
       return getNumberedTileColor(tile, true);
     }
 
@@ -634,16 +634,16 @@ class _GameViewState extends State<GameView>
   }
 
   void setRandomMode() {
-    addSeconds = 0;
-    tapCounter = 0;
-    if (tapTileOne != null) {
-      tapTileOne.untap(controller);
-      tapTileOne.resetAnimations();
-      tapTileOne.s = 1.0;
-      controller.forward(from: 0);
+    _addSeconds = 0;
+    _tapCounter = 0;
+    if (_tapTileOne != null) {
+      _tapTileOne.untap(_controller);
+      _tapTileOne.resetAnimations();
+      _tapTileOne.s = 1.0;
+      _controller.forward(from: 0);
     }
-    tapTileOne = null;
-    tapTileTwo = null;
+    _tapTileOne = null;
+    _tapTileTwo = null;
 
     var actions = [ActionMode.TAP, ActionMode.SWIPE];
     var operators = [OperatorMode.ADD, OperatorMode.MINUS];
@@ -654,7 +654,7 @@ class _GameViewState extends State<GameView>
       newAction = actions[new Random().nextInt(actions.length)];
       newOperator = operators[new Random().nextInt(operators.length)];
 
-      if (newAction != actionMode || newOperator != operatorMode) {
+      if (newAction != _actionMode || newOperator != _operatorMode) {
         isSameMode = false;
         break;
       }
@@ -667,8 +667,8 @@ class _GameViewState extends State<GameView>
   }
 
   void setModeDescription() {
-    var actionDesc = describeEnum(actionMode);
-    var operatorDesc = describeEnum(operatorMode);
+    var actionDesc = describeEnum(_actionMode);
+    var operatorDesc = describeEnum(_operatorMode);
     _currentMode = "$actionDesc - $operatorDesc";
   }
 
