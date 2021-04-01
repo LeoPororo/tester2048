@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:twentyfourtyeightplus/screens/about_us.dart';
 
 import 'screens/main_menu.dart';
 
@@ -16,4 +17,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

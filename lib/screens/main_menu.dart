@@ -10,6 +10,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:twentyfourtyeightplus/screens/about_us.dart';
 import '../admob/ad_manager.dart';
 import '../constants.dart';
 import 'game_view.dart';
@@ -198,7 +199,10 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                   style: mainMenuTextStyle,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AboutUs()));
+              },
             ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
               SizedBox(
