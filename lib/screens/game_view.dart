@@ -502,15 +502,6 @@ class _GameViewState extends State<GameView>
     });
   }
 
-  void changeVisibilityMode() {
-    setState(() {
-      visibilityMode == VisibilityMode.NUMBERED
-          ? visibilityMode = VisibilityMode.BLOCKED
-          : visibilityMode = VisibilityMode.NUMBERED;
-      print("Visibility Mode: $visibilityMode");
-    });
-  }
-
   void changeActionMode(ActionMode newAction) {
     setState(() {
       actionMode = newAction;
