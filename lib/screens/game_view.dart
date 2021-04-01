@@ -46,7 +46,6 @@ class _GameViewState extends State<GameView>
 
   int _boardSize = 4;
   List<Tile> toAdd = [];
-  List<int> toShuffle = [];
   List<List<Tile>> grid =
       List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
   Iterable<List<Tile>> get cols {
