@@ -204,9 +204,17 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               ),
               onPressed: () {},
             ),
-            SizedBox(
-              height: 55.0,
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+              SizedBox(
+                height: 78.0,
+              ),
+              Text('Version 1.0',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13.0,
+                  )),
+            ]),
           ],
         ),
       ),
