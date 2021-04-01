@@ -29,7 +29,6 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
-
   Timer _progressBarTimer;
   int _progressBarCounter = maxTimerInSeconds;
 
@@ -164,23 +163,14 @@ class _GameViewState extends State<GameView>
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: getNumberedTileColor(tile, false)),
                             child: Center(
-                              child: _visibilityMode == VisibilityMode.NUMBERED
-                                  ? Text(
-                                      '${tile.animatedValue.value}',
-                                      style: TextStyle(
-                                        color: getNumberedTileTextColor(
-                                            tile, false),
-                                        fontSize: 35,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Image.asset(
-                                        'assets/question.png',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                              child: Text(
+                                '${tile.animatedValue.value}',
+                                style: TextStyle(
+                                  color: getNumberedTileTextColor(tile, false),
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -411,7 +401,8 @@ class _GameViewState extends State<GameView>
   }
 
   void swipeLeft() => _grid.forEach(mergeTiles);
-  void swipeRight() => _grid.map((e) => e.reversed.toList()).forEach(mergeTiles);
+  void swipeRight() =>
+      _grid.map((e) => e.reversed.toList()).forEach(mergeTiles);
   void swipeUp() => _cols.forEach(mergeTiles);
   void swipeDown() => _cols.map((e) => e.reversed.toList()).forEach(mergeTiles);
 
@@ -610,10 +601,7 @@ class _GameViewState extends State<GameView>
   }
 
   Color getNumberedTileColor(Tile tile, bool reverseTextAndTileColor) {
-    Color color = tan;
-
-    if (_visibilityMode == VisibilityMode.NUMBERED)
-      color = numTileColor[tile.animatedValue.value];
+    Color color = numTileColor[tile.animatedValue.value];
 
     if (_actionMode == ActionMode.TAP && !reverseTextAndTileColor) {
       return getNumberedTileTextColor(tile, true);
