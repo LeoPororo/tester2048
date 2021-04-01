@@ -202,6 +202,14 @@ class _GameViewState extends State<GameView>
           )
         ],
       ),
+      Container(
+        width: 400,
+        child: CustomPaint(
+          size: Size(10, 10),
+          painter: ProgressBarPainter(
+              progressBarValue: _progressBarCounter, state: _isTimerOn),
+        ),
+      ),
       Stack(
         children: <Widget>[
           Container(
@@ -267,14 +275,6 @@ class _GameViewState extends State<GameView>
             ),
           )
         ],
-      ),
-      Container(
-        width: 400,
-        child: CustomPaint(
-          size: Size(10, 10),
-          painter: ProgressBarPainter(
-              progressBarValue: _progressBarCounter, state: _isTimerOn),
-        ),
       ),
       Container(
         height: 80,
