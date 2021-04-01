@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:admob_flutter/admob_flutter.dart';
+
 import 'screens/main_menu.dart';
 
 void main() {
+  Admob.initialize();
+
   runApp(MyApp());
 }
 

@@ -6,10 +6,12 @@
 
 // TODO: Move constant designs to constants.dart once main menu design is complete
 
+import 'dart:io' show Platform;
+
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import '../admob/ad_manager.dart';
 import '../constants.dart';
 import 'game_view.dart';
 
@@ -19,14 +21,14 @@ class MainMenuWidget extends StatefulWidget {
 }
 
 class _MainMenuWidgetState extends State<MainMenuWidget> {
+  GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
+  AdmobBannerSize bannerSize;
 
-  double getAnchorValue() {
-    var height = MediaQuery.of(context).size.height;
-    print(height);
-    if (height > 700)
-      return 50;
+  @override
+  void initState() {
+    super.initState();
 
-    return 25;
+    bannerSize = AdmobBannerSize.BANNER;
   }
 
   @override
@@ -37,8 +39,26 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+              child: AdmobBanner(
+                adUnitId: AdmobBanner.testAdUnitId,
+                adSize: bannerSize,
+                listener: (AdmobAdEvent event,
+                    Map<String, dynamic> args) {
+                  handleEvent(event, args, 'Banner');
+                },
+                onBannerCreated:
+                    (AdmobBannerController controller) {
+                  // Dispose is called automatically for you when Flutter removes the banner from the widget tree.
+                  // Normally you don't need to worry about disposing this yourself, it's handled.
+                  // If you need direct access to dispose, this is your guy!
+                  // controller.dispose();
+                },
+              ),
+            ),
             SizedBox(
-              height: 350.0,
+              height: 290.0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -183,5 +203,63 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
         ),
       ),
     );
+  }
+
+  void handleEvent(
+      AdmobAdEvent event, Map<String, dynamic> args, String adType) {
+    switch (event) {
+      case AdmobAdEvent.loaded:
+        showSnackBar('New Admob $adType Ad loaded!');
+        break;
+      case AdmobAdEvent.opened:
+        showSnackBar('Admob $adType Ad opened!');
+        break;
+      case AdmobAdEvent.closed:
+        showSnackBar('Admob $adType Ad closed!');
+        break;
+      case AdmobAdEvent.failedToLoad:
+        showSnackBar('Admob $adType failed to load. :(');
+        break;
+      case AdmobAdEvent.rewarded:
+        showDialog(
+          context: scaffoldState.currentContext,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              child: AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text('Reward callback fired. Thanks Andrew!'),
+                    Text('Type: ${args['type']}'),
+                    Text('Amount: ${args['amount']}'),
+                  ],
+                ),
+              ),
+              onWillPop: () async {
+                scaffoldState.currentState.hideCurrentSnackBar();
+                return true;
+              },
+            );
+          },
+        );
+        break;
+      default:
+    }
+  }
+
+  void showSnackBar(String content) {
+    scaffoldState.currentState.showSnackBar(
+      SnackBar(
+        content: Text(content),
+        duration: Duration(milliseconds: 1500),
+      ),
+    );
+  }
+
+  String getBannerAdUnitId() {
+    if (Platform.isAndroid) {
+      return 'ca-app-pub-3940256099942544/8865242552';
+    }
+    return null;
   }
 }
