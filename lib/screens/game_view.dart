@@ -42,6 +42,8 @@ class _GameViewState extends State<GameView>
   int _changeModeCounter = 0;
   String _currentMode = "-";
 
+  Timer _changeVisibilityTimer;
+
   AnimationController controller;
 
   int _highestValueTile = 0;
@@ -50,7 +52,7 @@ class _GameViewState extends State<GameView>
   List<Tile> toAdd = [];
   List<int> toShuffle = [];
   List<List<Tile>> grid =
-      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0)));
+      List.generate(4, (y) => List.generate(4, (x) => Tile(x, y, 0, 1.0, true, 0)));
   Iterable<List<Tile>> get cols {
     return List.generate(
         _boardSize, (x) => List.generate(_boardSize, (y) => grid[y][x]));
@@ -86,6 +88,12 @@ class _GameViewState extends State<GameView>
         setState(() {
           toAdd.forEach((element) {
             grid[element.y][element.x].val = element.val;
+            grid[element.y][element.x].changeVisibilityCounter = element.changeVisibilityCounter;
+            if (element.changeVisibilityCounter > 0) {
+              grid[element.y][element.x].startVisibilityTimer();
+              print("$element.x $element.y");
+            }
+
           });
           flattenedGrid.forEach((element) => element.resetAnimations());
           toAdd.clear();
@@ -169,7 +177,7 @@ class _GameViewState extends State<GameView>
                                 borderRadius: BorderRadius.circular(8.0),
                                 color: getNumberedTileColor(tile, false)),
                             child: Center(
-                              child: visibilityMode == VisibilityMode.NUMBERED
+                              child: tile.isVisible
                                   ? Text(
                                       '${tile.animatedValue.value}',
                                       style: TextStyle(
@@ -378,7 +386,7 @@ class _GameViewState extends State<GameView>
     }
     for (int i = 0; i < maxCount; i++) {
       toAdd.add(
-          Tile(empty[i].x, empty[i].y, newTiles[i], 1.0)..appear(controller));
+          Tile(empty[i].x, empty[i].y, newTiles[i], 1.0, true, 0)..appear(controller));
     }
   }
 
@@ -429,6 +437,24 @@ class _GameViewState extends State<GameView>
           _changeModeTimer.cancel();
           _isGameOver = true;
           saveHighScore();
+        }
+      });
+    });
+  }
+
+  void startVisibilityTimer() {
+    if (_changeVisibilityTimer != null) {
+      _changeVisibilityTimer.cancel();
+    }
+    _changeVisibilityTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_changeVisibilityCounter < 5) {
+          _changeVisibilityCounter++;
+        } else {
+          _changeVisibilityCounter = 0;
+          Tile numberedTile = flattenedGrid.where((e) => e.val != 0 && e.changeVisibilityCounter == 0).first;
+          numberedTile.setVisibility(false);
+          startVisibilityTimer();
         }
       });
     });
@@ -522,7 +548,7 @@ class _GameViewState extends State<GameView>
   void restartGame() {
     setState(() {
       grid = List.generate(_boardSize,
-          (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0)));
+          (y) => List.generate(_boardSize, (x) => Tile(x, y, 0, 1.0, true, 0)));
 
       flattenedGrid.forEach((e) {
         e.val = 0;
@@ -548,6 +574,7 @@ class _GameViewState extends State<GameView>
       if (isTimerOn) {
         startProgressBarTimer();
         startChangeModeTimer();
+        startVisibilityTimer();
       }
     });
   }
@@ -620,7 +647,7 @@ class _GameViewState extends State<GameView>
           }
         } while (true);
 
-        toAdd.add(Tile(x, y, notZeroTiles[i].val, 1.0)..appear(controller));
+        toAdd.add(Tile(x, y, notZeroTiles[i].val, 1.0, notZeroTiles[i].isVisible, notZeroTiles[i].changeVisibilityCounter)..appear(controller));
       }
 
       flattenedGrid.forEach((e) {

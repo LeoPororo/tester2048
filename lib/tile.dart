@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class Tile {
@@ -5,14 +7,22 @@ class Tile {
   final int y;
   int val;
   double s;
+  bool isVisible = true;
 
   Animation<double> animatedX;
   Animation<double> animatedY;
   Animation<int> animatedValue;
   Animation<double> scale;
+  Animation<bool> animatedVisible;
 
-  Tile(this.x, this.y, this.val, this.s) {
+  Timer _changeVisibleTimer;
+  int changeVisibilityCounter;
+
+  Tile(this.x, this.y, this.val, this.s, this.isVisible, this.changeVisibilityCounter) {
     resetAnimations();
+    if (this.changeVisibilityCounter > 0) {
+      startVisibilityTimer();
+    }
   }
 
   void resetAnimations() {
@@ -65,8 +75,35 @@ class Tile {
         .animate(CurvedAnimation(parent: parent, curve: Interval(0.0, 0.5)));
   }
 
-  bool isSame(Tile t)
-  {
+  bool isSame(Tile t) {
     return this.x == t.x && this.y == t.y;
+  }
+
+  void setVisibility(bool visible) {
+    isVisible = visible;
+    if (!isVisible) {
+      startVisibilityTimer();
+    }
+  }
+
+  void startVisibilityTimer() {
+    stopIfExistsVisibilityTimer();
+
+    _changeVisibleTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (changeVisibilityCounter > 5) {
+        _changeVisibleTimer.cancel();
+        isVisible = true;
+        changeVisibilityCounter = 0;
+      }
+      else {
+        changeVisibilityCounter += 1;
+      }
+    });
+  }
+
+  void stopIfExistsVisibilityTimer() {
+    if (_changeVisibleTimer != null) {
+      _changeVisibleTimer.cancel();
+    }
   }
 }
