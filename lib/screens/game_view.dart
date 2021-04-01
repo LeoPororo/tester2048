@@ -527,35 +527,6 @@ class _GameViewState extends State<GameView>
     });
   }
 
-  void doShuffle() {
-    setState(() {
-      List<Tile> notZeroTiles = flattenedGrid.where((e) => e.val != 0).toList();
-      List<String> indexes = [];
-      var index;
-      var x, y;
-      for (int i = 0; i < notZeroTiles.length; i++) {
-        do {
-          x = new Random().nextInt(_boardSize);
-          y = new Random().nextInt(_boardSize);
-          index = "$x$y";
-
-          if (!indexes.contains(index.toString())) {
-            indexes.add(index.toString());
-            break;
-          }
-        } while (true);
-
-        toAdd.add(Tile(x, y, notZeroTiles[i].val, 1.0)..appear(controller));
-      }
-
-      flattenedGrid.forEach((e) {
-        e.val = 0;
-        e.resetAnimations();
-      });
-      controller.forward(from: 0);
-    });
-  }
-
   void onEmptyTileTap(Tile tile) {
     if (_isGameOver) return;
 
@@ -696,8 +667,6 @@ class _GameViewState extends State<GameView>
     changeOperatorMode(newOperator);
 
     setModeDescription();
-
-    doShuffle();
   }
 
   void setModeDescription() {
