@@ -223,9 +223,10 @@ class _GameViewState extends State<GameView>
             child: Center(
               child: Column(
                 children: [
-                  Text("Score: $_score", style: textStyleSize21FontWeight900),
+                  Text("Score: $_score",
+                      style: _score > 99999 ? textStyleSize18FontWeight900 : textStyleSize21FontWeight900),
                   Text("High Score: $_highScore",
-                      style: textStyleSize21FontWeight900),
+                      style: _highScore > 99999 ? textStyleSize18FontWeight900 : textStyleSize21FontWeight900),
                 ],
               ),
             ),

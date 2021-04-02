@@ -36,6 +36,12 @@ const TextStyle textStyleSize21FontWeight900 = TextStyle(
   fontWeight: FontWeight.w900,
 );
 
+const TextStyle textStyleSize18FontWeight900 = TextStyle(
+  color: greyText,
+  fontSize: 18,
+  fontWeight: FontWeight.w900,
+);
+
 const TextStyle textStyleSize10FontWeight800 = TextStyle(
   color: buttonText,
   fontSize: 10,
