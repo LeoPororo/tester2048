@@ -46,7 +46,7 @@ const int fourDigitLimit = 999;
 const int boardSize = 4;
 const int maxTimerInSeconds = 30;
 const int maxChangeModeTimerInSeconds = 7;
-const readySetStrings = ["READY", "SET", "GO!!!", ""];
+const readySetStrings = ["READY", "SET", "GO!!!", "", "GAME OVER!"];
 
 const Map<int, Color> numTileColor = {
   2: tan,
@@ -60,4 +60,9 @@ const Map<int, Color> numTileColor = {
   512: const Color.fromARGB(255, 236, 201, 85),
   1024: const Color.fromARGB(255, 229, 194, 90),
   2048: const Color.fromARGB(255, 232, 192, 70),
+};
+
+const Map<String, String> audios = {
+  "SWIPE": "swipe.mp3",
+  "TAP": "tap.mp3"
 };

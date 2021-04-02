@@ -31,7 +31,8 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
-  static AudioCache player = AudioCache(prefix: 'assets/audios/', fixedPlayer: AudioPlayer());
+  static AudioCache player =
+      AudioCache(prefix: 'assets/audios/', fixedPlayer: AudioPlayer());
 
   AdmobBannerSize bannerSize;
 
@@ -75,7 +76,8 @@ class _GameViewState extends State<GameView>
   void initState() {
     super.initState();
 
-    player.load('swipe.mp3');
+    player.load(audios["SWIPE"]);
+    player.load(audios["TAP"]);
 
     bannerSize = AdmobBannerSize.BANNER;
 
@@ -295,7 +297,7 @@ class _GameViewState extends State<GameView>
                     key: ValueKey<int>(_readyCounter),
                     style: TextStyle(
                         fontSize: 50,
-                        color: greyText,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                 )
@@ -347,7 +349,7 @@ class _GameViewState extends State<GameView>
     }
     _readySetTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (_readyCounter == readySetStrings.length - 2) {
+        if (_readyCounter == readySetStrings.length - 3) {
           _readySetTimer.cancel();
           restartGame();
         }
@@ -386,6 +388,7 @@ class _GameViewState extends State<GameView>
           _progressBarTimer.cancel();
           _changeModeTimer.cancel();
           _isGameOver = true;
+          _readyCounter++;
           saveHighScore();
         }
       });
@@ -429,7 +432,7 @@ class _GameViewState extends State<GameView>
   void swipeDown() => _cols.map((e) => e.reversed.toList()).forEach(mergeTiles);
 
   void mergeTiles(List<Tile> tiles) {
-    playSwipe();
+    playSwipe("SWIPE");
 
     for (int i = 0; i < tiles.length; i++) {
       Iterable<Tile> toCheck =
@@ -556,6 +559,8 @@ class _GameViewState extends State<GameView>
   void onNumberedTileTap(Tile tile) {
     if (_actionMode != ActionMode.TAP || _controller.isAnimating || _isGameOver)
       return;
+
+    playSwipe("TAP");
 
     if (_tapCounter != 2) {
       if (_tapCounter == 0) {
@@ -708,8 +713,8 @@ class _GameViewState extends State<GameView>
     _highScore = prefs.getInt('highScore') ?? 0;
   }
 
-  playSwipe() {
+  playSwipe(String audio) {
     player.fixedPlayer.stop();
-    player.play("swipe.mp3");
+    player.play(audios[audio]);
   }
 }

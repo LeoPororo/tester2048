@@ -8,9 +8,9 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-  @override
+
   double _spaceHeight = 100;
-  int _counter = 4;
+  int _counter = 2;
   Timer _timer;
 
   void _startTimer() {
