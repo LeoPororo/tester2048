@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twentyfourtyeightplus/constants.dart';
+import 'dart:async';
 
 class AboutUs extends StatefulWidget {
   @override
@@ -8,6 +9,35 @@ class AboutUs extends StatefulWidget {
 
 class _AboutUsState extends State<AboutUs> {
   @override
+  double _spaceHeight = 100;
+  int _counter = 4;
+  Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_counter == 0) {
+          _decreaseHeight();
+          _timer.cancel();
+        } else {
+          _counter--;
+        }
+      });
+    });
+  }
+
+  void _decreaseHeight() {
+    setState(() {
+      _spaceHeight = 0;
+    });
+  }
+
+  void initState() {
+    super.initState();
+
+    _startTimer();
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Material(
@@ -41,10 +71,19 @@ class _AboutUsState extends State<AboutUs> {
                     Positioned(
                       top: 5.0,
                       left: 250.0,
-                      child: Image(
-                        image: AssetImage('images/waving_bear.png'),
-                        width: 130.0,
-                        height: 130.0,
+                      child: Column(
+                        children: [
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.linear,
+                            height: _spaceHeight,
+                          ),
+                          Image(
+                            image: AssetImage('images/waving_bear.png'),
+                            width: 130.0,
+                            height: 130.0,
+                          ),
+                        ],
                       ),
                     ),
                     Positioned(
