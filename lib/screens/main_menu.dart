@@ -1,9 +1,3 @@
-// TODO: Fix issue related to illegalArgumentException for AdMob
-// W/ConnectionTracker(21265): Exception thrown while unbinding
-// W/ConnectionTracker(21265): java.lang.IllegalArgumentException: Service not registered: com.google.android.gms.measurement.internal.zzja@2e6d7b1
-// Said issue can be ignored:
-// https://github.com/firebase/firebase-android-sdk/issues/1662
-
 // TODO: Move constant designs to constants.dart once main menu design is complete
 
 import 'package:admob_flutter/admob_flutter.dart';
