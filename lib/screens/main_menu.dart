@@ -33,7 +33,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: AdmobBanner(
                 adUnitId: AdmobBanner.testAdUnitId,
                 adSize: bannerSize,
