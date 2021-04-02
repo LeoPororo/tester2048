@@ -43,12 +43,10 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               child: AdmobBanner(
                 adUnitId: AdmobBanner.testAdUnitId,
                 adSize: bannerSize,
-                listener: (AdmobAdEvent event,
-                    Map<String, dynamic> args) {
+                listener: (AdmobAdEvent event, Map<String, dynamic> args) {
                   AdManager.handleEvent(event, args, 'Banner');
                 },
-                onBannerCreated:
-                    (AdmobBannerController controller) {
+                onBannerCreated: (AdmobBannerController controller) {
                   // Dispose is called automatically for you when Flutter removes the banner from the widget tree.
                   // Normally you don't need to worry about disposing this yourself, it's handled.
                   // If you need direct access to dispose, this is your guy!
@@ -186,17 +184,19 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                     MaterialPageRoute(builder: (context) => AboutUs()));
               },
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-              SizedBox(
-                height: 78.0,
-              ),
-              Text('Version 1.0.0',
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomRight,
+                child: Text(
+                  'Version 1.0.0',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 13.0,
-                  )),
-            ]),
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
