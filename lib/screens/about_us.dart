@@ -8,7 +8,6 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-
   double _spaceHeight = 100;
   int _counter = 2;
   Timer _timer;
@@ -101,7 +100,7 @@ class _AboutUsState extends State<AboutUs> {
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.black,
-                            fontFamily: "OpenSans",
+                            fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
