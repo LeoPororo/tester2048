@@ -463,7 +463,7 @@ class _GameViewState extends State<GameView>
               t.disappear(_controller);
               merge.val = 0;
 
-              if (_toAdd.length == 0) addNewTile([2, _highestValueTile]);
+              if (_toAdd.length == 0) addNewTile([2]);
             } else {
               merge.moveTo(_controller, tiles[i].x, tiles[i].y);
               merge.bounce(_controller);
