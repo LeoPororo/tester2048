@@ -15,7 +15,7 @@ class _HowToPlayState extends State<HowToPlay> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Image(image: AssetImage('images/howtoplay.png')),
+            Image(image: AssetImage('images/final_howtoplay.png')),
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
