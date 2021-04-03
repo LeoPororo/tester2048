@@ -1,4 +1,4 @@
-package com.panchos.twentyfourtyeightplus;
+package com.leoleoappcenter.twentyfourtyeightplus;
 
 import io.flutter.embedding.android.FlutterActivity;
 
