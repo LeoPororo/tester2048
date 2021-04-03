@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:twentyfourtyeightplus/screens/about_us.dart';
 
 import 'package:admob_flutter/admob_flutter.dart';
 

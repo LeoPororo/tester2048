@@ -6,39 +6,39 @@ class AdManager {
 
   static String get appId {
     if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544~4354546703";
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544~2594085930";
+      return "ca-app-pub-3259383160721715~3478552105";
+    }  else {
+      throw new UnsupportedError("Unsupported platform");
+    }
+  }
+
+  static String get bannerAdUnitIdMainMenu {
+    if (Platform.isAndroid) {
+      return "ca-app-pub-3259383160721715/1945978586";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
   }
 
-  static String get bannerAdUnitId {
+  static String get bannerAdUnitIdGameView {
     if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544/8865242552";
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/4339318960";
+      return "ca-app-pub-3259383160721715/4104613340";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
   }
 
-  static String get interstitialAdUnitId {
+  static String get bannerAdUnitIdAboutUs {
     if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544/7049598008";
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/3964253750";
+      return "ca-app-pub-3259383160721715/5713208484";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
   }
 
-  static String get rewardedAdUnitId {
+  static String get bannerAdUnitIdHowToPlay {
     if (Platform.isAndroid) {
-      return "ca-app-pub-3940256099942544/8673189370";
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-3940256099942544/7552160883";
+      return "ca-app-pub-3259383160721715/6539204997";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }

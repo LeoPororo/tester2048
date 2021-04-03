@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.panchos.twentyfourtyeightplus">
+    package="com.leoleoappcenter.twentyfourtyeightplus">
    <application
-        android:label="twentyfourtyeightplus"
+        android:label="2048+"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -37,7 +37,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-       <meta-data
+        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
            android:value="ca-app-pub-3259383160721715~3478552105"/>
     </application>
