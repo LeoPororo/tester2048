@@ -320,7 +320,7 @@ class _GameViewState extends State<GameView>
               child: ElevatedButton(
                 style: buttonStyle,
                 child: Text(
-                  "RESTART",
+                  "Restart",
                   style: textStyleSize34FontWeight800,
                 ),
                 onPressed: () {
@@ -343,7 +343,7 @@ class _GameViewState extends State<GameView>
               child: ElevatedButton(
                 style: buttonStyle,
                 child: Text(
-                  "BACK",
+                  "Back",
                   style: textStyleSize34FontWeight800,
                 ),
                 onPressed: () {

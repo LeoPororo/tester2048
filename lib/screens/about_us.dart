@@ -10,7 +10,6 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
-
   AdmobBannerSize bannerSize;
   double _spaceHeight = 100;
   int _counter = 2;
@@ -123,20 +122,15 @@ class _AboutUsState extends State<AboutUs> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        constraints:
-                            BoxConstraints(maxWidth: 350, maxHeight: 300),
-                      ),
-                    ),
-                    Positioned(
-                      top: 335.0,
-                      child: Image(
-                        image: AssetImage('images/honey_bear.png'),
-                        width: 130.0,
-                        height: 110.0,
+                        constraints: BoxConstraints(maxWidth: 350),
                       ),
                     ),
                   ],
                 ),
+              ),
+              Image(
+                image: AssetImage('images/honey_bear.png'),
+                height: 110.0,
               ),
               ElevatedButton(
                 style: buttonStyle,
