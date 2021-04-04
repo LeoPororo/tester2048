@@ -1,4 +1,6 @@
+import 'package:admob_flutter/admob_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:twentyfourtyeightplus/admob/ad_manager.dart';
 import 'package:twentyfourtyeightplus/constants.dart';
 import 'dart:async';
 
@@ -8,6 +10,8 @@ class AboutUs extends StatefulWidget {
 }
 
 class _AboutUsState extends State<AboutUs> {
+
+  AdmobBannerSize bannerSize;
   double _spaceHeight = 100;
   int _counter = 2;
   Timer _timer;
@@ -35,6 +39,7 @@ class _AboutUsState extends State<AboutUs> {
     super.initState();
 
     _startTimer();
+    bannerSize = AdmobBannerSize.BANNER;
   }
 
   Widget build(BuildContext context) {
@@ -45,8 +50,24 @@ class _AboutUsState extends State<AboutUs> {
           color: tan,
           child: Column(
             children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: AdmobBanner(
+                  adUnitId: AdManager.bannerByUsage("ABOUT_US"),
+                  adSize: bannerSize,
+                  listener: (AdmobAdEvent event, Map<String, dynamic> args) {
+                    AdManager.handleEvent(event, args, 'Banner');
+                  },
+                  onBannerCreated: (AdmobBannerController controller) {
+                    // Dispose is called automatically for you when Flutter removes the banner from the widget tree.
+                    // Normally you don't need to worry about disposing this yourself, it's handled.
+                    // If you need direct access to dispose, this is your guy!
+                    // controller.dispose();
+                  },
+                ),
+              ),
               SizedBox(
-                height: 40.0,
+                height: 5.0,
               ),
               Container(
                 width: 270.0,

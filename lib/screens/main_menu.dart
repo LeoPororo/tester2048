@@ -36,7 +36,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
             Container(
               padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: AdmobBanner(
-                adUnitId: AdmobBanner.testAdUnitId,
+                adUnitId: AdManager.bannerByUsage("MAIN_MENU"),
                 adSize: bannerSize,
                 listener: (AdmobAdEvent event, Map<String, dynamic> args) {
                   AdManager.handleEvent(event, args, 'Banner');

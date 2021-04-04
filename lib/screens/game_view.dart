@@ -190,11 +190,10 @@ class _GameViewState extends State<GameView>
     );
 
     return <Widget>[
-      // This is for the banner space
       Container(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: AdmobBanner(
-          adUnitId: AdmobBanner.testAdUnitId,
+          adUnitId: AdManager.bannerByUsage("GAME_VIEW"),
           adSize: bannerSize,
           listener: (AdmobAdEvent event, Map<String, dynamic> args) {
             AdManager.handleEvent(event, args, 'Banner');
