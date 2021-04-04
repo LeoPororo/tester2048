@@ -224,9 +224,13 @@ class _GameViewState extends State<GameView>
               child: Column(
                 children: [
                   Text("Score: $_score",
-                      style: _score > 99999 ? textStyleSize18FontWeight900 : textStyleSize21FontWeight900),
+                      style: _score > 99999
+                          ? textStyleSize18FontWeight900
+                          : textStyleSize21FontWeight900),
                   Text("High Score: $_highScore",
-                      style: _highScore > 99999 ? textStyleSize18FontWeight900 : textStyleSize21FontWeight900),
+                      style: _highScore > 99999
+                          ? textStyleSize18FontWeight900
+                          : textStyleSize21FontWeight900),
                 ],
               ),
             ),
@@ -307,24 +311,49 @@ class _GameViewState extends State<GameView>
           )
         ],
       ),
-      Container(
-        height: 80,
-        width: 400,
-        child: ElevatedButton(
-          style: buttonStyle,
-          child: Text(
-            "Restart",
-            style: textStyleSize34FontWeight800,
+      Row(
+
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              height: 80.0,
+              child: ElevatedButton(
+                style: buttonStyle,
+                child: Text(
+                  "RESTART",
+                  style: textStyleSize34FontWeight800,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _readyCounter = 0;
+                    _progressBarTimer.cancel();
+                    _changeModeTimer.cancel();
+                    startReadySetTimer();
+                  });
+                },
+              ),
+            ),
           ),
-          onPressed: () {
-            setState(() {
-              _readyCounter = 0;
-              _progressBarTimer.cancel();
-              _changeModeTimer.cancel();
-              startReadySetTimer();
-            });
-          },
-        ),
+          SizedBox(
+            width: 10.0,
+          ),
+          Expanded(
+            child: Container(
+              height: 80.0,
+              child: ElevatedButton(
+                style: buttonStyle,
+                child: Text(
+                  "BACK",
+                  style: textStyleSize34FontWeight800,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          )
+        ],
       ),
     ];
   }
