@@ -62,9 +62,7 @@ class _AboutUsState extends State<AboutUs> {
                 ),
               ),
               SizedBox(height: 10.0),
-              Container(
-                width: double.infinity,
-                height: 450.0,
+              Expanded(
                 child: Stack(
                   children: <Widget>[
                     Positioned(
