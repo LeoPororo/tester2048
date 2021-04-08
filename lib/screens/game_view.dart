@@ -1,11 +1,3 @@
-// Pointing system:
-// If the mode is ADD the value will be the merged value.
-// Example: 2 and 2. 2 + 2. it will be 4 points
-//          16 and 16. 16 + 16. it will be 32 points
-// If the mode is MINUS the value will be half of the merged value
-// Example: 2 and 2. 4 / 2. it will be 2 points
-//          8 and 8. 16 / 2. it will be 8 points
-
 import 'dart:async';
 import 'dart:math';
 
@@ -499,6 +491,10 @@ class _GameViewState extends State<GameView>
 
               merge.val = 0;
               t.changeNumber(_controller, 0);
+
+              if (resultValue > _highestValueTile) {
+                _highestValueTile = resultValue;
+              }
             }
             _addSeconds += 1;
 
@@ -506,7 +502,6 @@ class _GameViewState extends State<GameView>
           }
           t.val = 0;
           tiles[i].val = resultValue;
-          tileValueChecker();
         }
       }
     }
@@ -555,17 +550,6 @@ class _GameViewState extends State<GameView>
     setState(() {
       _operatorMode = newOperator;
       print("Operator Mode: $_operatorMode");
-    });
-  }
-
-  void tileValueChecker() {
-    setState(() {
-      List<Tile> tileCheck = _flattenedGrid.where((e) => e.val != 0).toList();
-      for (int i = 0; i < tileCheck.length; i++) {
-        if (tileCheck[i].val > _highestValueTile) {
-          _highestValueTile = tileCheck[i].val;
-        }
-      }
     });
   }
 
@@ -619,6 +603,10 @@ class _GameViewState extends State<GameView>
             addNewTile([2, 2]);
             multiplier = 2;
             setScore(scoreToAdd, multiplier, true);
+
+            if (_tapTileTwo.val > _highestValueTile) {
+              _highestValueTile = _tapTileTwo.val;
+            }
           } else {
             multiplier = _tapTileTwo.val;
             _tapTileTwo.disappear(_controller);
@@ -653,7 +641,6 @@ class _GameViewState extends State<GameView>
 
       _tapCounter++;
       if (_tapCounter == 2) _tapCounter = 0;
-      tileValueChecker();
     }
   }
 
