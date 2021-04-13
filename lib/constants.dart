@@ -17,37 +17,6 @@ ButtonStyle buttonStyle = ElevatedButton.styleFrom(
     shape:
         new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)));
 
-const TextStyle mainMenuTextStyle = TextStyle(
-  fontWeight: FontWeight.w900,
-  fontSize: 30.0,
-  color: Colors.yellowAccent,
-  fontFamily: 'PatrickHand',
-);
-
-const TextStyle textStyleSize34FontWeight800 = TextStyle(
-  color: buttonText,
-  fontSize: 34,
-  fontWeight: FontWeight.w800,
-);
-
-const TextStyle textStyleSize21FontWeight900 = TextStyle(
-  color: greyText,
-  fontSize: 21,
-  fontWeight: FontWeight.w900,
-);
-
-const TextStyle textStyleSize18FontWeight900 = TextStyle(
-  color: greyText,
-  fontSize: 18,
-  fontWeight: FontWeight.w900,
-);
-
-const TextStyle textStyleSize10FontWeight800 = TextStyle(
-  color: buttonText,
-  fontSize: 10,
-  fontWeight: FontWeight.w800,
-);
-
 const int fourDigitLimit = 999;
 const int boardSize = 4;
 const int maxTimerInSeconds = 30;

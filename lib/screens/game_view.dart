@@ -23,6 +23,8 @@ class GameView extends StatefulWidget {
 
 class _GameViewState extends State<GameView>
     with SingleTickerProviderStateMixin {
+  var screenWidth;
+
   static AudioCache player =
       AudioCache(prefix: 'assets/audios/', fixedPlayer: AudioPlayer());
 
@@ -99,6 +101,8 @@ class _GameViewState extends State<GameView>
 
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: tan,
       body: Padding(
@@ -168,7 +172,7 @@ class _GameViewState extends State<GameView>
                                 '${tile.animatedValue.value}',
                                 style: TextStyle(
                                   color: getNumberedTileTextColor(tile, false),
-                                  fontSize: tile.val > fourDigitLimit ? 30 : 35,
+                                  fontSize: getTileFontSize(tile.animatedValue.value),
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
@@ -204,8 +208,22 @@ class _GameViewState extends State<GameView>
             child: Center(
               child: Column(
                 children: [
-                  Text("MODE", style: textStyleSize21FontWeight900),
-                  Text("$_currentMode", style: textStyleSize21FontWeight900),
+                  Text(
+                    "MODE",
+                    style: TextStyle(
+                      color: greyText,
+                      fontSize: getModeFontSize(),
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    "$_currentMode",
+                    style: TextStyle(
+                      color: greyText,
+                      fontSize: getModeFontSize(),
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -214,14 +232,22 @@ class _GameViewState extends State<GameView>
             child: Center(
               child: Column(
                 children: [
-                  Text("Score: $_score",
-                      style: _score > 99999
-                          ? textStyleSize18FontWeight900
-                          : textStyleSize21FontWeight900),
-                  Text("High Score: $_highScore",
-                      style: _highScore > 99999
-                          ? textStyleSize18FontWeight900
-                          : textStyleSize21FontWeight900),
+                  Text(
+                    "Score: $_score",
+                    style: TextStyle(
+                      color: greyText,
+                      fontSize: getScoreFontSize(_score),
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    "High Score: $_highScore",
+                    style: TextStyle(
+                      color: greyText,
+                      fontSize: getScoreFontSize(_highScore),
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -229,11 +255,13 @@ class _GameViewState extends State<GameView>
         ],
       ),
       Container(
-        width: 400,
+        width: screenWidth - 16 * 2,
         child: CustomPaint(
           size: Size(10, 10),
           painter: ProgressBarPainter(
-              progressBarValue: _progressBarCounter, state: _isTimerOn),
+              progressBarValue: _progressBarCounter,
+              state: _isTimerOn,
+              screenWidth: screenWidth),
         ),
       ),
       Stack(
@@ -292,8 +320,8 @@ class _GameViewState extends State<GameView>
                     readySetStrings[_readyCounter],
                     key: ValueKey<int>(_readyCounter),
                     style: TextStyle(
-                        fontSize: 50,
-                        color: Colors.white,
+                        fontSize: getReadySetFontSize(),
+                        color: _readyCounter == 4 ? Colors.red : Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
                 )
@@ -303,7 +331,6 @@ class _GameViewState extends State<GameView>
         ],
       ),
       Row(
-
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Expanded(
@@ -313,7 +340,11 @@ class _GameViewState extends State<GameView>
                 style: buttonStyle,
                 child: Text(
                   "Restart",
-                  style: textStyleSize34FontWeight800,
+                  style: TextStyle(
+                    color: buttonText,
+                    fontSize: getButtonFontSize(),
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 onPressed: () {
                   setState(() {
@@ -336,7 +367,11 @@ class _GameViewState extends State<GameView>
                 style: buttonStyle,
                 child: Text(
                   "Back",
-                  style: textStyleSize34FontWeight800,
+                  style: TextStyle(
+                    color: buttonText,
+                    fontSize: getButtonFontSize(),
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -732,5 +767,33 @@ class _GameViewState extends State<GameView>
   playSwipe(String audio) {
     player.fixedPlayer.stop();
     player.play(audios[audio]);
+  }
+
+  getTileFontSize(int val) {
+    var size = val > fourDigitLimit ? 30.0 : 35.0;
+    if (screenWidth < 400) {
+      size -= 10.0;
+    }
+    return size;
+  }
+
+  getButtonFontSize() {
+    return screenWidth < 400 ? 28.0 : 34.0;
+  }
+
+  getModeFontSize() {
+    return screenWidth < 400 ? 16.0 : 21.0;
+  }
+
+  getScoreFontSize(var score) {
+    var size = screenWidth < 400 ? 16.0 : 21.0;
+    if (score > 99999) {
+      size -= 2.0;
+    }
+    return size;
+  }
+
+  getReadySetFontSize() {
+    return screenWidth < 400 ? 40.0 : 50.0;
   }
 }

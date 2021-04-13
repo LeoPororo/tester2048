@@ -69,7 +69,12 @@ class _HowToPlayState extends State<HowToPlay> {
                       child: Text(
                         "B A C K",
                         textAlign: TextAlign.center,
-                        style: mainMenuTextStyle,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 30,
+                          color: Colors.yellowAccent,
+                          fontFamily: 'PatrickHand',
+                        ),
                       ),
                     ),
                     onPressed: () {

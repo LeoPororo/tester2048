@@ -42,6 +42,41 @@ class _AboutUsState extends State<AboutUs> {
   }
 
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var topBearLeft = 250.0;
+    var paragraphLeft = 10.0;
+    var paragraphFontSize = 17.0;
+    var paragraphConstraintWidth = width - 16 * 2;
+    var visibleBottomBear = true;
+
+    // BUTTONS
+    var buttonFontSize = 30.0;
+    var buttonWidth = 270.0;
+    var buttonHeight = 60.0;
+
+    if (width > 600) {
+      topBearLeft = 550.0;
+      paragraphLeft = 20.0;
+      paragraphFontSize = 36.0;
+      buttonFontSize = 50.0;
+      buttonWidth = 450.0;
+      buttonHeight = 90.0;
+    }
+    else if (width > 500) {
+      topBearLeft = 450.0;
+      paragraphLeft = 10.0;
+      paragraphFontSize = 30.0;
+      buttonFontSize = 50.0;
+      buttonWidth = 450.0;
+      buttonHeight = 90.0;
+    }
+    else if (width < 400){
+      topBearLeft = 180.0;
+      paragraphLeft = 5.0;
+      paragraphFontSize = 12.0;
+      visibleBottomBear = false;
+    }
+
     return SafeArea(
       child: Material(
         child: Container(
@@ -69,7 +104,8 @@ class _AboutUsState extends State<AboutUs> {
                 height: 5.0,
               ),
               Container(
-                width: 270.0,
+                width: buttonWidth,
+                height: buttonHeight,
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
@@ -78,7 +114,12 @@ class _AboutUsState extends State<AboutUs> {
                 child: Text(
                   " A B O U T   U S ",
                   textAlign: TextAlign.center,
-                  style: mainMenuTextStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: buttonFontSize,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
               SizedBox(height: 10.0),
@@ -87,7 +128,7 @@ class _AboutUsState extends State<AboutUs> {
                   children: <Widget>[
                     Positioned(
                       top: 5.0,
-                      left: 250.0,
+                      left: topBearLeft,
                       child: Column(
                         children: [
                           AnimatedContainer(
@@ -105,7 +146,7 @@ class _AboutUsState extends State<AboutUs> {
                     ),
                     Positioned(
                       top: 70.0,
-                      left: 20.0,
+                      left: paragraphLeft,
                       child: Container(
                         padding: EdgeInsets.all(25.0),
                         decoration: BoxDecoration(
@@ -116,32 +157,40 @@ class _AboutUsState extends State<AboutUs> {
                           aboutUs,
                           textAlign: TextAlign.justify,
                           style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: paragraphFontSize,
                             color: Colors.black,
                             fontFamily: 'OpenSans',
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        constraints: BoxConstraints(maxWidth: 350),
+                        constraints: BoxConstraints(maxWidth: paragraphConstraintWidth),
                       ),
                     ),
                   ],
                 ),
               ),
-              Image(
-                image: AssetImage('images/honey_bear.png'),
-                height: 110.0,
+              Visibility(
+                visible: visibleBottomBear,
+                child: Image(
+                  image: AssetImage('images/honey_bear.png'),
+                  height: 110.0,
+                ),
               ),
               ElevatedButton(
                 style: buttonStyle,
                 child: Container(
-                  width: 150.0,
-                  height: 60.0,
+                  width: buttonWidth,
+                  height: buttonHeight,
                   padding: EdgeInsets.all(10.0),
                   child: Text(
                     "B A C K",
                     textAlign: TextAlign.center,
-                    style: mainMenuTextStyle,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: buttonFontSize,
+                      color: Colors.yellowAccent,
+                      fontFamily: 'PatrickHand',
+                    ),
                   ),
                 ),
                 onPressed: () {

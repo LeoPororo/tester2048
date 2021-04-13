@@ -27,6 +27,46 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    print(width);
+    var titleHeight = 290.0;
+    var titleFontSize = 125.0;
+    var letterWidth = 75.0;
+    var letterSpacing = 20.0;
+
+    // BUTTONS
+    var buttonFontSize = 30.0;
+    var buttonWidth = 270.0;
+    var buttonHeight = 60.0;
+
+    // TABLETS
+    if (width > 600) {
+      titleHeight = 500.0;
+      titleFontSize = 250.0;
+      letterWidth = 120.0;
+      letterSpacing = 20.0;
+      buttonFontSize = 50.0;
+      buttonWidth = 450.0;
+      buttonHeight = 90.0;
+    }
+    else if (width > 500) {
+      titleHeight = 500.0;
+      titleFontSize = 250.0;
+      letterWidth = 120.0;
+      letterSpacing = 20.0;
+      buttonFontSize = 50.0;
+      buttonWidth = 450.0;
+      buttonHeight = 90.0;
+    }
+    // SMALL SMARTPHONE
+    else if (width < 400) {
+      titleHeight = 180.0;
+      letterWidth = 60.0;
+    }
+
+
+
+
     return Scaffold(
       body: Container(
         color: tan,
@@ -50,50 +90,50 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               ),
             ),
             SizedBox(
-              height: 290.0,
+              height: titleHeight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 75.0,
+                    width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
                       duration: Duration(milliseconds: 1900),
                       text: ["2"],
                       textStyle: TextStyle(
-                        fontSize: 125.0,
+                        fontSize: titleFontSize,
                         fontFamily: 'Monofett',
                         color: Color.fromARGB(255, 242, 177, 121),
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 20.0,
+                    width: letterSpacing,
                   ),
                   SizedBox(
-                    width: 75.0,
+                    width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
                       duration: Duration(milliseconds: 1950),
                       text: ["0"],
                       textStyle: TextStyle(
-                        fontSize: 125.0,
+                        fontSize: titleFontSize,
                         fontFamily: 'Monofett',
                         color: Color.fromARGB(255, 246, 95, 64),
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 20.0,
+                    width: letterSpacing,
                   ),
                   SizedBox(
-                    width: 75.0,
+                    width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
                       duration: Duration(milliseconds: 2000),
                       text: ["4"],
                       textStyle: TextStyle(
-                        fontSize: 125.0,
+                        fontSize: titleFontSize,
                         fontFamily: 'Monofett',
                         color: Color.fromARGB(255, 237, 203, 103),
                       ),
@@ -102,16 +142,16 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: 20.0,
+                    width: letterSpacing,
                   ),
                   SizedBox(
-                    width: 75.0,
+                    width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
                       duration: Duration(milliseconds: 2050),
                       text: ["8"],
                       textStyle: TextStyle(
-                        fontSize: 125.0,
+                        fontSize: titleFontSize,
                         fontFamily: 'Monofett',
                         color: Color.fromARGB(255, 232, 192, 70),
                       ),
@@ -128,13 +168,18 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
             ElevatedButton(
               style: buttonStyle,
               child: Container(
-                width: 270.0,
-                height: 60.0,
+                width: buttonWidth,
+                height: buttonHeight,
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   "S T A R T   G A M E ",
                   textAlign: TextAlign.center,
-                  style: mainMenuTextStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: buttonFontSize,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
               onPressed: () {
@@ -148,13 +193,18 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
             ElevatedButton(
               style: buttonStyle,
               child: Container(
-                width: 270.0,
-                height: 60.0,
+                width: buttonWidth,
+                height: buttonHeight,
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   "H O W   T O   P L A Y ",
                   textAlign: TextAlign.center,
-                  style: mainMenuTextStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: buttonFontSize,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
               onPressed: () {
@@ -168,13 +218,18 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
             ElevatedButton(
               style: buttonStyle,
               child: Container(
-                width: 270.0,
-                height: 60.0,
+                width: buttonWidth,
+                height: buttonHeight,
                 padding: EdgeInsets.all(10.0),
                 child: Text(
                   "A B O U T   U S ",
                   textAlign: TextAlign.center,
-                  style: mainMenuTextStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: buttonFontSize,
+                    color: Colors.yellowAccent,
+                    fontFamily: 'PatrickHand',
+                  ),
                 ),
               ),
               onPressed: () {
