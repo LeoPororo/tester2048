@@ -43,6 +43,8 @@ class _GameViewState extends State<GameView>
   AnimationController _controller;
 
   int _highestValueTile = 0;
+  int _lowestValueTile = 0;
+  bool _stuck = false;
 
   List<Tile> _toAdd = [];
   List<List<Tile>> _grid =
@@ -172,7 +174,8 @@ class _GameViewState extends State<GameView>
                                 '${tile.animatedValue.value}',
                                 style: TextStyle(
                                   color: getNumberedTileTextColor(tile, false),
-                                  fontSize: getTileFontSize(tile.animatedValue.value),
+                                  fontSize:
+                                      getTileFontSize(tile.animatedValue.value),
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
@@ -440,6 +443,7 @@ class _GameViewState extends State<GameView>
       setState(() {
         if (_progressBarCounter > 0) {
           _progressBarCounter--;
+          tileValueChecker();
         } else {
           _progressBarTimer.cancel();
           _changeModeTimer.cancel();
@@ -578,6 +582,12 @@ class _GameViewState extends State<GameView>
     setState(() {
       _actionMode = newAction;
       print("Action Mode: $_actionMode");
+      if (_actionMode == ActionMode.TAP) {
+        tileValueChecker();
+        if (_stuck) {
+          addNewTile([2]);
+        }
+      }
     });
   }
 
@@ -795,5 +805,23 @@ class _GameViewState extends State<GameView>
 
   getReadySetFontSize() {
     return screenWidth < 400 ? 40.0 : 50.0;
+  }
+
+  void tileValueChecker() {
+    List<int> presentValues = [];
+    _lowestValueTile = _highestValueTile;
+    _flattenedGrid.forEach((e) {
+      if (e.val != 0) {
+        if (presentValues.contains(e.val)) {
+          _stuck = false;
+        } else {
+          if (e.val < _lowestValueTile) {
+            _lowestValueTile = e.val;
+          }
+          presentValues.add(e.val);
+          _stuck = true;
+        }
+      }
+    });
   }
 }
