@@ -3,14 +3,13 @@ import 'dart:io';
 import 'package:admob_flutter/admob_flutter.dart';
 
 class AdManager {
-
   // TODO: Change this to false if going to release it in Google Play
   static bool isDebug = true;
 
   static String get appId {
     if (Platform.isAndroid) {
       return "ca-app-pub-3259383160721715~3478552105";
-    }  else {
+    } else {
       throw new UnsupportedError("Unsupported platform");
     }
   }
@@ -52,11 +51,15 @@ class AdManager {
       return AdmobBanner.testAdUnitId;
     }
 
-    switch(usage) {
-      case "MAIN_MENU": return bannerAdUnitIdMainMenu;
-      case "HOW_TO_PLAY": return bannerAdUnitIdHowToPlay;
-      case "ABOUT_US": return bannerAdUnitIdAboutUs;
-      case "GAME_VIEW": return bannerAdUnitIdGameView;
+    switch (usage) {
+      case "MAIN_MENU":
+        return bannerAdUnitIdMainMenu;
+      case "HOW_TO_PLAY":
+        return bannerAdUnitIdHowToPlay;
+      case "ABOUT_US":
+        return bannerAdUnitIdAboutUs;
+      case "GAME_VIEW":
+        return bannerAdUnitIdGameView;
     }
 
     return AdmobBanner.testAdUnitId;
@@ -80,5 +83,4 @@ class AdManager {
       default:
     }
   }
-
 }

@@ -48,8 +48,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
       buttonFontSize = 50.0;
       buttonWidth = 450.0;
       buttonHeight = 90.0;
-    }
-    else if (width > 500) {
+    } else if (width > 500) {
       titleHeight = 500.0;
       titleFontSize = 250.0;
       letterWidth = 120.0;
@@ -63,9 +62,6 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
       titleHeight = 180.0;
       letterWidth = 60.0;
     }
-
-
-
 
     return Scaffold(
       body: Container(
@@ -241,7 +237,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               child: Align(
                 alignment: FractionalOffset.bottomRight,
                 child: Text(
-                  'Version 1.0.0',
+                  'Version 1.0.1',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.grey,

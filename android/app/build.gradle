@@ -55,7 +55,7 @@ android {
         release {
             // Signing with the debug keys for now, so `flutter run --release` works.
             // TODO: Change this to release when releasing to Google play
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
