@@ -585,7 +585,7 @@ class _GameViewState extends State<GameView>
       if (_actionMode == ActionMode.TAP) {
         tileValueChecker();
         if (_stuck) {
-          addNewTile([2]);
+          addNewTile([_lowestValueTile]);
         }
       }
     });
