@@ -243,7 +243,7 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
               child: Align(
                 alignment: FractionalOffset.bottomRight,
                 child: Text(
-                  'Version 1.0.1',
+                  'Version 1.0.2',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.grey,
