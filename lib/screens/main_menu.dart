@@ -104,9 +104,6 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: letterSpacing,
-                  ),
-                  SizedBox(
                     width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
@@ -118,9 +115,6 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                         color: Color.fromARGB(255, 246, 95, 64),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: letterSpacing,
                   ),
                   SizedBox(
                     width: letterWidth,
@@ -138,9 +132,6 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                     ),
                   ),
                   SizedBox(
-                    width: letterSpacing,
-                  ),
-                  SizedBox(
                     width: letterWidth,
                     child: RotateAnimatedTextKit(
                       repeatForever: true,
@@ -155,6 +146,21 @@ class _MainMenuWidgetState extends State<MainMenuWidget> {
                       alignment: AlignmentDirectional.center,
                     ),
                   ),
+                  SizedBox(
+                    width: letterWidth - 15.0,
+                    child: RotateAnimatedTextKit(
+                      repeatForever: true,
+                      duration: Duration(milliseconds: 2100),
+                      text: ["+"],
+                      textStyle: TextStyle(
+                        fontSize: titleFontSize,
+                        fontFamily: 'Monofett',
+                        color: Color.fromARGB(255, 246, 95, 64),
+                      ),
+                      textAlign: TextAlign.center,
+                      alignment: AlignmentDirectional.center,
+                    ),
+                  )
                 ],
               ),
             ),
