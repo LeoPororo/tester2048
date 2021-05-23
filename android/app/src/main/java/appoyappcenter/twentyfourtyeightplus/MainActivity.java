@@ -1,4 +1,4 @@
-package com.leoleoappcenter.twentyfourtyeightplus;
+package com.appoyappcenter.twentyfourtyeightplus;
 
 import io.flutter.embedding.android.FlutterActivity;
 

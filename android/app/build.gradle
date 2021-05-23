@@ -35,7 +35,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.leoleoappcenter.twentyfourtyeightplus"
+        applicationId "com.appoyappcenter.twentyfourtyeightplus"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
@@ -60,10 +60,6 @@ android {
     }
 }
 
-flutter {
-    source '../..'
-}
-
 dependencies {
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
@@ -74,4 +70,8 @@ dependencies {
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
+}
+
+flutter {
+    source '../..'
 }

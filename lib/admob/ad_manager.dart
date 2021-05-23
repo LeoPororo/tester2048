@@ -4,7 +4,7 @@ import 'package:admob_flutter/admob_flutter.dart';
 
 class AdManager {
   // TODO: Change this to false if going to release it in Google Play
-  static bool isDebug = true;
+  static bool isDebug = false;
 
   static String get appId {
     if (Platform.isAndroid) {

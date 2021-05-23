@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.leoleoappcenter.twentyfourtyeightplus">
+    package="com.appoyappcenter.twentyfourtyeightplus">
    <application
         android:label="2048+"
         android:icon="@mipmap/ic_launcher">
